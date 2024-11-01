@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:health/health.dart';
 
 class HealthService {
@@ -21,21 +22,54 @@ class HealthService {
     }
   }
 
-  Future<void> getProtein() async {
+  Future<int> getProtein() async {
     final now = DateTime.now();
-    final healthData = await healthManager.getHealthDataFromTypes(
+    final healthDataList = await healthManager.getHealthDataFromTypes(
         types: [proteinType],
         startTime: now.subtract(Duration(hours: now.hour, minutes: now.minute)),
         endTime: now);
+    if (healthDataList.isEmpty) {
+      return 0;
+    } else {
+      final total = healthDataList
+          .map((healthData) {
+            if (healthData.value.$type == 'NumericHealthValue') {
+              final healthValue = healthData.value as NumericHealthValue;
+              return healthValue.numericValue.toInt();
+            } else {
+              return 0;
+            }
+          })
+          .toList()
+          .sum;
+
+      return total;
+    }
   }
 
-  Future<void> getCalories() async {
+  Future<int> getCalories() async {
     final now = DateTime.now();
 
-    final healthData = await healthManager.getHealthDataFromTypes(
+    final healthDataList = await healthManager.getHealthDataFromTypes(
         types: [calorieType],
         startTime: now.subtract(Duration(hours: now.hour, minutes: now.minute)),
         endTime: now);
+    if (healthDataList.isEmpty) {
+      return 0;
+    } else {
+      final total = healthDataList
+          .map((healthData) {
+            if (healthData.value.$type == 'NumericHealthValue') {
+              final healthValue = healthData.value as NumericHealthValue;
+              return healthValue.numericValue.toInt();
+            } else {
+              return 0;
+            }
+          })
+          .toList()
+          .sum;
+      return total;
+    }
   }
 
   Future<bool> submitProtein(int protein) async =>

@@ -1,15 +1,15 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:health/health.dart';
-import 'package:procal/device_services/health_service.dart';
-import 'package:procal/device_services/local_storage_service.dart';
+import 'package:procal/services/device_services/health_service.dart';
+import 'package:procal/services/device_services/local_storage_service.dart';
 
-final healthManagerProvider = Provider<Health>((_) => Health());
-
-final healthServiceProvider = Provider<HealthService>(
-    (ref) => HealthService(healthManager: ref.read(healthManagerProvider)));
+final healthServiceProvider =
+    Provider<HealthService>((_) => HealthService(healthManager: Health()));
 
 final localStorageServiceProvider =
-    Provider<LocalStorageService>((ref) => LocalStorageService());
+    Provider<LocalStorageService>((_) => LocalStorageService());
 
-final proteinConsumed = StateProvider((_) => 0);
-final caloriesConsumed = StateProvider((_) => 0);
+final proteinConsumedProvider = StateProvider<int?>((_) => null);
+final caloriesConsumedProvider = StateProvider<int?>((_) => null);
+
+final proteinGoalProvider = StateProvider<int?>((_) => null);

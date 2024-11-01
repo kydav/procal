@@ -3,7 +3,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:procal/constants/strings.dart';
 import 'package:procal/constants/system_strings.dart';
-import 'package:procal/device_services/local_storage_service.dart';
+import 'package:procal/services/device_services/local_storage_service.dart';
+import 'package:procal/theme.dart';
 import 'package:procal/top_level_providers.dart';
 
 class HomePage extends HookConsumerWidget {
@@ -47,6 +48,8 @@ class HomePage extends HookConsumerWidget {
     final protein = useState(0);
     final healthService = ref.read(healthServiceProvider);
     final storageService = ref.read(localStorageServiceProvider);
+    final proteinConsumed = ref.watch(proteinConsumedProvider);
+    final proteinGoal = ref.watch(proteinGoalProvider);
     useEffect(() {
       if (!storageService.checkValueExists(SystemStrings.proteinGoal)) {
         final protein = useTextEditingController();
@@ -64,6 +67,36 @@ class HomePage extends HookConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            SizedBox(
+              width: 100,
+              height: 100,
+              child: Stack(
+                children: [
+                  SizedBox(
+                    height: 100,
+                    width: 100,
+                    child: CircularProgressIndicator(
+                      value: proteinConsumed! / proteinGoal!,
+                      valueColor:
+                          const AlwaysStoppedAnimation(ColorPalette.brandTwo),
+                      backgroundColor: ColorPalette.brandTwo2,
+                      strokeWidth: 10,
+                      strokeCap: StrokeCap.round,
+                    ),
+                  ),
+                  Align(
+                    child: Text(
+                      '$proteinConsumed / $proteinGoal',
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                          fontSize: 18,
+                          color: ColorPalette.brandOne,
+                          fontWeight: FontWeight.w700),
+                    ),
+                  )
+                ],
+              ),
+            ),
             TextField(
               onChanged: (value) {
                 if (int.tryParse(value) != null) {
