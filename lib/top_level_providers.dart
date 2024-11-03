@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health/health.dart';
 import 'package:procal/pages/home/home_page.dart';
+import 'package:procal/pages/intro/intro_page.dart';
 import 'package:procal/services/device_services/health_service.dart';
 import 'package:procal/services/device_services/local_storage_service.dart';
 
@@ -22,9 +23,9 @@ final procalRouterProvider = Provider<GoRouter>((ref) => GoRouter(
           path: '/',
           builder: (context, state) => const HomePage(),
         ),
-        // GoRoute(
-        //   path: '/page2',
-        //   builder: (context, state) => const Page2Screen(),
-        // ),
+        GoRoute(
+          path: '/intro',
+          builder: (context, state) => const IntroPage(),
+        ),
       ],
     ));

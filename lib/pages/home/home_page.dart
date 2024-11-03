@@ -24,6 +24,9 @@ class HomePage extends HookConsumerWidget {
     final homeModel = ref.watch(homeModelProvider);
     useEffect(() {
       //if (proteinGoal != null) {
+      WidgetsBinding.instance.addPostFrameCallback(
+          (_) => ref.read(procalRouterProvider).go('/intro'));
+
       _showProteinDialog(context);
       //}
 
