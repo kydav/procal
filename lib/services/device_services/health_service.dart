@@ -12,13 +12,21 @@ class HealthService {
     HealthDataType.DIETARY_ENERGY_CONSUMED
   ];
 
-  Future<void> requestDataAccess() async {
+  Future<bool> requestDataAccess() async {
     final hasAccess = await healthManager.hasPermissions(healthTypes);
     if (hasAccess == null || !hasAccess) {
-      await healthManager.requestAuthorization(healthTypes, permissions: [
-        HealthDataAccess.READ_WRITE,
-        HealthDataAccess.READ_WRITE
-      ]);
+      final access = await healthManager.requestAuthorization(healthTypes,
+          permissions: [
+            HealthDataAccess.READ_WRITE,
+            HealthDataAccess.READ_WRITE
+          ]);
+      if (access) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return true;
     }
   }
 
