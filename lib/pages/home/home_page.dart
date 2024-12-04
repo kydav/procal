@@ -3,7 +3,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:procal/common/circular_progress.dart';
 import 'package:procal/common/common_dialog.dart';
+import 'package:procal/constants/asset_icons.dart';
 import 'package:procal/pages/home/home_model.dart';
+import 'package:procal/pages/home/home_widgets/add_protein_dialog.dart';
 import 'package:procal/top_level_providers.dart';
 
 class HomePage extends HookConsumerWidget {
@@ -17,49 +19,44 @@ class HomePage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final protein = useState(0);
-    final healthService = ref.read(healthServiceProvider);
     final proteinConsumed = ref.watch(proteinConsumedProvider);
     final proteinGoal = ref.watch(proteinGoalProvider);
     final homeModel = ref.watch(homeModelProvider);
-    useEffect(() {
-      //if (proteinGoal != null) {
-      WidgetsBinding.instance.addPostFrameCallback(
-          (_) => ref.read(procalRouterProvider).go('/intro'));
-
-      _showProteinDialog(context);
-      //}
-
-      return null;
-    }, []);
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: const Text('Procal'),
+          elevation: 4,
+          titleSpacing: -30,
+          //backgroundColor: CustomColors.primaryBlue,
+          title: Padding(
+              padding: EdgeInsets
+                  .zero, //isMobile ? EdgeInsets.zero : const EdgeInsets.only(top: 15),
+              child: Image.asset(
+                AssetIcons.horizontalTransparentLogo,
+                height: 45,
+              )),
         ),
+        floatingActionButton: IconButton(
+            onPressed: () {
+              showAdaptiveDialog(
+                  context: context,
+                  builder: (context) => const AddProteinDialog());
+            },
+            icon: const Icon(Icons.add)),
         body: homeModel.when(
-          loading: () => const CircularProgressIndicator(),
-          initial: () => Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                CircularProgress(
-                    current: proteinConsumed ?? 0, total: proteinGoal ?? 0),
-                TextField(
-                  onChanged: (value) {
-                    if (int.tryParse(value) != null) {
-                      protein.value = int.parse(value);
-                    }
-                  },
+            loading: () => const CircularProgressIndicator(),
+            initial: () {
+              if (proteinGoal == null) {
+                _showProteinDialog(context);
+              }
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    CircularProgress(
+                        current: proteinConsumed ?? 0, total: proteinGoal ?? 0),
+                  ],
                 ),
-                TextButton(
-                    onPressed: () {
-                      healthService.submitProtein(protein.value);
-                    },
-                    child: const Text('Submit')),
-              ],
-            ),
-          ),
-        ));
+              );
+            }));
   }
 }

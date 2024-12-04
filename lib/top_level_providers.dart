@@ -6,14 +6,14 @@ import 'package:procal/pages/intro/intro_page.dart';
 import 'package:procal/services/device_services/health_service.dart';
 import 'package:procal/services/device_services/local_storage_service.dart';
 
-final healthServiceProvider =
-    Provider<HealthService>((_) => HealthService(healthManager: Health()));
+final proteinConsumedProvider = StateProvider<int?>((_) => null);
+final caloriesConsumedProvider = StateProvider<int?>((_) => null);
+
+final healthServiceProvider = Provider<HealthService>(
+    (ref) => HealthService(healthManager: Health(), ref: ref));
 
 final localStorageServiceProvider =
     Provider<LocalStorageService>((_) => LocalStorageService());
-
-final proteinConsumedProvider = StateProvider<int?>((_) => null);
-final caloriesConsumedProvider = StateProvider<int?>((_) => null);
 
 final proteinGoalProvider = StateProvider<int?>((_) => null);
 

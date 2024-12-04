@@ -2,7 +2,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:procal/constants/asset_icons.dart';
 import 'package:procal/constants/strings.dart';
+import 'package:procal/constants/text_styles.dart';
 import 'package:procal/hooks/carousel_hook.dart';
 import 'package:procal/services/device_services/health_service.dart';
 import 'package:procal/top_level_providers.dart';
@@ -30,14 +32,33 @@ class IntroPage extends HookConsumerWidget {
         ],
       );
 
-  Column _first(CarouselSliderController controller,
-          HealthService healthService, BuildContext context) =>
+  Column _wrapper(
+    Widget content,
+    Widget controls,
+  ) =>
       Column(
         children: [
-          Text('Welcome to ProCal Tracker!'),
-          Text("Let's get started"),
-          Text('For the best ProCal Experience, please enable Health Access'),
-          Text('We will only ever write and read your protein and calories'),
+          Expanded(
+            child: content,
+          ),
+          controls
+        ],
+      );
+
+  Column _first(HealthService healthService, BuildContext context) => Column(
+        children: [
+          Text(Strings.introWelcome, style: TextStyles.menuTitle),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Text(
+              Strings.introHealthAccess,
+              textAlign: TextAlign.center,
+            ),
+          ),
+          Text(
+            Strings.introWriteRead,
+            textAlign: TextAlign.center,
+          ),
           TextButton(
               onPressed: () async {
                 final hasAccess = await healthService.requestDataAccess();
@@ -63,72 +84,65 @@ class IntroPage extends HookConsumerWidget {
                   );
                 }
               },
-              child: Text('Enable Access')),
-          _buttons(controller, first: true)
+              child: Text(Strings.generalEnableAccess)),
         ],
       );
 
-  Column _second(CarouselSliderController controller) => Column(
-        children: [Text('page two'), _buttons(controller)],
+  Column _second() => const Column(
+        children: [
+          Text(
+              'Procal is a new kind of tracker app for only calories and protein, and attempts to guide you to increasing your calories and protein initially in what is called a Reverse Diet.  '),
+        ],
       );
 
   Column _third(
-          TextEditingController proteinGoalController,
-          TextEditingController goalWeightController,
-          CarouselSliderController controller) =>
+    TextEditingController proteinGoalController,
+    TextEditingController goalWeightController,
+  ) =>
       Column(
         children: [
-          Text("Now let's set your Protein Goal"),
-          Text(
-              'ProCal recommends setting your Protein Goal to 1 gram of Protein per pound of goal weight'),
-          Text("Enter your goal weight:"),
+          Text(Strings.introProteinGoalTitle),
+          Text(Strings.introProteinRecommend),
+          Text(Strings.introGoalWeight),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
             child: TextField(
               textAlign: TextAlign.center,
               controller: goalWeightController,
             ),
           ),
-          Text('Your recommended Protein Goal is:'),
+          Text(Strings.introRecommendProteinGoal),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
             child: TextField(
               textAlign: TextAlign.center,
               controller: proteinGoalController,
             ),
           ),
-          _buttons(controller)
         ],
       );
 
   Column _fourth(
-          TextEditingController proteinGoalController,
-          TextEditingController goalWeightController,
-          CarouselSliderController controller) =>
+    TextEditingController goalWeightController,
+    TextEditingController calorieGoalController,
+  ) =>
       Column(
         children: [
-          Text("Now your calorie goal"),
-          Text(
-              'While setting your calorie goal quite low will help lose initial weight'),
-          Text("Procal recommends setting your calorie goal higher initially"),
-          Text(
-              "While enlisting in weight training and then doing periods of lower calories"),
+          Text(Strings.introCalorieGoalTitle),
+          Text(Strings.introCalorieRecommend),
+          Text(Strings.introCalorieWeight),
+          Text(Strings.introGoalWeightText),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+              child: Text(goalWeightController.value.text)),
+          Text(Strings.introRecommendCalorieGoal),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
             child: TextField(
               textAlign: TextAlign.center,
-              controller: goalWeightController,
+              controller: calorieGoalController,
             ),
           ),
-          Text('Your recommended Protein Goal is:'),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
-            child: TextField(
-              textAlign: TextAlign.center,
-              controller: proteinGoalController,
-            ),
-          ),
-          _buttons(controller)
         ],
       );
 
@@ -139,9 +153,48 @@ class IntroPage extends HookConsumerWidget {
     final controller = useCarouselSliderController();
     final goalWeightController = useTextEditingController();
     final proteinGoalController = useTextEditingController();
+    final calorieGoalController = useTextEditingController();
+    final heightController = useTextEditingController();
+    final currentWeightController = useTextEditingController();
+    final ageController = useTextEditingController();
+
+    useEffect(() {
+      if (goalWeightController.text.isNotEmpty &&
+          heightController.text.isNotEmpty &&
+          currentWeightController.text.isNotEmpty) {
+        calorieGoalController.text =
+            (10 * int.parse(goalWeightController.text) +
+                    6.25 * int.parse(heightController.text) -
+                    5 * int.parse(ageController.text) +
+                    5)
+                .toString();
+      }
+      return null;
+    }, [
+      goalWeightController,
+      heightController,
+      currentWeightController,
+      ageController
+    ]);
     goalWeightController.addListener(
         () => proteinGoalController.value = goalWeightController.value);
     return Scaffold(
+      appBar: AppBar(
+        elevation: 4,
+        // leading: !includeBackButton
+        //     ? const SizedBox.shrink()
+        //     : IconButton(icon: const Icon(Icons.arrow_back_ios, color: Colors.white), onPressed: backButtonClick),
+        titleSpacing: -30,
+        //centerTitle: isMobile,
+        title: Padding(
+            padding: EdgeInsets
+                .zero, //isMobile ? EdgeInsets.zero : const EdgeInsets.only(top: 15),
+            child: Image.asset(
+              AssetIcons.horizontalTransparentLogo,
+              height: 45,
+            )),
+      ),
+      //backgroundColor: CustomColors.primaryBlue);,
       // insetPadding:
       //     const EdgeInsets.only(left: 20, top: 100, right: 20, bottom: 50),
       body: Container(
@@ -150,9 +203,13 @@ class IntroPage extends HookConsumerWidget {
           ),
           child: CarouselSlider(
               items: [
-                _first(controller, healthService, context),
-                _second(controller),
-                _third(proteinGoalController, goalWeightController, controller)
+                _wrapper(_first(healthService, context),
+                    _buttons(controller, first: true)),
+                _wrapper(_second(), _buttons(controller)),
+                _wrapper(_third(proteinGoalController, goalWeightController),
+                    _buttons(controller)),
+                _wrapper(_fourth(goalWeightController, calorieGoalController),
+                    _buttons(controller))
               ],
               carouselController: controller,
               options: CarouselOptions(
