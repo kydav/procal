@@ -22,6 +22,21 @@ class HomePage extends HookConsumerWidget {
     final proteinConsumed = ref.watch(proteinConsumedProvider);
     final proteinGoal = ref.watch(proteinGoalProvider);
     final homeModel = ref.watch(homeModelProvider);
+    final homeModelNotifier = ref.read(homeModelProvider.notifier);
+    final caloriesConsumed = ref.watch(caloriesConsumedProvider);
+    final caloriesGoal = ref.watch(caloriesGoalProvider);
+
+    useOnAppLifecycleStateChange((_, state) {
+      if (state == AppLifecycleState.resumed) {
+        homeModelNotifier.init();
+      }
+    });
+    useEffect(() {
+      print(caloriesGoal);
+      print(caloriesConsumed);
+      return null;
+    }, []);
+
     return Scaffold(
         appBar: AppBar(
           elevation: 4,
@@ -50,10 +65,13 @@ class HomePage extends HookConsumerWidget {
               }
               return Center(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     CircularProgress(
                         current: proteinConsumed ?? 0, total: proteinGoal ?? 0),
+                    CircularProgress(
+                        current: caloriesConsumed ?? 0,
+                        total: caloriesGoal ?? 0),
                   ],
                 ),
               );

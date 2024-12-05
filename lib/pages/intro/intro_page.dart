@@ -47,16 +47,16 @@ class IntroPage extends HookConsumerWidget {
 
   Column _first(HealthService healthService, BuildContext context) => Column(
         children: [
-          Text(Strings.introWelcome, style: TextStyles.menuTitle),
+          Text(IntroStrings.welcome, style: TextStyles.menuTitle),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: Text(
-              Strings.introHealthAccess,
+              IntroStrings.healthAccess,
               textAlign: TextAlign.center,
             ),
           ),
           Text(
-            Strings.introWriteRead,
+            IntroStrings.writeRead,
             textAlign: TextAlign.center,
           ),
           TextButton(
@@ -65,7 +65,7 @@ class IntroPage extends HookConsumerWidget {
                 if (hasAccess && context.mounted) {
                   toastification.show(
                     context: context,
-                    title: Text(Strings.toastHealthGranted),
+                    title: Text(ToastStrings.healthGranted),
                     type: ToastificationType.success,
                     style: ToastificationStyle.fillColored,
                     alignment: Alignment.bottomCenter,
@@ -75,7 +75,7 @@ class IntroPage extends HookConsumerWidget {
                 } else if (context.mounted) {
                   toastification.show(
                     context: context,
-                    title: Text(Strings.toastHealthDenied),
+                    title: Text(ToastStrings.healthDenied),
                     type: ToastificationType.error,
                     style: ToastificationStyle.fillColored,
                     alignment: Alignment.bottomCenter,
@@ -84,7 +84,7 @@ class IntroPage extends HookConsumerWidget {
                   );
                 }
               },
-              child: Text(Strings.generalEnableAccess)),
+              child: Text(GeneralStrings.enableAccess)),
         ],
       );
 
@@ -101,9 +101,9 @@ class IntroPage extends HookConsumerWidget {
   ) =>
       Column(
         children: [
-          Text(Strings.introProteinGoalTitle),
-          Text(Strings.introProteinRecommend),
-          Text(Strings.introGoalWeight),
+          Text(IntroStrings.proteinGoalTitle),
+          Text(IntroStrings.proteinRecommend),
+          Text(IntroStrings.goalWeight),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
             child: TextField(
@@ -111,7 +111,7 @@ class IntroPage extends HookConsumerWidget {
               controller: goalWeightController,
             ),
           ),
-          Text(Strings.introRecommendProteinGoal),
+          Text(IntroStrings.recommendProteinGoal),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
             child: TextField(
@@ -128,14 +128,14 @@ class IntroPage extends HookConsumerWidget {
   ) =>
       Column(
         children: [
-          Text(Strings.introCalorieGoalTitle),
-          Text(Strings.introCalorieRecommend),
-          Text(Strings.introCalorieWeight),
-          Text(Strings.introGoalWeightText),
+          Text(IntroStrings.calorieGoalTitle),
+          Text(IntroStrings.calorieRecommend),
+          Text(IntroStrings.calorieWeight),
+          Text(IntroStrings.goalWeightText),
           Padding(
               padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
               child: Text(goalWeightController.value.text)),
-          Text(Strings.introRecommendCalorieGoal),
+          Text(IntroStrings.recommendCalorieGoal),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
             child: TextField(

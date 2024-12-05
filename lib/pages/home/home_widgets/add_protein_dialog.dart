@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:procal/common/form_field_title.dart';
 import 'package:procal/constants/strings.dart';
 import 'package:procal/top_level_providers.dart';
 
@@ -9,11 +11,13 @@ class AddProteinDialog extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final proteinController = useTextEditingController();
+    final caloriesController = useTextEditingController();
     final healthService = ref.read(healthServiceProvider);
     final proteinConsumed = ref.read(proteinConsumedProvider.notifier);
-    final focusNode = useFocusNode();
+    final proteinFocusNode = useFocusNode();
+    final caloriesFocusNode = useFocusNode();
     useEffect(() {
-      focusNode.requestFocus();
+      proteinFocusNode.requestFocus();
       return null;
     }, []);
     return Dialog(
@@ -25,30 +29,58 @@ class AddProteinDialog extends HookConsumerWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(Strings.dialogProteinGoal),
-            TextField(
-              textAlign: TextAlign.center,
-              keyboardType: TextInputType.number,
-              controller: proteinController,
-              focusNode: focusNode,
+            FormFieldTitle(
+              title: DialogStrings.mealProtein,
+              child: TextField(
+                textAlign: TextAlign.center,
+                keyboardType: TextInputType.number,
+                controller: proteinController,
+                focusNode: proteinFocusNode,
+                onEditingComplete: () => caloriesFocusNode.requestFocus,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  LengthLimitingTextInputFormatter(4)
+                ],
+              ),
+            ),
+            FormFieldTitle(
+              title: DialogStrings.mealCalories,
+              child: TextField(
+                textAlign: TextAlign.center,
+                keyboardType: TextInputType.number,
+                controller: caloriesController,
+                focusNode: caloriesFocusNode,
+                onEditingComplete: () {},
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  LengthLimitingTextInputFormatter(4)
+                ],
+              ),
             ),
             TextButton(
-              child: Text(Strings.generalSubmit),
-              onPressed: () {
-                final value = proteinController.text;
-                if (int.tryParse(proteinController.text) != null) {
-                  final intValue = int.parse(value);
-                  healthService.submitProtein(intValue);
-                  final current = proteinConsumed.state ?? 0;
-                  proteinConsumed.state = current + intValue;
+              child: Text(GeneralStrings.submit),
+              onPressed: () async {
+                final proteinValue = proteinController.text;
+                if (int.tryParse(proteinValue) != null) {
+                  final proteinIntValue = int.parse(proteinValue);
+                  await healthService.submitProtein(proteinIntValue);
+                  //final current = proteinConsumed.state ?? 0;
+                  //proteinConsumed.state = current + intValue;
+                }
+                final caloriesValue = caloriesController.text;
+                if (int.tryParse(caloriesValue) != null) {
+                  final caloriesIntValue = int.parse(caloriesValue);
+                  await healthService.submitCalories(caloriesIntValue);
                 }
 
                 // storageService.storeValue(
                 //     SystemStrings, proteinController.value.text);
                 // proteinGoal
                 //     .update((_) => int.tryParse(proteinController.value.text));
-
-                Navigator.pop(context);
+                if (context.mounted) {
+                  ref.read(procalRouterProvider).pop();
+                  //Navigator.pop(context);
+                }
               },
             )
           ],

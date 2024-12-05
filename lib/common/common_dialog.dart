@@ -22,14 +22,14 @@ class CommonDialog extends HookConsumerWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(Strings.dialogProteinGoal),
+            Text(DialogStrings.proteinGoal),
             TextField(
               textAlign: TextAlign.center,
               keyboardType: TextInputType.number,
               controller: proteinController,
             ),
             TextButton(
-              child: Text(Strings.generalSubmit),
+              child: Text(GeneralStrings.submit),
               onPressed: () {
                 storageService.storeValue(
                     SystemStrings.proteinGoal, proteinController.value.text);

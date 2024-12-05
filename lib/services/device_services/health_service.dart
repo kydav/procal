@@ -100,7 +100,7 @@ class HealthService {
   Future<bool> submitCalories(int calories) async {
     final saved = await healthManager.writeHealthData(
         value: calories.toDouble(),
-        type: HealthDataType.DIETARY_PROTEIN_CONSUMED,
+        type: HealthDataType.DIETARY_ENERGY_CONSUMED,
         startTime: DateTime.now());
     if (saved) {
       final currentCalories = await getCalories();
