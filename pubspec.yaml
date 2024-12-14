@@ -18,8 +18,8 @@ dependencies:
   go_router: ^14.3.0
   health: ^11.1.0
   hooks_riverpod: ^2.5.4
-  localstorage: ^5.0.0
   riverpod_annotation: ^2.6.1
+  shared_preferences: ^2.3.3
   simple_barcode_scanner: ^0.1.8
   toastification: ^2.3.0
 

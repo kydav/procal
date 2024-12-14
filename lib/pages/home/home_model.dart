@@ -34,19 +34,16 @@ class HomeModel extends StateNotifier<HomeState> {
     caloriesConsumed.update((_) => calories);
 
     if (proteinGoal.state == null) {
-      final storedProteinGoal =
-          localStorage.getValue(SystemStrings.proteinGoal);
-      if (storedProteinGoal != null &&
-          int.tryParse(storedProteinGoal) != null) {
-        proteinGoal.update((_) => int.parse(storedProteinGoal));
+      final storedProteinGoal = localStorage.getInt(SystemStrings.proteinGoal);
+      if (storedProteinGoal != null) {
+        proteinGoal.update((_) => storedProteinGoal);
       }
     }
     if (caloriesGoal.state == null) {
       final storedCaloriesGoal =
-          localStorage.getValue(SystemStrings.caloriesGoal);
-      if (storedCaloriesGoal != null &&
-          int.tryParse(storedCaloriesGoal) != null) {
-        proteinGoal.update((_) => int.parse(storedCaloriesGoal));
+          localStorage.getInt(SystemStrings.caloriesGoal);
+      if (storedCaloriesGoal != null) {
+        caloriesGoal.update((_) => storedCaloriesGoal);
       }
     }
     state = const HomeState.initial();
@@ -58,8 +55,8 @@ final homeModelProvider = StateNotifierProvider<HomeModel, HomeState>((ref) {
   final localStorage = ref.read(localStorageServiceProvider);
   final proteinConsumed = ref.read(proteinConsumedProvider.notifier);
   final proteinGoal = ref.read(proteinGoalProvider.notifier);
-  final caloriesConsumed = ref.read(proteinConsumedProvider.notifier);
-  final caloriesGoal = ref.read(proteinGoalProvider.notifier);
+  final caloriesConsumed = ref.read(caloriesConsumedProvider.notifier);
+  final caloriesGoal = ref.read(caloriesGoalProvider.notifier);
 
   return HomeModel(
       ref: ref,

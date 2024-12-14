@@ -4,38 +4,91 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:procal/common/circular_progress.dart';
 import 'package:procal/common/common_dialog.dart';
 import 'package:procal/constants/asset_icons.dart';
+import 'package:procal/constants/strings.dart';
+import 'package:procal/constants/system_strings.dart';
 import 'package:procal/pages/home/home_model.dart';
 import 'package:procal/pages/home/home_widgets/add_protein_dialog.dart';
+import 'package:procal/services/device_services/local_storage_service.dart';
 import 'package:procal/top_level_providers.dart';
 
 class HomePage extends HookConsumerWidget {
   const HomePage({super.key});
 
   Future<void> _showProteinDialog(
-    BuildContext context,
-  ) async =>
+          BuildContext context,
+          TextEditingController proteinController,
+          LocalStorageService storageService,
+          StateController<int?> proteinGoal) async =>
       WidgetsBinding.instance.addPostFrameCallback((_) => showAdaptiveDialog(
-          context: context, builder: (context) => const CommonDialog()));
+          context: context,
+          builder: (context) => CommonDialog(
+                title: DialogStrings.proteinGoal,
+                content: TextField(
+                  textAlign: TextAlign.center,
+                  keyboardType: TextInputType.number,
+                  controller: proteinController,
+                ),
+                onSubmit: () async {
+                  final intValue = int.tryParse(proteinController.value.text);
+                  if (intValue != null) {
+                    storageService.storeInt(
+                        SystemStrings.proteinGoal, intValue);
+                    proteinGoal.update((_) => intValue);
+                  }
+
+                  Navigator.pop(context);
+                },
+              )));
+
+  Future<void> _showCaloriesDialog(
+          BuildContext context,
+          TextEditingController caloriesController,
+          LocalStorageService storageService,
+          StateController<int?> caloriesGoal) async =>
+      WidgetsBinding.instance.addPostFrameCallback((_) => showAdaptiveDialog(
+          context: context,
+          builder: (context) => CommonDialog(
+                title: DialogStrings.caloriesGoal,
+                content: TextField(
+                  textAlign: TextAlign.center,
+                  keyboardType: TextInputType.number,
+                  controller: caloriesController,
+                ),
+                onSubmit: () async {
+                  final intValue = int.tryParse(caloriesController.value.text);
+                  if (intValue != null) {
+                    storageService.storeInt(
+                        SystemStrings.caloriesGoal, intValue);
+                    caloriesGoal.update((_) => intValue);
+                  }
+
+                  Navigator.pop(context);
+                },
+              )));
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final proteinConsumed = ref.watch(proteinConsumedProvider);
-    final proteinGoal = ref.watch(proteinGoalProvider);
+    final caloriesConsumed = ref.watch(caloriesConsumedProvider);
+
     final homeModel = ref.watch(homeModelProvider);
     final homeModelNotifier = ref.read(homeModelProvider.notifier);
-    final caloriesConsumed = ref.watch(caloriesConsumedProvider);
+
+    final storageService = ref.read(localStorageServiceProvider);
+
+    final proteinController = useTextEditingController();
+    final proteinGoal = ref.watch(proteinGoalProvider);
+    final proteinGoalNotifier = ref.watch(proteinGoalProvider.notifier);
+
+    final caloriesController = useTextEditingController();
     final caloriesGoal = ref.watch(caloriesGoalProvider);
+    final caloriesGoalNotifier = ref.watch(caloriesGoalProvider.notifier);
 
     useOnAppLifecycleStateChange((_, state) {
       if (state == AppLifecycleState.resumed) {
         homeModelNotifier.init();
       }
     });
-    useEffect(() {
-      print(caloriesGoal);
-      print(caloriesConsumed);
-      return null;
-    }, []);
 
     return Scaffold(
         appBar: AppBar(
@@ -61,7 +114,12 @@ class HomePage extends HookConsumerWidget {
             loading: () => const CircularProgressIndicator(),
             initial: () {
               if (proteinGoal == null) {
-                _showProteinDialog(context);
+                _showProteinDialog(context, proteinController, storageService,
+                    proteinGoalNotifier);
+              }
+              if (caloriesGoal == null) {
+                _showCaloriesDialog(context, caloriesController, storageService,
+                    caloriesGoalNotifier);
               }
               return Center(
                 child: Column(

@@ -13,7 +13,6 @@ class AddProteinDialog extends HookConsumerWidget {
     final proteinController = useTextEditingController();
     final caloriesController = useTextEditingController();
     final healthService = ref.read(healthServiceProvider);
-    final proteinConsumed = ref.read(proteinConsumedProvider.notifier);
     final proteinFocusNode = useFocusNode();
     final caloriesFocusNode = useFocusNode();
     useEffect(() {

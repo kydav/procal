@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:health/health.dart';
-import 'package:localstorage/localstorage.dart';
 import 'package:procal/top_level_providers.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final initializeAppProvider = FutureProvider<void>((ref) async {
   WidgetsFlutterBinding.ensureInitialized();
-  await initLocalStorage();
+  final prefs = await SharedPreferences.getInstance();
+  ref.read(localStorageServiceProvider).sharedPreferences = prefs;
   await Health().configure();
 });
 

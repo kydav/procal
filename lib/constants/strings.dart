@@ -24,6 +24,7 @@ class DialogStrings {
   static String proteinGoal = 'Enter your protein goal';
   static String mealProtein = 'Enter protein';
   static String mealCalories = 'Enter Calories';
+  static String caloriesGoal = 'Enter your calorie goal';
 }
 
 class ToastStrings {

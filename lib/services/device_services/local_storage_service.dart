@@ -1,14 +1,12 @@
-import 'package:localstorage/localstorage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalStorageService {
   LocalStorageService();
+  late final SharedPreferences sharedPreferences;
 
-  void storeValue(String key, String value) => localStorage.setItem(key, value);
+  void storeInt(String key, int value) => sharedPreferences.setInt(key, value);
 
-  bool checkValueExists(String key) {
-    final value = localStorage.getItem(key);
-    return value != null;
-  }
+  bool checkExists(String key) => sharedPreferences.containsKey(key);
 
-  String? getValue(String key) => localStorage.getItem(key);
+  int? getInt(String key) => sharedPreferences.getInt(key);
 }
