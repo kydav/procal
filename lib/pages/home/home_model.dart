@@ -7,8 +7,7 @@ import 'package:procal/top_level_providers.dart';
 
 class HomeModel extends StateNotifier<HomeState> {
   HomeModel(
-      {required this.ref,
-      required this.healthService,
+      {required this.healthService,
       required this.localStorage,
       required this.proteinConsumed,
       required this.proteinGoal,
@@ -17,8 +16,6 @@ class HomeModel extends StateNotifier<HomeState> {
       : super(const HomeState.loading()) {
     init();
   }
-
-  final Ref ref;
   final HealthService healthService;
   final LocalStorageService localStorage;
   final StateController<int?> proteinConsumed;
@@ -59,7 +56,6 @@ final homeModelProvider = StateNotifierProvider<HomeModel, HomeState>((ref) {
   final caloriesGoal = ref.read(caloriesGoalProvider.notifier);
 
   return HomeModel(
-      ref: ref,
       healthService: healthService,
       localStorage: localStorage,
       proteinConsumed: proteinConsumed,

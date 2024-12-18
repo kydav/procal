@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:health/health.dart';
+import 'package:procal/theme.dart';
 import 'package:procal/top_level_providers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -21,13 +22,33 @@ class ProCalApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final initializeApp = ref.watch(initializeAppProvider);
+    //final colorScheme = ColorScheme(brightness: Brightness.light, primary: ColorPalette.headerLight, onPrimary: onPrimary, secondary: secondary, onSecondary: onSecondary, error: error, onError: onError, surface: surface, onSurface: onSurface)
     return MaterialApp.router(
       title: 'ProCal',
       routerConfig: ref.read(procalRouterProvider),
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.grey),
-        useMaterial3: true,
-      ),
+          brightness: Brightness.light,
+          primaryColor: ColorPalette.headerLight,
+          // colorScheme: Theme.of(context)
+          //     .colorScheme
+          //     .copyWith(secondary: ColorPalette.secondaryLight),
+          appBarTheme: const AppBarTheme(
+            backgroundColor: ColorPalette.headerLight,
+            titleTextStyle: TextStyle(color: Colors.white, fontSize: 18),
+          ),
+          textTheme: Typography.blackCupertino),
+      darkTheme: ThemeData(
+          useMaterial3: true,
+          brightness: Brightness.dark,
+          primaryColor: ColorPalette.headerDark,
+          // colorScheme: Theme.of(context)
+          //     .colorScheme
+          //     .copyWith(secondary: ColorPalette.secondaryDark),
+          appBarTheme: const AppBarTheme(
+            backgroundColor: ColorPalette.headerDark,
+            titleTextStyle: TextStyle(color: Colors.black, fontSize: 18),
+          ),
+          textTheme: Typography.whiteCupertino),
       builder: (ctx, child) => initializeApp.when(
           loading: () => const CircularProgressIndicator(),
           data: (_) => child!,

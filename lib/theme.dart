@@ -1,6 +1,13 @@
 import 'dart:ui';
 
 class ColorPalette {
+  static const headerLight = Color(0xfff5fcf3);
+
+  static const headerDark = Color(0xffb6cbb1);
+
+  static const secondaryLight = Color(0xff6b9064);
+  static const secondaryDark = Color(0xff446c35);
+
   static const brandOne = Color(0xff213A57);
   static const brandOne1 = Color.fromARGB(120, 33, 58, 87);
 

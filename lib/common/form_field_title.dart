@@ -4,14 +4,12 @@ class FormFieldTitle extends StatelessWidget {
   const FormFieldTitle(
       {required this.title,
       required this.child,
-      this.titleColor = Colors.black,
       this.isRequired = false,
       this.topPadding = 12,
       this.bottomPadding = 6,
       super.key});
   final String title;
   final bool isRequired;
-  final Color? titleColor;
   final double topPadding;
   final double bottomPadding;
   final Widget child;
@@ -34,9 +32,9 @@ class FormFieldTitle extends StatelessWidget {
                         TextSpan(
                             text: title,
                             style: TextStyle(
-                                color: titleColor,
                                 fontSize: 12,
-                                fontWeight: FontWeight.w500)),
+                                fontWeight: FontWeight.w500,
+                                color: Theme.of(context).colorScheme.primary)),
                         TextSpan(
                             text: isRequired ? '*' : '',
                             style: const TextStyle(color: Colors.red))

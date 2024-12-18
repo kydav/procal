@@ -11,10 +11,23 @@ class AddProteinDialog extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final proteinController = useTextEditingController();
+    final proteinUpdate = useValueListenable(proteinController);
     final caloriesController = useTextEditingController();
+    final caloriesUpdate = useValueListenable(caloriesController);
     final healthService = ref.read(healthServiceProvider);
     final proteinFocusNode = useFocusNode();
     final caloriesFocusNode = useFocusNode();
+    final isValid = useState(false);
+    useEffect(() {
+      if (proteinController.text.isNotEmpty &&
+          caloriesController.text.isNotEmpty) {
+        isValid.value = true;
+      } else {
+        isValid.value = false;
+      }
+      return null;
+    }, [proteinUpdate, caloriesUpdate]);
+
     useEffect(() {
       proteinFocusNode.requestFocus();
       return null;
@@ -23,11 +36,19 @@ class AddProteinDialog extends HookConsumerWidget {
       insetPadding:
           const EdgeInsets.only(left: 20, top: 100, right: 20, bottom: 100),
       child: Container(
-        padding:
-            const EdgeInsets.only(left: 30, top: 58, right: 30, bottom: 30),
+        padding: const EdgeInsets.only(left: 30, right: 30, bottom: 30),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            Align(
+                alignment: Alignment.topRight,
+                child: TextButton(
+                  child: const Text(
+                    'X',
+                    textAlign: TextAlign.right,
+                  ),
+                  onPressed: () => ref.read(procalRouterProvider).pop(),
+                )),
             FormFieldTitle(
               title: DialogStrings.mealProtein,
               child: TextField(
@@ -57,30 +78,24 @@ class AddProteinDialog extends HookConsumerWidget {
               ),
             ),
             TextButton(
+              onPressed: isValid.value
+                  ? () async {
+                      final proteinValue = proteinController.text;
+                      if (int.tryParse(proteinValue) != null) {
+                        final proteinIntValue = int.parse(proteinValue);
+                        await healthService.submitProtein(proteinIntValue);
+                      }
+                      final caloriesValue = caloriesController.text;
+                      if (int.tryParse(caloriesValue) != null) {
+                        final caloriesIntValue = int.parse(caloriesValue);
+                        await healthService.submitCalories(caloriesIntValue);
+                      }
+                      if (context.mounted) {
+                        ref.read(procalRouterProvider).pop();
+                      }
+                    }
+                  : null,
               child: Text(GeneralStrings.submit),
-              onPressed: () async {
-                final proteinValue = proteinController.text;
-                if (int.tryParse(proteinValue) != null) {
-                  final proteinIntValue = int.parse(proteinValue);
-                  await healthService.submitProtein(proteinIntValue);
-                  //final current = proteinConsumed.state ?? 0;
-                  //proteinConsumed.state = current + intValue;
-                }
-                final caloriesValue = caloriesController.text;
-                if (int.tryParse(caloriesValue) != null) {
-                  final caloriesIntValue = int.parse(caloriesValue);
-                  await healthService.submitCalories(caloriesIntValue);
-                }
-
-                // storageService.storeValue(
-                //     SystemStrings, proteinController.value.text);
-                // proteinGoal
-                //     .update((_) => int.tryParse(proteinController.value.text));
-                if (context.mounted) {
-                  ref.read(procalRouterProvider).pop();
-                  //Navigator.pop(context);
-                }
-              },
             )
           ],
         ),
