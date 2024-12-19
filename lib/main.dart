@@ -22,16 +22,14 @@ class ProCalApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final initializeApp = ref.watch(initializeAppProvider);
-    //final colorScheme = ColorScheme(brightness: Brightness.light, primary: ColorPalette.headerLight, onPrimary: onPrimary, secondary: secondary, onSecondary: onSecondary, error: error, onError: onError, surface: surface, onSurface: onSurface)
+
     return MaterialApp.router(
       title: 'ProCal',
       routerConfig: ref.read(procalRouterProvider),
       theme: ThemeData(
           brightness: Brightness.light,
           primaryColor: ColorPalette.headerLight,
-          // colorScheme: Theme.of(context)
-          //     .colorScheme
-          //     .copyWith(secondary: ColorPalette.secondaryLight),
+          colorScheme: MaterialTheme.lightScheme(),
           appBarTheme: const AppBarTheme(
             backgroundColor: ColorPalette.headerLight,
             titleTextStyle: TextStyle(color: Colors.white, fontSize: 18),
@@ -41,9 +39,7 @@ class ProCalApp extends ConsumerWidget {
           useMaterial3: true,
           brightness: Brightness.dark,
           primaryColor: ColorPalette.headerDark,
-          // colorScheme: Theme.of(context)
-          //     .colorScheme
-          //     .copyWith(secondary: ColorPalette.secondaryDark),
+          colorScheme: MaterialTheme.darkScheme(),
           appBarTheme: const AppBarTheme(
             backgroundColor: ColorPalette.headerDark,
             titleTextStyle: TextStyle(color: Colors.black, fontSize: 18),

@@ -19,8 +19,9 @@ class CircularProgress extends StatelessWidget {
               width: 100,
               child: CircularProgressIndicator(
                 value: (current == 0 && total == 0) ? 0 : current / total,
-                valueColor: const AlwaysStoppedAnimation(ColorPalette.brandTwo),
-                backgroundColor: ColorPalette.brandTwo2,
+                valueColor: AlwaysStoppedAnimation(
+                    Theme.of(context).colorScheme.primary),
+                backgroundColor: Theme.of(context).colorScheme.outlineVariant,
                 strokeWidth: 10,
                 strokeCap: StrokeCap.round,
               ),
