@@ -42,11 +42,9 @@ class AddProteinDialog extends HookConsumerWidget {
           children: [
             Align(
                 alignment: Alignment.topRight,
-                child: TextButton(
-                  child: const Text(
-                    'X',
-                    textAlign: TextAlign.right,
-                  ),
+                child: IconButton(
+                  alignment: Alignment.topRight,
+                  icon: const Icon(Icons.close),
                   onPressed: () => ref.read(procalRouterProvider).pop(),
                 )),
             FormFieldTitle(

@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 class ColorPalette {
@@ -347,7 +345,7 @@ class MaterialTheme {
           bodyColor: colorScheme.onSurface,
           displayColor: colorScheme.onSurface,
         ),
-        scaffoldBackgroundColor: colorScheme.background,
+        scaffoldBackgroundColor: colorScheme.surface,
         canvasColor: colorScheme.surface,
       );
 
@@ -365,7 +363,8 @@ class ExtendedColor {
     required this.darkHighContrast,
     required this.darkMediumContrast,
   });
-  final Color seed, value;
+  final Color seed;
+  final Color value;
   final ColorFamily light;
   final ColorFamily lightHighContrast;
   final ColorFamily lightMediumContrast;
