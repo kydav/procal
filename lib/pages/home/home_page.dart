@@ -95,6 +95,7 @@ class HomePage extends HookConsumerWidget {
         homeModelNotifier.init();
       }
     });
+    final date = DateTime.now();
 
     return Scaffold(
         resizeToAvoidBottomInset: true,
@@ -139,11 +140,22 @@ class HomePage extends HookConsumerWidget {
                     child: Column(
                       spacing: 30,
                       children: <Widget>[
-                        CircularProgress(
-                            title: GeneralStrings.protein,
-                            sizeFactor: 30,
-                            current: proteinConsumed ?? 0,
-                            total: proteinGoal ?? 0),
+                        Row(
+                          children: [
+                            CircularProgress(
+                                title: GeneralStrings.protein,
+                                sizeFactor: 30,
+                                current: proteinConsumed ?? 0,
+                                total: proteinGoal ?? 0),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text('Sunday'),
+                                Text('December 20, 2024')
+                              ],
+                            )
+                          ],
+                        ),
                         CircularProgress(
                             title: GeneralStrings.calories,
                             sizeFactor: 50,

@@ -15,10 +15,10 @@ class CircularProgress extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: Theme.of(context).colorScheme.tertiaryContainer,
-        ),
+        // decoration: BoxDecoration(
+        //   borderRadius: BorderRadius.circular(10),
+        //   color: Theme.of(context).colorScheme.tertiaryContainer,
+        // ),
         width: sizeFactor * 5,
         height: sizeFactor * 5,
         child: Stack(
