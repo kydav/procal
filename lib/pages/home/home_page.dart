@@ -95,7 +95,7 @@ class HomePage extends HookConsumerWidget {
         homeModelNotifier.init();
       }
     });
-    final date = DateTime.now();
+    //final date = DateTime.now();
 
     return Scaffold(
         resizeToAvoidBottomInset: true,
@@ -147,7 +147,7 @@ class HomePage extends HookConsumerWidget {
                                 sizeFactor: 30,
                                 current: proteinConsumed ?? 0,
                                 total: proteinGoal ?? 0),
-                            Column(
+                            const Column(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 Text('Sunday'),

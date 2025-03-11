@@ -1,8 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health/health.dart';
-import 'package:procal/pages/home/home_page.dart';
-import 'package:procal/pages/intro/intro_page.dart';
+import 'package:procal/routes.dart';
 import 'package:procal/services/device_services/health_service.dart';
 import 'package:procal/services/device_services/local_storage_service.dart';
 
@@ -18,15 +18,35 @@ final healthServiceProvider = Provider<HealthService>(
 final localStorageServiceProvider =
     Provider<LocalStorageService>((_) => LocalStorageService());
 
-final procalRouterProvider = Provider<GoRouter>((ref) => GoRouter(
-      routes: [
-        GoRoute(
-          path: '/',
-          builder: (context, state) => const HomePage(),
-        ),
-        GoRoute(
-          path: '/intro',
-          builder: (context, state) => const IntroPage(),
-        ),
-      ],
-    ));
+final firebaseAuthProvider =
+    Provider<FirebaseAuth>((_) => FirebaseAuth.instance);
+
+final currentUserProvider = StreamProvider<User?>((ref) {
+  final auth = ref.watch(firebaseAuthProvider);
+  return auth.authStateChanges();
+});
+
+final procalRouterProvider =
+    Provider((ref) => _routeConfig(redirect: (context, state) {
+          final authState = ref.watch(currentUserProvider);
+          if (authState.isLoading || authState.hasError) return null;
+
+          final isAuthenticated = authState.valueOrNull != null;
+          final isAuthenticating = state.matchedLocation == Routes.login.path;
+
+          if (!isAuthenticated) {
+            return Routes.login.path;
+          }
+
+          if (isAuthenticating) {
+            return Routes.home.path;
+          }
+
+          return null;
+        }));
+
+GoRouter _routeConfig({GoRouterRedirect? redirect}) =>
+    GoRouter(redirect: redirect, routes: [
+      Routes.home,
+      Routes.intro,
+    ]);

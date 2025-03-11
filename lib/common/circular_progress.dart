@@ -14,7 +14,7 @@ class CircularProgress extends StatelessWidget {
   final int sizeFactor;
 
   @override
-  Widget build(BuildContext context) => Container(
+  Widget build(BuildContext context) => SizedBox(
         // decoration: BoxDecoration(
         //   borderRadius: BorderRadius.circular(10),
         //   color: Theme.of(context).colorScheme.tertiaryContainer,

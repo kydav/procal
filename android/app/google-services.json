@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "400865225365",
+    "project_id": "procal-b9d20",
+    "storage_bucket": "procal-b9d20.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:400865225365:android:8522d5373aa912c0ce499c",
+        "android_client_info": {
+          "package_name": "com.example.procal"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBIdu4qjd9mCMUlkhbScMOWFIhlkqjU0xw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

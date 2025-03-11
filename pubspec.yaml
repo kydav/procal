@@ -11,21 +11,22 @@ environment:
 dependencies:
   carousel_slider: ^5.0.0
   cupertino_icons: ^1.0.8
+  firebase_auth: ^5.5.1
   flutter:
     sdk: flutter
-  flutter_hooks: ^0.20.5
+  flutter_hooks: ^0.21.2
   flutter_riverpod: ^2.5.3
-  freezed: ^2.5.7
+  freezed: ^3.0.0-0.0.dev
   go_router: ^14.3.0
-  health: ^11.1.0
+  health: ^12.0.1
   hooks_riverpod: ^2.5.4
   riverpod_annotation: ^2.6.1
   shared_preferences: ^2.3.3
-  simple_barcode_scanner: ^0.1.8
-  toastification: ^2.3.0
+  simple_barcode_scanner: ^0.3.0
+  toastification: ^3.0.1
 
 dev_dependencies:
-  build_runner: ^2.4.13
+  build_runner: ^2.4.15
   custom_lint: ^0.7.0
   flutter_launcher_icons: ^0.14.1
   flutter_lints: ^5.0.0

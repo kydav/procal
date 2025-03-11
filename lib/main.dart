@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:health/health.dart';
@@ -7,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 final initializeAppProvider = FutureProvider<void>((ref) async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   final prefs = await SharedPreferences.getInstance();
   ref.read(localStorageServiceProvider).sharedPreferences = prefs;
   await Health().configure();
@@ -25,7 +27,7 @@ class ProCalApp extends ConsumerWidget {
 
     return MaterialApp.router(
       title: 'ProCal',
-      routerConfig: ref.read(procalRouterProvider),
+      routerConfig: ref.watch(procalRouterProvider),
       theme: ThemeData(
           brightness: Brightness.light,
           primaryColor: ColorPalette.headerLight,
