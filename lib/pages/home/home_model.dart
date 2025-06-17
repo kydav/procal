@@ -6,14 +6,14 @@ import 'package:procal/services/device_services/local_storage_service.dart';
 import 'package:procal/top_level_providers.dart';
 
 class HomeModel extends StateNotifier<HomeState> {
-  HomeModel(
-      {required this.healthService,
-      required this.localStorage,
-      required this.proteinConsumed,
-      required this.proteinGoal,
-      required this.caloriesConsumed,
-      required this.caloriesGoal})
-      : super(const HomeState.loading()) {
+  HomeModel({
+    required this.healthService,
+    required this.localStorage,
+    required this.proteinConsumed,
+    required this.proteinGoal,
+    required this.caloriesConsumed,
+    required this.caloriesGoal,
+  }) : super(const HomeState.loading()) {
     init();
   }
   final HealthService healthService;
@@ -24,6 +24,7 @@ class HomeModel extends StateNotifier<HomeState> {
   final StateController<int?> caloriesGoal;
 
   Future<void> init() async {
+    final hasAccess = await healthService.requestDataAccess();
     final protein = await healthService.getProtein();
     proteinConsumed.update((_) => protein);
 
@@ -37,8 +38,9 @@ class HomeModel extends StateNotifier<HomeState> {
       }
     }
     if (caloriesGoal.state == null) {
-      final storedCaloriesGoal =
-          localStorage.getInt(SystemStrings.caloriesGoal);
+      final storedCaloriesGoal = localStorage.getInt(
+        SystemStrings.caloriesGoal,
+      );
       if (storedCaloriesGoal != null) {
         caloriesGoal.update((_) => storedCaloriesGoal);
       }
@@ -56,10 +58,11 @@ final homeModelProvider = StateNotifierProvider<HomeModel, HomeState>((ref) {
   final caloriesGoal = ref.read(caloriesGoalProvider.notifier);
 
   return HomeModel(
-      healthService: healthService,
-      localStorage: localStorage,
-      proteinConsumed: proteinConsumed,
-      proteinGoal: proteinGoal,
-      caloriesConsumed: caloriesConsumed,
-      caloriesGoal: caloriesGoal);
+    healthService: healthService,
+    localStorage: localStorage,
+    proteinConsumed: proteinConsumed,
+    proteinGoal: proteinGoal,
+    caloriesConsumed: caloriesConsumed,
+    caloriesGoal: caloriesGoal,
+  );
 });

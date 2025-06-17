@@ -3,20 +3,26 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health/health.dart';
 import 'package:procal/routes.dart';
+import 'package:procal/services/device_services/auth_service.dart';
 import 'package:procal/services/device_services/health_service.dart';
 import 'package:procal/services/device_services/local_storage_service.dart';
 
+final authServiceProvider =
+    Provider<AuthService>((ref) => AuthService(ref: ref));
 final proteinConsumedProvider = StateProvider<int?>((_) => null);
 final proteinGoalProvider = StateProvider<int?>((_) => null);
 
 final caloriesConsumedProvider = StateProvider<int?>((_) => null);
 final caloriesGoalProvider = StateProvider<int?>((_) => null);
 
-final healthServiceProvider = Provider<HealthService>((ref) => HealthService(healthManager: Health(), ref: ref));
+final healthServiceProvider = Provider<HealthService>(
+    (ref) => HealthService(healthManager: Health(), ref: ref));
 
-final localStorageServiceProvider = Provider<LocalStorageService>((_) => LocalStorageService());
+final localStorageServiceProvider =
+    Provider<LocalStorageService>((_) => LocalStorageService());
 
-final firebaseAuthProvider = Provider<FirebaseAuth>((_) => FirebaseAuth.instance);
+final firebaseAuthProvider =
+    Provider<FirebaseAuth>((_) => FirebaseAuth.instance);
 
 final currentUserProvider = StreamProvider<User?>((ref) {
   final auth = ref.watch(firebaseAuthProvider);
@@ -45,5 +51,5 @@ final procalRouterProvider = Provider(
   ),
 );
 
-GoRouter _routeConfig({GoRouterRedirect? redirect}) =>
-    GoRouter(redirect: redirect, routes: [Routes.home, Routes.intro, Routes.login]);
+GoRouter _routeConfig({GoRouterRedirect? redirect}) => GoRouter(
+    redirect: redirect, routes: [Routes.home, Routes.intro, Routes.login]);

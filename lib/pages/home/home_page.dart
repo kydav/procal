@@ -8,6 +8,7 @@ import 'package:procal/constants/asset_icons.dart';
 import 'package:procal/constants/strings.dart';
 import 'package:procal/constants/system_strings.dart';
 import 'package:procal/pages/home/home_model.dart';
+import 'package:procal/pages/home/home_state.dart';
 import 'package:procal/pages/home/home_widgets/add_protein_dialog.dart';
 import 'package:procal/services/device_services/local_storage_service.dart';
 import 'package:procal/top_level_providers.dart';
@@ -119,9 +120,9 @@ class HomePage extends HookConsumerWidget {
               Icons.add,
               size: 50,
             )),
-        body: homeModel.when(
-            loading: () => const CircularProgressIndicator(),
-            initial: () {
+        body: switch (homeModel) {
+          HomeLoading() => const CircularProgressIndicator(),
+          HomeInitial() => Builder(builder: (context) {
               if (proteinGoal == null || caloriesGoal == null) {
                 _showDialog(
                     context,
@@ -166,6 +167,7 @@ class HomePage extends HookConsumerWidget {
                   ),
                 ),
               );
-            }));
+            }),
+        });
   }
 }
