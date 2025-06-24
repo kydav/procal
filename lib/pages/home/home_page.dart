@@ -17,61 +17,65 @@ class HomePage extends HookConsumerWidget {
   const HomePage({super.key});
 
   Future<void> _showDialog(
-          BuildContext context,
-          bool showProtein,
-          bool showCalories,
-          TextEditingController proteinController,
-          TextEditingController caloriesController,
-          LocalStorageService storageService,
-          StateController<int?> proteinGoal,
-          StateController<int?> caloriesGoal) async =>
-      WidgetsBinding.instance.addPostFrameCallback((_) => showAdaptiveDialog(
-          context: context,
-          builder: (context) => CommonDialog(
-              title: showProtein && showCalories
-                  ? DialogStrings.enterGoals
-                  : DialogStrings.enterGoal,
-              content: Column(
-                children: [
-                  if (showProtein)
-                    FormFieldTitle(
-                      title: DialogStrings.proteinGoal,
-                      child: TextField(
-                        textAlign: TextAlign.center,
-                        keyboardType: TextInputType.number,
-                        controller: proteinController,
-                      ),
+    BuildContext context,
+    bool showProtein,
+    bool showCalories,
+    TextEditingController proteinController,
+    TextEditingController caloriesController,
+    LocalStorageService storageService,
+    StateController<int?> proteinGoal,
+    StateController<int?> caloriesGoal,
+  ) async => WidgetsBinding.instance.addPostFrameCallback(
+    (_) => showAdaptiveDialog(
+      context: context,
+      builder:
+          (context) => CommonDialog(
+            title:
+                showProtein && showCalories
+                    ? DialogStrings.enterGoals
+                    : DialogStrings.enterGoal,
+            content: Column(
+              children: [
+                if (showProtein)
+                  FormFieldTitle(
+                    title: DialogStrings.proteinGoal,
+                    child: TextField(
+                      textAlign: TextAlign.center,
+                      keyboardType: TextInputType.number,
+                      controller: proteinController,
                     ),
-                  if (showCalories)
-                    FormFieldTitle(
-                      title: DialogStrings.caloriesGoal,
-                      child: TextField(
-                        textAlign: TextAlign.center,
-                        keyboardType: TextInputType.number,
-                        controller: caloriesController,
-                      ),
-                    )
-                ],
-              ),
-              onSubmit: () async {
-                if (showProtein) {
-                  final intValue = int.tryParse(proteinController.value.text);
-                  if (intValue != null) {
-                    storageService.storeInt(
-                        SystemStrings.proteinGoal, intValue);
-                    proteinGoal.update((_) => intValue);
-                  }
+                  ),
+                if (showCalories)
+                  FormFieldTitle(
+                    title: DialogStrings.caloriesGoal,
+                    child: TextField(
+                      textAlign: TextAlign.center,
+                      keyboardType: TextInputType.number,
+                      controller: caloriesController,
+                    ),
+                  ),
+              ],
+            ),
+            onSubmit: () async {
+              if (showProtein) {
+                final intValue = int.tryParse(proteinController.value.text);
+                if (intValue != null) {
+                  storageService.storeInt(SystemStrings.proteinGoal, intValue);
+                  proteinGoal.update((_) => intValue);
                 }
-                if (showCalories) {
-                  final intValue = int.tryParse(caloriesController.value.text);
-                  if (intValue != null) {
-                    storageService.storeInt(
-                        SystemStrings.caloriesGoal, intValue);
-                    caloriesGoal.update((_) => intValue);
-                  }
+              }
+              if (showCalories) {
+                final intValue = int.tryParse(caloriesController.value.text);
+                if (intValue != null) {
+                  storageService.storeInt(SystemStrings.caloriesGoal, intValue);
+                  caloriesGoal.update((_) => intValue);
                 }
-                Navigator.pop(context);
-              })));
+              }
+              Navigator.pop(context);
+            },
+          ),
+    ),
+  );
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -99,75 +103,78 @@ class HomePage extends HookConsumerWidget {
     //final date = DateTime.now();
 
     return Scaffold(
-        resizeToAvoidBottomInset: true,
-        appBar: AppBar(
-          elevation: 4,
-          titleSpacing: -30,
-          title: Padding(
-              padding: EdgeInsets.zero,
-              child: Image.asset(
-                AssetIcons.horizontalTransparentLogo,
-                height: 45,
-              )),
+      resizeToAvoidBottomInset: true,
+      appBar: AppBar(
+        elevation: 4,
+        titleSpacing: -30,
+        title: Padding(
+          padding: EdgeInsets.zero,
+          child: Image.asset(AssetIcons.horizontalTransparentLogo, height: 45),
         ),
-        floatingActionButton: IconButton(
-            onPressed: () {
-              showAdaptiveDialog(
-                  context: context,
-                  builder: (context) => const AddProteinDialog());
-            },
-            icon: const Icon(
-              Icons.add,
-              size: 50,
-            )),
-        body: switch (homeModel) {
-          HomeLoading() => const CircularProgressIndicator(),
-          HomeInitial() => Builder(builder: (context) {
-              if (proteinGoal == null || caloriesGoal == null) {
-                _showDialog(
-                    context,
-                    proteinGoal == null,
-                    caloriesGoal == null,
-                    proteinController,
-                    caloriesController,
-                    storageService,
-                    proteinGoalNotifier,
-                    caloriesGoalNotifier);
-              }
-              return Align(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 50.0),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      spacing: 30,
-                      children: <Widget>[
-                        Row(
-                          children: [
-                            CircularProgress(
-                                title: GeneralStrings.protein,
-                                sizeFactor: 30,
-                                current: proteinConsumed ?? 0,
-                                total: proteinGoal ?? 0),
-                            const Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Text('Sunday'),
-                                Text('December 20, 2024')
-                              ],
-                            )
-                          ],
-                        ),
-                        CircularProgress(
-                            title: GeneralStrings.calories,
-                            sizeFactor: 50,
-                            current: caloriesConsumed ?? 0,
-                            total: caloriesGoal ?? 0),
-                      ],
-                    ),
+      ),
+      floatingActionButton: IconButton(
+        onPressed: () {
+          showAdaptiveDialog(
+            context: context,
+            builder: (context) => const AddProteinDialog(),
+          );
+        },
+        icon: const Icon(Icons.add, size: 50),
+      ),
+      body: switch (homeModel) {
+        HomeLoading() => const CircularProgressIndicator(),
+        HomeInitial() => Builder(
+          builder: (context) {
+            if (proteinGoal == null || caloriesGoal == null) {
+              _showDialog(
+                context,
+                proteinGoal == null,
+                caloriesGoal == null,
+                proteinController,
+                caloriesController,
+                storageService,
+                proteinGoalNotifier,
+                caloriesGoalNotifier,
+              );
+            }
+            return Align(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 50.0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    spacing: 30,
+                    children: <Widget>[
+                      Row(
+                        children: [
+                          CircularProgress(
+                            title: GeneralStrings.protein,
+                            sizeFactor: 30,
+                            current: proteinConsumed ?? 0,
+                            total: proteinGoal ?? 0,
+                          ),
+                          const Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text('Sunday'),
+                              Text('December 20, 2024'),
+                            ],
+                          ),
+                        ],
+                      ),
+                      CircularProgress(
+                        title: GeneralStrings.calories,
+                        sizeFactor: 50,
+                        current: caloriesConsumed ?? 0,
+                        total: caloriesGoal ?? 0,
+                      ),
+                    ],
                   ),
                 ),
-              );
-            }),
-        });
+              ),
+            );
+          },
+        ),
+      },
+    );
   }
 }

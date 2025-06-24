@@ -7,8 +7,9 @@ import 'package:procal/services/device_services/auth_service.dart';
 import 'package:procal/services/device_services/health_service.dart';
 import 'package:procal/services/device_services/local_storage_service.dart';
 
-final authServiceProvider =
-    Provider<AuthService>((ref) => AuthService(ref: ref));
+final authServiceProvider = Provider<AuthService>(
+  (ref) => AuthService(ref: ref),
+);
 final proteinConsumedProvider = StateProvider<int?>((_) => null);
 final proteinGoalProvider = StateProvider<int?>((_) => null);
 
@@ -16,13 +17,16 @@ final caloriesConsumedProvider = StateProvider<int?>((_) => null);
 final caloriesGoalProvider = StateProvider<int?>((_) => null);
 
 final healthServiceProvider = Provider<HealthService>(
-    (ref) => HealthService(healthManager: Health(), ref: ref));
+  (ref) => HealthService(healthManager: Health(), ref: ref),
+);
 
-final localStorageServiceProvider =
-    Provider<LocalStorageService>((_) => LocalStorageService());
+final localStorageServiceProvider = Provider<LocalStorageService>(
+  (_) => LocalStorageService(),
+);
 
-final firebaseAuthProvider =
-    Provider<FirebaseAuth>((_) => FirebaseAuth.instance);
+final firebaseAuthProvider = Provider<FirebaseAuth>(
+  (_) => FirebaseAuth.instance,
+);
 
 final currentUserProvider = StreamProvider<User?>((ref) {
   final auth = ref.watch(firebaseAuthProvider);
@@ -43,6 +47,10 @@ final procalRouterProvider = Provider(
       }
 
       if (isAuthenticating) {
+        return null;
+      }
+
+      if (isAuthenticated) {
         return Routes.home.path;
       }
 
@@ -52,4 +60,6 @@ final procalRouterProvider = Provider(
 );
 
 GoRouter _routeConfig({GoRouterRedirect? redirect}) => GoRouter(
-    redirect: redirect, routes: [Routes.home, Routes.intro, Routes.login]);
+  redirect: redirect,
+  routes: [Routes.home, Routes.intro, Routes.login],
+);

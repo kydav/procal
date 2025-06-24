@@ -7,8 +7,10 @@ class CurrentAuthState {
   final User? user;
 
   CurrentAuthState copyWith({bool? isLoggedIn, User? user}) => CurrentAuthState(
-      isLoggedIn: isLoggedIn ?? this.isLoggedIn, user: user ?? this.user);
+    isLoggedIn: isLoggedIn ?? this.isLoggedIn,
+    user: user ?? this.user,
+  );
 
   CurrentAuthState clearCurrentUser() =>
-      CurrentAuthState(isLoggedIn: false, user: null);
+      const CurrentAuthState(isLoggedIn: false, user: null);
 }

@@ -1,44 +1,37 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:procal/providers/auth_state_model.dart';
 
 class AuthService {
   AuthService({required this.ref});
 
   final Ref ref;
 
-  Future<UserCredential?> createUser(String email, String password) async {
+  Future<UserCredential> createUser(String email, String password) async {
     try {
-      final credential =
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+      final credential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
       return credential;
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
-      }
-    } catch (e) {
-      print(e);
+    } on Exception {
+      rethrow;
     }
   }
 
-  Future<void> loginUser(String email, String password) async {
+  Future<UserCredential> loginUser(String email, String password) async {
     try {
-      final credential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        print('No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
-      }
+      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      return credential;
+    } on Exception {
+      rethrow;
     }
   }
 
   Future<void> logoutUser() async {
     await FirebaseAuth.instance.signOut();
+    ref.read(authStateModelProvider.notifier).clearCurrentUser();
   }
 }
