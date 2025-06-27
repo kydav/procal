@@ -10,6 +10,7 @@ import 'package:procal/constants/system_strings.dart';
 import 'package:procal/pages/home/home_model.dart';
 import 'package:procal/pages/home/home_state.dart';
 import 'package:procal/pages/home/home_widgets/add_protein_dialog.dart';
+import 'package:procal/services/device_services/auth_service.dart';
 import 'package:procal/services/device_services/local_storage_service.dart';
 import 'package:procal/top_level_providers.dart';
 
@@ -111,6 +112,16 @@ class HomePage extends HookConsumerWidget {
           padding: EdgeInsets.zero,
           child: Image.asset(AssetIcons.horizontalTransparentLogo, height: 45),
         ),
+        actions: [
+          IconButton(
+            color: Theme.of(context).colorScheme.surfaceBright,
+            icon: const Icon(Icons.menu, size: 30),
+            onPressed: () {
+              ref.read(authServiceProvider.notifier).logoutUser();
+              // Navigate to settings page
+            },
+          ),
+        ],
       ),
       floatingActionButton: IconButton(
         onPressed: () {
@@ -126,16 +137,16 @@ class HomePage extends HookConsumerWidget {
         HomeInitial() => Builder(
           builder: (context) {
             if (proteinGoal == null || caloriesGoal == null) {
-              _showDialog(
-                context,
-                proteinGoal == null,
-                caloriesGoal == null,
-                proteinController,
-                caloriesController,
-                storageService,
-                proteinGoalNotifier,
-                caloriesGoalNotifier,
-              );
+              // _showDialog(
+              //   context,
+              //   proteinGoal == null,
+              //   caloriesGoal == null,
+              //   proteinController,
+              //   caloriesController,
+              //   storageService,
+              //   proteinGoalNotifier,
+              //   caloriesGoalNotifier,
+              // );
             }
             return Align(
               child: Padding(

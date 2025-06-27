@@ -3,7 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:procal/constants/asset_icons.dart';
 import 'package:procal/pages/login/common/login_text_input.dart';
-import 'package:procal/pages/login/login_model.dart';
+import 'package:procal/pages/login/login_controller.dart';
 
 class LoginPage extends HookConsumerWidget {
   const LoginPage({super.key});
@@ -13,7 +13,9 @@ class LoginPage extends HookConsumerWidget {
     final userNameController = useTextEditingController();
     final passwordController = useTextEditingController();
     final isSignUp = useState(false);
-    final loginModel = ref.read(loginModelProvider.notifier);
+    final loginModel = ref.read(loginControllerProvider.notifier);
+    final loginState = ref.watch(loginControllerProvider);
+
     return Material(
       child: Scaffold(
         body: Padding(
@@ -32,17 +34,18 @@ class LoginPage extends HookConsumerWidget {
               ),
               ElevatedButton(
                 child: Text(isSignUp.value ? 'Sign Up' : 'Login'),
-                onPressed:
-                    () async =>
-                        isSignUp.value
-                            ? loginModel.createUser(
-                              userNameController.text,
-                              passwordController.text,
-                            )
-                            : loginModel.login(
-                              userNameController.text,
-                              passwordController.text,
-                            ),
+                onPressed: () async {
+                  // final future =
+                  isSignUp.value
+                      ? await loginModel.createUser(
+                        userNameController.text,
+                        passwordController.text,
+                      )
+                      : await loginModel.login(
+                        userNameController.text,
+                        passwordController.text,
+                      );
+                },
               ),
               TextButton(
                 onPressed: () => isSignUp.value = !isSignUp.value,
@@ -52,6 +55,14 @@ class LoginPage extends HookConsumerWidget {
                       : "Don't have an account? Sign Up",
                 ),
               ),
+              if (loginState.isLoading) ...[
+                const CircularProgressIndicator(),
+              ] else if (loginState.hasError) ...[
+                Text(
+                  loginState.error.toString(),
+                  style: const TextStyle(color: Colors.red),
+                ),
+              ],
             ],
           ),
         ),

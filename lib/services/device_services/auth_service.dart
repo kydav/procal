@@ -1,11 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:procal/providers/auth_state_model.dart';
+import 'package:procal/providers/auth_state_notifier.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-class AuthService {
-  AuthService({required this.ref});
+part 'auth_service.g.dart';
 
-  final Ref ref;
+@riverpod
+class AuthService extends _$AuthService {
+  @override
+  FutureOr<void> build() {
+    // Initial state is set in the AuthStateModel constructor
+    // so we don't need to do anything here.
+  }
 
   Future<UserCredential> createUser(String email, String password) async {
     try {
@@ -32,6 +37,6 @@ class AuthService {
 
   Future<void> logoutUser() async {
     await FirebaseAuth.instance.signOut();
-    ref.read(authStateModelProvider.notifier).clearCurrentUser();
+    ref.read(authStateNotifierProvider.notifier).clearCurrentUser();
   }
 }
