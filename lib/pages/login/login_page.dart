@@ -1,70 +1,34 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:procal/constants/asset_icons.dart';
-import 'package:procal/pages/login/common/login_text_input.dart';
-import 'package:procal/pages/login/login_controller.dart';
+import 'package:procal/hooks/carousel_hook.dart';
+import 'package:procal/pages/login/forgot_password_code_container.dart';
+import 'package:procal/pages/login/forgot_password_container.dart';
+import 'package:procal/pages/login/login_container.dart';
 
 class LoginPage extends HookConsumerWidget {
   const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final userNameController = useTextEditingController();
-    final passwordController = useTextEditingController();
-    final isSignUp = useState(false);
-    final loginModel = ref.read(loginControllerProvider.notifier);
-    final loginState = ref.watch(loginControllerProvider);
-
+    final controller = useCarouselSliderController();
     return Material(
       child: Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 100),
-          child: Column(
-            children: [
-              Image.asset(AssetIcons.horizontalTransparentLogo, height: 45),
-              LoginTextInput(
-                controller: userNameController,
-                hintText: 'Username',
-              ),
-              LoginTextInput(
-                controller: passwordController,
-                hintText: 'Password',
-                isPassword: true,
-              ),
-              ElevatedButton(
-                child: Text(isSignUp.value ? 'Sign Up' : 'Login'),
-                onPressed: () async {
-                  // final future =
-                  isSignUp.value
-                      ? await loginModel.createUser(
-                        userNameController.text,
-                        passwordController.text,
-                      )
-                      : await loginModel.login(
-                        userNameController.text,
-                        passwordController.text,
-                      );
-                },
-              ),
-              TextButton(
-                onPressed: () => isSignUp.value = !isSignUp.value,
-                child: Text(
-                  isSignUp.value
-                      ? 'Already have an account? Login'
-                      : "Don't have an account? Sign Up",
-                ),
-              ),
-              if (loginState.isLoading) ...[
-                const CircularProgressIndicator(),
-              ] else if (loginState.hasError) ...[
-                Text(
-                  loginState.error.toString(),
-                  style: const TextStyle(color: Colors.red),
-                ),
-              ],
-            ],
+        body: CarouselSlider(
+          carouselController: controller,
+          options: CarouselOptions(
+            height: MediaQuery.of(context).size.height * 0.7,
+            scrollPhysics: const NeverScrollableScrollPhysics(),
+            viewportFraction: 1,
+            enableInfiniteScroll: false,
+            initialPage: 0,
           ),
+
+          items: [
+            LoginContainer(carouselController: controller),
+            ForgotPasswordContainer(carouselController: controller),
+            ForgotPasswordCodeContainer(carouselController: controller),
+          ],
         ),
       ),
     );

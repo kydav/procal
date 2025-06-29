@@ -9,7 +9,7 @@ class _CarouselSliderControllerHook extends Hook<CarouselSliderController> {
 
   @override
   HookState<CarouselSliderController, Hook<CarouselSliderController>>
-      createState() => _CarouselSliderControllerState();
+  createState() => _CarouselSliderControllerState();
 }
 
 class _CarouselSliderControllerState

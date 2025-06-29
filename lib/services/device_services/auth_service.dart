@@ -8,8 +8,7 @@ part 'auth_service.g.dart';
 class AuthService extends _$AuthService {
   @override
   FutureOr<void> build() {
-    // Initial state is set in the AuthStateModel constructor
-    // so we don't need to do anything here.
+    // no operations needed on build
   }
 
   Future<UserCredential> createUser(String email, String password) async {
@@ -38,5 +37,32 @@ class AuthService extends _$AuthService {
   Future<void> logoutUser() async {
     await FirebaseAuth.instance.signOut();
     ref.read(authStateNotifierProvider.notifier).clearCurrentUser();
+  }
+
+  Future<void> sendResetPasswordEmail(String email) async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(
+        email: email,
+        actionCodeSettings: ActionCodeSettings(
+          handleCodeInApp: true,
+          url: 'https://yourapp.com/reset-password',
+        ),
+      );
+    } on Exception {
+      rethrow;
+    }
+  }
+
+  Future<String> confirmResetPassowrd(String code, String newPassword) async {
+    try {
+      final email = await FirebaseAuth.instance.verifyPasswordResetCode(code);
+      await FirebaseAuth.instance.confirmPasswordReset(
+        code: code,
+        newPassword: newPassword,
+      );
+      return email;
+    } on Exception {
+      rethrow;
+    }
   }
 }

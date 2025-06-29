@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:procal/pages/login/models/login_errors.dart';
 import 'package:procal/providers/auth_state_notifier.dart';
 import 'package:procal/services/device_services/auth_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -10,8 +11,7 @@ part 'login_controller.g.dart';
 class LoginController extends _$LoginController {
   @override
   FutureOr<void> build() async {
-    // Initial state is set in the LoginModel constructor
-    // so we don't need to do anything here.
+    // no operations needed on build
   }
 
   Future<void> createUser(String username, String password) async {
@@ -23,21 +23,13 @@ class LoginController extends _$LoginController {
       ref.read(authStateNotifierProvider.notifier).setLoggedIn(result.user!);
       state = const AsyncValue.data(null);
     } on FirebaseAuthException catch (e, stk) {
-      if (e.code == 'weak-password') {
-        state = AsyncValue.error('The password provided is too weak.', stk);
-      } else if (e.code == 'email-already-in-use') {
-        state = AsyncValue.error(
-          'The account already exists for that email.',
-          stk,
-        );
-      } else {
-        debugPrint('AuthException: ${e.code}  - ${e.message}');
-        state = AsyncValue.error('Failed to create user', stk);
-      }
+      final error = CreateUserError.fromCode(e.code);
+      state = AsyncValue.error(error.message, stk);
       return;
     } on Exception catch (e, stk) {
       debugPrint('AuthException: ${e.toString()}');
       state = AsyncValue.error('Failed to create user', stk);
+      return;
     }
   }
 
@@ -50,21 +42,47 @@ class LoginController extends _$LoginController {
       ref.read(authStateNotifierProvider.notifier).setLoggedIn(result.user!);
       state = const AsyncValue.data(null);
     } on FirebaseAuthException catch (e, stk) {
-      if (e.code == 'user-not-found') {
-        state = AsyncValue.error(
-          'No user found with that email and password.',
-          stk,
-        );
-      } else if (e.code == 'wrong-password') {
-        state = AsyncValue.error('Wrong password provided for that user.', stk);
-      } else {
-        debugPrint('AuthException: ${e.code}  - ${e.message}');
-        state = AsyncValue.error('Failed to create user', stk);
-      }
+      final error = LoginError.fromCode(e.code);
+      state = AsyncValue.error(error.message, stk);
       return;
     } on Exception catch (e, stk) {
       debugPrint('AuthException: ${e.toString()}');
-      state = AsyncValue.error('Failed to create user', stk);
+      state = AsyncValue.error('Failed to login user', stk);
+      return;
+    }
+  }
+
+  Future<void> sendPasswordResetEmail(String email) async {
+    state = const AsyncValue.loading();
+    try {
+      await ref
+          .read(authServiceProvider.notifier)
+          .sendResetPasswordEmail(email);
+      state = const AsyncValue.data(null);
+    } on FirebaseAuthException catch (e, stk) {
+      final error = SendPasswordResetEmailError.fromCode(e.code);
+      state = AsyncValue.error(error.message, stk);
+      return;
+    } on Exception catch (e, stk) {
+      debugPrint('AuthException: ${e.toString()}');
+      state = AsyncValue.error('Failed to send password reset email', stk);
+    }
+  }
+
+  Future<void> confirmPasswordReset(String code, String newPassword) async {
+    state = const AsyncValue.loading();
+    try {
+      await ref
+          .read(authServiceProvider.notifier)
+          .confirmResetPassowrd(code, newPassword);
+      state = const AsyncValue.data(null);
+    } on FirebaseAuthException catch (e, stk) {
+      final error = ConfirmResetPasswordError.fromCode(e.code);
+      state = AsyncValue.error(error.message, stk);
+      return;
+    } on Exception catch (e, stk) {
+      debugPrint('AuthException: ${e.toString()}');
+      state = AsyncValue.error('Failed to confirm password reset', stk);
     }
   }
 }
