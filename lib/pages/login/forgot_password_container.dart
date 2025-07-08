@@ -12,13 +12,18 @@ class ForgotPasswordContainer extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userNameController = useTextEditingController();
+    final focusNode = useFocusNode();
     final loginModel = ref.read(loginControllerProvider.notifier);
     final loginState = ref.watch(loginControllerProvider);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 100),
       child: Column(
         children: [
-          LoginTextInput(controller: userNameController, hintText: 'Email'),
+          LoginTextInput(
+            controller: userNameController,
+            focusNode: focusNode,
+            hintText: 'Email',
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 20.0),
             child: ElevatedButton(
@@ -30,7 +35,7 @@ class ForgotPasswordContainer extends HookConsumerWidget {
                 await loginModel.sendPasswordResetEmail(
                   userNameController.text,
                 );
-                await carouselController.nextPage();
+                carouselController.jumpToPage(0);
               },
             ),
           ),

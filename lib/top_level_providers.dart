@@ -1,8 +1,11 @@
+import 'package:firebase_ai/firebase_ai.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health/health.dart';
 import 'package:procal/routes.dart';
+import 'package:procal/services/ai_service.dart';
 import 'package:procal/services/device_services/health_service.dart';
 import 'package:procal/services/device_services/local_storage_service.dart';
 
@@ -18,6 +21,12 @@ final healthServiceProvider = Provider<HealthService>(
 
 final localStorageServiceProvider = Provider<LocalStorageService>(
   (_) => LocalStorageService(),
+);
+
+final aiServiceProvider = Provider<AiService>(
+  (ref) => AiService(
+    model: FirebaseAI.googleAI().generativeModel(model: 'gemini-2.5-flash'),
+  ),
 );
 
 final firebaseAuthProvider = Provider<FirebaseAuth>(
@@ -37,9 +46,16 @@ final procalRouterProvider = Provider(
 
       final isAuthenticated = authState.valueOrNull != null;
       final isAuthenticating = state.matchedLocation == Routes.login.path;
+      ref.watch(firebaseAuthProvider).authStateChanges().listen((User? user) {
+        if (user == null) {
+          debugPrint('User is currently signed out!');
+        } else {
+          debugPrint('User is signed in!');
+        }
+      });
 
       if (!isAuthenticated) {
-        return Routes.login.path;
+        return Routes.home.path;
       }
 
       if (isAuthenticating) {

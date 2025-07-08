@@ -15,24 +15,25 @@ class ForgotPasswordCodeContainer extends HookConsumerWidget {
   @override
   Widget build(BuildContext contex, WidgetRef ref) {
     final codeController = useTextEditingController();
+    final focusNode = useFocusNode();
     final passwordController = useTextEditingController();
     final loginModel = ref.read(loginControllerProvider.notifier);
-    final loginState = ref.watch(loginControllerProvider);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 100),
       child: Column(
         children: [
-          Text('Enter the code sent to your email'),
+          const Text('Enter the code sent to your email'),
           const SizedBox(height: 20),
           TextField(
             controller: codeController,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               hintText: 'Verification Code',
               border: OutlineInputBorder(),
             ),
           ),
           LoginTextInput(
             controller: passwordController,
+            focusNode: focusNode,
             hintText: 'Enter new password',
             isPassword: true,
           ),

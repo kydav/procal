@@ -12,8 +12,10 @@ class LoginContainer extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final userNameController = useTextEditingController();
+    final usernameController = useTextEditingController();
     final passwordController = useTextEditingController();
+    final usernameFocusNode = useFocusNode();
+    final passwordFocusNode = useFocusNode();
     final isSignUp = useState(false);
     final loginModel = ref.read(loginControllerProvider.notifier);
     final loginState = ref.watch(loginControllerProvider);
@@ -22,9 +24,31 @@ class LoginContainer extends HookConsumerWidget {
       child: Column(
         children: [
           Image.asset(AssetIcons.horizontalTransparentLogo, height: 45),
-          LoginTextInput(controller: userNameController, hintText: 'Username'),
+          LoginTextInput(
+            controller: usernameController,
+            focusNode: usernameFocusNode,
+            textInputAction: TextInputAction.next,
+            onFieldSubmitted: (_) {
+              usernameFocusNode.unfocus();
+              passwordFocusNode.requestFocus();
+            },
+            hintText: 'Email',
+          ),
           LoginTextInput(
             controller: passwordController,
+            focusNode: passwordFocusNode,
+            textInputAction: TextInputAction.done,
+            onFieldSubmitted:
+                (_) =>
+                    isSignUp.value
+                        ? loginModel.createUser(
+                          usernameController.text,
+                          passwordController.text,
+                        )
+                        : loginModel.login(
+                          usernameController.text,
+                          passwordController.text,
+                        ),
             hintText: 'Password',
             isPassword: true,
           ),
@@ -38,11 +62,11 @@ class LoginContainer extends HookConsumerWidget {
               onPressed: () async {
                 isSignUp.value
                     ? await loginModel.createUser(
-                      userNameController.text,
+                      usernameController.text,
                       passwordController.text,
                     )
                     : await loginModel.login(
-                      userNameController.text,
+                      usernameController.text,
                       passwordController.text,
                     );
               },

@@ -7,7 +7,8 @@
         {
             "name": "procal",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            "flutterMode": "debug"
         },
         {
             "name": "procal (profile mode)",

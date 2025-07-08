@@ -43,10 +43,14 @@ class AuthService extends _$AuthService {
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(
         email: email,
-        actionCodeSettings: ActionCodeSettings(
-          handleCodeInApp: true,
-          url: 'https://yourapp.com/reset-password',
-        ),
+        // Uncomment the following line if you want to handle the code in-app
+        // and provide a URL for the reset password page.
+        // Will need to handle deep linking to use
+        // actionCodeSettings: ActionCodeSettings(handleCodeInApp: true, url: ''),
+        // actionCodeSettings: ActionCodeSettings(
+        //   handleCodeInApp: true,
+        //   url: 'https://yourapp.com/reset-password',
+        // ),
       );
     } on Exception {
       rethrow;

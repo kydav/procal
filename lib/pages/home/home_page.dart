@@ -1,3 +1,4 @@
+import 'package:firebase_ai/firebase_ai.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -10,6 +11,7 @@ import 'package:procal/constants/system_strings.dart';
 import 'package:procal/pages/home/home_model.dart';
 import 'package:procal/pages/home/home_state.dart';
 import 'package:procal/pages/home/home_widgets/add_protein_dialog.dart';
+import 'package:procal/services/ai_service.dart';
 import 'package:procal/services/device_services/auth_service.dart';
 import 'package:procal/services/device_services/local_storage_service.dart';
 import 'package:procal/top_level_providers.dart';
@@ -78,6 +80,15 @@ class HomePage extends HookConsumerWidget {
     ),
   );
 
+  Future<void> testThing(AiService aiService) async {
+    final response = await aiService.generateResponseToMeal(
+      mealProtein: 30,
+      mealCalories: 300,
+      goalProtein: 200,
+      goalCalories: 2400,
+    );
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final proteinConsumed = ref.watch(proteinConsumedProvider);
@@ -95,6 +106,10 @@ class HomePage extends HookConsumerWidget {
     final caloriesController = useTextEditingController();
     final caloriesGoal = ref.watch(caloriesGoalProvider);
     final caloriesGoalNotifier = ref.watch(caloriesGoalProvider.notifier);
+    final aiService = ref.read(aiServiceProvider);
+    useEffect(() {
+      testThing(aiService);
+    }, [aiService]);
 
     useOnAppLifecycleStateChange((_, state) {
       if (state == AppLifecycleState.resumed) {
