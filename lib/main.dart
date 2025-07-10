@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:health/health.dart';
 import 'package:procal/theme.dart';
@@ -12,6 +13,7 @@ final initializeAppProvider = FutureProvider<void>((ref) async {
   final prefs = await SharedPreferences.getInstance();
   ref.read(localStorageServiceProvider).sharedPreferences = prefs;
   await Health().configure();
+  await dotenv.load(fileName: 'dev.env');
 });
 
 void main() {
@@ -29,28 +31,32 @@ class ProCalApp extends ConsumerWidget {
       title: 'ProCal',
       routerConfig: ref.watch(procalRouterProvider),
       theme: ThemeData(
-          brightness: Brightness.light,
-          primaryColor: ColorPalette.headerLight,
-          colorScheme: MaterialTheme.lightScheme(),
-          appBarTheme: const AppBarTheme(
-            backgroundColor: ColorPalette.headerLight,
-            titleTextStyle: TextStyle(color: Colors.white, fontSize: 18),
-          ),
-          textTheme: Typography.blackCupertino),
+        brightness: Brightness.light,
+        primaryColor: ColorPalette.headerLight,
+        colorScheme: MaterialTheme.lightScheme(),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: ColorPalette.headerLight,
+          titleTextStyle: TextStyle(color: Colors.white, fontSize: 18),
+        ),
+        textTheme: Typography.blackCupertino,
+      ),
       darkTheme: ThemeData(
-          useMaterial3: true,
-          brightness: Brightness.dark,
-          primaryColor: ColorPalette.headerDark,
-          colorScheme: MaterialTheme.darkScheme(),
-          appBarTheme: const AppBarTheme(
-            backgroundColor: ColorPalette.headerDark,
-            titleTextStyle: TextStyle(color: Colors.black, fontSize: 18),
+        useMaterial3: true,
+        brightness: Brightness.dark,
+        primaryColor: ColorPalette.headerDark,
+        colorScheme: MaterialTheme.darkScheme(),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: ColorPalette.headerDark,
+          titleTextStyle: TextStyle(color: Colors.black, fontSize: 18),
+        ),
+        textTheme: Typography.whiteCupertino,
+      ),
+      builder:
+          (ctx, child) => initializeApp.when(
+            loading: () => const CircularProgressIndicator(),
+            data: (_) => child!,
+            error: (err, _) => Text(err.toString()),
           ),
-          textTheme: Typography.whiteCupertino),
-      builder: (ctx, child) => initializeApp.when(
-          loading: () => const CircularProgressIndicator(),
-          data: (_) => child!,
-          error: (err, _) => Text(err.toString())),
     );
   }
 }

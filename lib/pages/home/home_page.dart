@@ -1,4 +1,3 @@
-import 'package:firebase_ai/firebase_ai.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -12,6 +11,7 @@ import 'package:procal/pages/home/home_model.dart';
 import 'package:procal/pages/home/home_state.dart';
 import 'package:procal/pages/home/home_widgets/add_protein_dialog.dart';
 import 'package:procal/services/ai_service.dart';
+import 'package:procal/services/api/clients/procal_client.dart';
 import 'package:procal/services/device_services/auth_service.dart';
 import 'package:procal/services/device_services/local_storage_service.dart';
 import 'package:procal/top_level_providers.dart';
@@ -80,13 +80,18 @@ class HomePage extends HookConsumerWidget {
     ),
   );
 
-  Future<void> testThing(AiService aiService) async {
-    final response = await aiService.generateResponseToMeal(
-      mealProtein: 30,
-      mealCalories: 300,
-      goalProtein: 200,
-      goalCalories: 2400,
-    );
+  // Future<void> testThing(AiService aiService) async {
+  //   final response = await aiService.generateResponseToMeal(
+  //     mealProtein: 30,
+  //     mealCalories: 300,
+  //     goalProtein: 200,
+  //     goalCalories: 2400,
+  //   );
+  // }
+
+  Future<void> testThing(ProcalClient procalClient) async {
+    final response = await procalClient.getFoodByBarcode('0041570054161');
+    print(response);
   }
 
   @override
@@ -108,7 +113,7 @@ class HomePage extends HookConsumerWidget {
     final caloriesGoalNotifier = ref.watch(caloriesGoalProvider.notifier);
     final aiService = ref.read(aiServiceProvider);
     useEffect(() {
-      testThing(aiService);
+      testThing(ref.read(procalClientProvider));
     }, [aiService]);
 
     useOnAppLifecycleStateChange((_, state) {

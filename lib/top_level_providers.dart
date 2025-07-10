@@ -1,11 +1,14 @@
+import 'package:dio/dio.dart';
 import 'package:firebase_ai/firebase_ai.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health/health.dart';
 import 'package:procal/routes.dart';
 import 'package:procal/services/ai_service.dart';
+import 'package:procal/services/api/clients/procal_client.dart';
 import 'package:procal/services/device_services/health_service.dart';
 import 'package:procal/services/device_services/local_storage_service.dart';
 
@@ -17,6 +20,18 @@ final caloriesGoalProvider = StateProvider<int?>((_) => null);
 
 final healthServiceProvider = Provider<HealthService>(
   (ref) => HealthService(healthManager: Health(), ref: ref),
+);
+
+final dioOptions = BaseOptions(
+  baseUrl: dotenv.env['BASE_URL'] ?? 'https://procal-api.fly.dev/api/',
+  connectTimeout: const Duration(seconds: 20),
+  contentType: Headers.jsonContentType,
+  receiveTimeout: const Duration(seconds: 20),
+  validateStatus: (_) => true,
+);
+
+final procalClientProvider = Provider<ProcalClient>(
+  (ref) => ProcalClient(Dio(dioOptions), baseUrl: dioOptions.baseUrl),
 );
 
 final localStorageServiceProvider = Provider<LocalStorageService>(
