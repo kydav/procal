@@ -13,7 +13,8 @@ final initializeAppProvider = FutureProvider<void>((ref) async {
   final prefs = await SharedPreferences.getInstance();
   ref.read(localStorageServiceProvider).sharedPreferences = prefs;
   await Health().configure();
-  await dotenv.load(fileName: 'dev.env');
+  //await dotenv.load(fileName: 'dev.env');
+  await dotenv.load(fileName: 'local.env');
 });
 
 void main() {

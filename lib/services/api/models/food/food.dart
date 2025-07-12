@@ -4,14 +4,14 @@ import 'package:procal/services/api/models/food/serving.dart';
 part 'food.g.dart';
 
 @JsonSerializable(explicitToJson: true, fieldRename: FieldRename.snake)
-class ReturnFood {
-  ReturnFood({required this.food});
-  factory ReturnFood.fromJson(Map<String, dynamic> json) =>
-      _$ReturnFoodFromJson(json);
+class FatSecretFood {
+  FatSecretFood({required this.food});
+  factory FatSecretFood.fromJson(Map<String, dynamic> json) =>
+      _$FatSecretFoodFromJson(json);
   @JsonKey(name: 'food')
   Food food;
 
-  Map<String, dynamic> toJson() => _$ReturnFoodToJson(this);
+  Map<String, dynamic> toJson() => _$FatSecretFoodToJson(this);
 }
 
 @JsonSerializable(explicitToJson: true, fieldRename: FieldRename.snake)

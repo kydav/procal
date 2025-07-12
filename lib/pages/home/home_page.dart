@@ -90,7 +90,9 @@ class HomePage extends HookConsumerWidget {
   // }
 
   Future<void> testThing(ProcalClient procalClient) async {
-    final response = await procalClient.getFoodByBarcode('0041570054161');
+    //final response = await procalClient.getFoodByBarcode('0041570054161');
+
+    final response = await procalClient.searchFoodsByName('banana', 1);
     print(response);
   }
 

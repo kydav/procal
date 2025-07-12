@@ -8,9 +8,15 @@ part 'procal_client.g.dart';
 abstract class ProcalClient {
   factory ProcalClient(Dio dio, {String baseUrl}) = _ProcalClient;
 
-  @GET('/food/{barcode}/barcode')
-  Future<ReturnFood> getFoodByBarcode(@Path('barcode') String barcode);
+  @GET('/food/{id}')
+  Future<FatSecretFood> getFoodById(@Path('id') String id);
 
-  @POST('/food/{foodName}/search/2')
-  Future<List<ReturnFood>> searchFoodsByName(@Path('foodName') String foodName);
+  @GET('/food/{barcode}/barcode')
+  Future<FatSecretFood> getFoodByBarcode(@Path('barcode') String barcode);
+
+  @GET('/food/{foodName}/search/{page}')
+  Future<List<Food>> searchFoodsByName(
+    @Path('foodName') String foodName,
+    @Path('page') int page,
+  );
 }

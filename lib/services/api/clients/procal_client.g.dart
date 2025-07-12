@@ -18,12 +18,39 @@ class _ProcalClient implements ProcalClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<ReturnFood> getFoodByBarcode(String barcode) async {
+  Future<FatSecretFood> getFoodById(String id) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ReturnFood>(
+    final _options = _setStreamType<FatSecretFood>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/food/${id}',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late FatSecretFood _value;
+    try {
+      _value = FatSecretFood.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<FatSecretFood> getFoodByBarcode(String barcode) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<FatSecretFood>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -34,9 +61,9 @@ class _ProcalClient implements ProcalClient {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ReturnFood _value;
+    late FatSecretFood _value;
     try {
-      _value = ReturnFood.fromJson(_result.data!);
+      _value = FatSecretFood.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -45,29 +72,27 @@ class _ProcalClient implements ProcalClient {
   }
 
   @override
-  Future<List<ReturnFood>> searchFoodsByName(String foodName) async {
+  Future<List<Food>> searchFoodsByName(String foodName, int page) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<List<ReturnFood>>(
-      Options(method: 'POST', headers: _headers, extra: _extra)
+    final _options = _setStreamType<List<Food>>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/food/${foodName}/search/2',
+            '/food/${foodName}/search/${page}',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<ReturnFood> _value;
+    late List<Food> _value;
     try {
       _value =
           _result.data!
-              .map(
-                (dynamic i) => ReturnFood.fromJson(i as Map<String, dynamic>),
-              )
+              .map((dynamic i) => Food.fromJson(i as Map<String, dynamic>))
               .toList();
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);

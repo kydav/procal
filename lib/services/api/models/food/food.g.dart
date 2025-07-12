@@ -6,10 +6,10 @@ part of 'food.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-ReturnFood _$ReturnFoodFromJson(Map<String, dynamic> json) =>
-    ReturnFood(food: Food.fromJson(json['food'] as Map<String, dynamic>));
+FatSecretFood _$FatSecretFoodFromJson(Map<String, dynamic> json) =>
+    FatSecretFood(food: Food.fromJson(json['food'] as Map<String, dynamic>));
 
-Map<String, dynamic> _$ReturnFoodToJson(ReturnFood instance) =>
+Map<String, dynamic> _$FatSecretFoodToJson(FatSecretFood instance) =>
     <String, dynamic>{'food': instance.food.toJson()};
 
 Food _$FoodFromJson(Map<String, dynamic> json) => Food(
