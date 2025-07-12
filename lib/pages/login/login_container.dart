@@ -20,14 +20,13 @@ class LoginContainer extends HookConsumerWidget {
     final loginModel = ref.read(loginControllerProvider.notifier);
     final loginState = ref.watch(loginControllerProvider);
 
-    final loginFormModel = ref.watch(loginFormControllerProvider.notifier);
+    final loginFormModel = ref.read(loginFormControllerProvider.notifier);
     final loginFormState = ref.watch(loginFormControllerProvider);
     final formKey = useMemoized(GlobalKey<FormState>.new, const []);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 100),
       child: Form(
         key: formKey,
-        autovalidateMode: AutovalidateMode.onUserInteraction,
         child: AutofillGroup(
           child: Column(
             children: [
