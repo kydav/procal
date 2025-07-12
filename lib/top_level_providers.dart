@@ -70,7 +70,7 @@ final procalRouterProvider = Provider(
       });
 
       if (!isAuthenticated) {
-        return Routes.home.path;
+        return Routes.login.path;
       }
 
       if (isAuthenticating) {

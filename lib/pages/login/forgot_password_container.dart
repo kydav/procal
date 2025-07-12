@@ -19,10 +19,23 @@ class ForgotPasswordContainer extends HookConsumerWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 100),
       child: Column(
         children: [
-          LoginTextInput(
-            controller: userNameController,
-            focusNode: focusNode,
-            hintText: 'Email',
+          const Center(
+            child: Text(
+              'Please enter your email and we will send you an email to reset your password.',
+              textAlign: TextAlign.center,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20.0),
+            child: LoginTextInput(
+              controller: userNameController,
+              focusNode: focusNode,
+              hintText: 'Email',
+              onFieldSubmitted: (email) async {
+                await loginModel.sendPasswordResetEmail(email);
+                carouselController.jumpToPage(0);
+              },
+            ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 20.0),

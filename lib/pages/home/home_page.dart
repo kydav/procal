@@ -89,13 +89,6 @@ class HomePage extends HookConsumerWidget {
   //   );
   // }
 
-  Future<void> testThing(ProcalClient procalClient) async {
-    //final response = await procalClient.getFoodByBarcode('0041570054161');
-
-    final response = await procalClient.searchFoodsByName('banana', 1);
-    print(response);
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final proteinConsumed = ref.watch(proteinConsumedProvider);
@@ -113,10 +106,6 @@ class HomePage extends HookConsumerWidget {
     final caloriesController = useTextEditingController();
     final caloriesGoal = ref.watch(caloriesGoalProvider);
     final caloriesGoalNotifier = ref.watch(caloriesGoalProvider.notifier);
-    final aiService = ref.read(aiServiceProvider);
-    useEffect(() {
-      testThing(ref.read(procalClientProvider));
-    }, [aiService]);
 
     useOnAppLifecycleStateChange((_, state) {
       if (state == AppLifecycleState.resumed) {

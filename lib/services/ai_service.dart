@@ -55,7 +55,7 @@ class AiService {
     return GeneratedGoals.fromJson(goalsJson['goals']);
   }
 
-  Future<void> generateResponseToMeal({
+  Future<GeneratedMealResponse> generateResponseToMeal({
     required int mealProtein,
     required int mealCalories,
     required int goalProtein,
@@ -90,6 +90,6 @@ class AiService {
     final mealResponse = GeneratedMealResponse.fromJson(
       mealResponseJson['mealResponse'],
     );
-    print(mealResponse);
+    return mealResponse;
   }
 }

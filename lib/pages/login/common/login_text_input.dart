@@ -9,6 +9,9 @@ class LoginTextInput extends HookWidget {
     this.isPassword = false,
     this.textInputAction,
     this.onFieldSubmitted,
+    this.validator,
+    this.onChanged,
+    this.error,
     super.key,
   });
 
@@ -18,6 +21,9 @@ class LoginTextInput extends HookWidget {
   final bool isPassword;
   final TextInputAction? textInputAction;
   final void Function(String)? onFieldSubmitted;
+  final String? Function(String?)? validator;
+  final ValueChanged<String>? onChanged;
+  final String? error;
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +37,12 @@ class LoginTextInput extends HookWidget {
           isPassword ? TextInputType.visiblePassword : TextInputType.text,
       textInputAction: textInputAction,
       onFieldSubmitted: onFieldSubmitted,
+      onChanged: onChanged,
+      validator: validator,
       decoration: InputDecoration(
         hintText: hintText,
+        errorText: error,
+        errorStyle: const TextStyle(fontSize: 10, color: Colors.red),
         suffixIcon:
             isPassword
                 ? isObscured.value
