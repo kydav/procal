@@ -1,28 +1,28 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'login_form_controller.dart';
+part of 'food_search_controller.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$loginFormControllerHash() =>
-    r'7ae56551068d18b64ae920fcc8f50ca6e0ccc164';
+String _$foodSearchControllerHash() =>
+    r'ecc2bfc761ca326116e6f72da5dedc8ccce82c94';
 
-/// See also [LoginFormController].
-@ProviderFor(LoginFormController)
-final loginFormControllerProvider =
-    AutoDisposeNotifierProvider<LoginFormController, LoginFormState>.internal(
-      LoginFormController.new,
-      name: r'loginFormControllerProvider',
+/// See also [FoodSearchController].
+@ProviderFor(FoodSearchController)
+final foodSearchControllerProvider =
+    AutoDisposeAsyncNotifierProvider<FoodSearchController, List<Food>>.internal(
+      FoodSearchController.new,
+      name: r'foodSearchControllerProvider',
       debugGetCreateSourceHash:
           const bool.fromEnvironment('dart.vm.product')
               ? null
-              : _$loginFormControllerHash,
+              : _$foodSearchControllerHash,
       dependencies: null,
       allTransitiveDependencies: null,
     );
 
-typedef _$LoginFormController = AutoDisposeNotifier<LoginFormState>;
+typedef _$FoodSearchController = AutoDisposeAsyncNotifier<List<Food>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

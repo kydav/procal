@@ -1,28 +1,27 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'login_form_controller.dart';
+part of 'procal_service.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$loginFormControllerHash() =>
-    r'7ae56551068d18b64ae920fcc8f50ca6e0ccc164';
+String _$procalServiceHash() => r'a82f39c4727e47b6b734322c2314be0648e65efb';
 
-/// See also [LoginFormController].
-@ProviderFor(LoginFormController)
-final loginFormControllerProvider =
-    AutoDisposeNotifierProvider<LoginFormController, LoginFormState>.internal(
-      LoginFormController.new,
-      name: r'loginFormControllerProvider',
+/// See also [ProcalService].
+@ProviderFor(ProcalService)
+final procalServiceProvider =
+    AutoDisposeNotifierProvider<ProcalService, void>.internal(
+      ProcalService.new,
+      name: r'procalServiceProvider',
       debugGetCreateSourceHash:
           const bool.fromEnvironment('dart.vm.product')
               ? null
-              : _$loginFormControllerHash,
+              : _$procalServiceHash,
       dependencies: null,
       allTransitiveDependencies: null,
     );
 
-typedef _$LoginFormController = AutoDisposeNotifier<LoginFormState>;
+typedef _$ProcalService = AutoDisposeNotifier<void>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
