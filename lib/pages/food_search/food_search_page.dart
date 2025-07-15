@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:procal/pages/food_search/food_search_controller.dart';
 
 class FoodSearchPage extends HookConsumerWidget {
@@ -29,37 +30,54 @@ class FoodSearchPage extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(title: const Text('Food Search'), centerTitle: true),
-      body: Column(
-        children: [
-          TextField(
-            controller: searchController,
-            onSubmitted: foodSearchController.init,
-
-            decoration: const InputDecoration(
-              labelText: 'Search for food',
-              prefixIcon: Icon(Icons.search),
-              border: OutlineInputBorder(),
-            ),
-          ),
-          foodSearchState.maybeWhen(
-            data:
-                (foodList) => Expanded(
-                  child: ListView.builder(
-                    controller: controller,
-                    itemCount: foodList.length,
-                    itemBuilder: (context, index) {
-                      final food = foodList[index];
-                      return ListTile(
-                        title: Text(food.foodName),
-                        subtitle: Text(food.foodType),
-                      );
-                    },
-                  ),
+      body: SafeArea(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 10.0,
+                vertical: 5.0,
+              ),
+              child: TextField(
+                controller: searchController,
+                onSubmitted: foodSearchController.init,
+                decoration: const InputDecoration(
+                  labelText: 'Search for food',
+                  prefixIcon: Icon(Icons.search),
+                  border: OutlineInputBorder(),
                 ),
-            orElse: () => const SizedBox.shrink(),
-          ),
-          if (foodSearchState.isLoading) const CircularProgressIndicator(),
-        ],
+              ),
+            ),
+            foodSearchState.maybeWhen(
+              data:
+                  (foodList) => Expanded(
+                    child: RefreshIndicator(
+                      onRefresh:
+                          () async => foodSearchController.refresh(
+                            searchController.text,
+                          ),
+                      child: ListView.builder(
+                        controller: controller,
+                        itemCount: foodList.length,
+                        itemBuilder: (context, index) {
+                          final food = foodList[index];
+                          return ListTile(
+                            title: Text(food.foodName),
+                            subtitle: Text(food.foodType),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+              orElse: () => const SizedBox.shrink(),
+            ),
+            if (foodSearchState.isLoading)
+              LoadingAnimationWidget.horizontalRotatingDots(
+                color: Theme.of(context).colorScheme.primary,
+                size: 50,
+              ),
+          ],
+        ),
       ),
     );
   }

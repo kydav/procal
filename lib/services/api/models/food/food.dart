@@ -21,6 +21,7 @@ class Food {
     required this.foodName,
     required this.foodType,
     required this.serving,
+    this.brandName,
   });
   factory Food.fromJson(Map<String, dynamic> json) => _$FoodFromJson(json);
   @JsonKey(name: 'food_id')
@@ -31,6 +32,8 @@ class Food {
   String foodType;
   @JsonKey(name: 'servings')
   Servings serving;
+  @JsonKey(name: 'brand_name')
+  String? brandName;
 
   Map<String, dynamic> toJson() => _$FoodToJson(this);
 }

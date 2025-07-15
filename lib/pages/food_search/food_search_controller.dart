@@ -14,9 +14,9 @@ class FoodSearchController extends _$FoodSearchController {
   List<Food> _foodList = <Food>[];
   Timer _timer = Timer(Duration.zero, () {});
   @override
-  FutureOr<List<Food>> build() async => _foodList;
+  Future<List<Food>> build() async => _foodList;
 
-  Future<void> init(String query) async {
+  FutureOr<void> init(String query) async {
     _page = 1;
     _searchQuery = query;
     final procalService = ref.read(procalServiceProvider.notifier);
@@ -25,26 +25,30 @@ class FoodSearchController extends _$FoodSearchController {
     state = AsyncData(_foodList);
   }
 
-  // @override
-  // void dispose() {
-  //   _timer.cancel();
-  //   _foodList.clear();
-  //   _page = 1;
-  //   _searchQuery = '';
-  // }
-
   Future<void> getNextPage() async {
     if (_timer.isActive && _foodList.isNotEmpty) {
       return;
     }
     _timer = Timer(const Duration(seconds: 1), () {});
-    state = const AsyncLoading();
+    state = const AsyncLoading<List<Food>>().copyWithPrevious(state);
     _page++;
     debugPrint('Getting next page: $_page');
-    final procalService = ref.read(procalServiceProvider.notifier);
-    final list = await procalService.searchFoodsByName(_searchQuery, _page);
-    _foodList = [..._foodList, ...list];
-    state = AsyncData(_foodList);
+    var attempts = 3;
+    while (attempts > 0) {
+      try {
+        final procalService = ref.read(procalServiceProvider.notifier);
+        final list = await procalService.searchFoodsByName(_searchQuery, _page);
+        _foodList = [..._foodList, ...list];
+        state = AsyncData(_foodList);
+        return;
+      } on Exception catch (e) {
+        attempts--;
+        if (attempts == 0) {
+          state = AsyncError(e, StackTrace.current);
+          return;
+        }
+      }
+    }
   }
 
   Future<void> refresh(String query) async {
