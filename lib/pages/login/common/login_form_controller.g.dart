@@ -15,10 +15,9 @@ final loginFormControllerProvider =
     AutoDisposeNotifierProvider<LoginFormController, LoginFormState>.internal(
       LoginFormController.new,
       name: r'loginFormControllerProvider',
-      debugGetCreateSourceHash:
-          const bool.fromEnvironment('dart.vm.product')
-              ? null
-              : _$loginFormControllerHash,
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$loginFormControllerHash,
       dependencies: null,
       allTransitiveDependencies: null,
     );

@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:procal/pages/food_search/food_search_controller.dart';
+import 'package:procal/top_level_providers.dart';
 
 class FoodSearchPage extends HookConsumerWidget {
   const FoodSearchPage({super.key});
@@ -49,26 +50,28 @@ class FoodSearchPage extends HookConsumerWidget {
               ),
             ),
             foodSearchState.maybeWhen(
-              data:
-                  (foodList) => Expanded(
-                    child: RefreshIndicator(
-                      onRefresh:
-                          () async => foodSearchController.refresh(
-                            searchController.text,
-                          ),
-                      child: ListView.builder(
-                        controller: controller,
-                        itemCount: foodList.length,
-                        itemBuilder: (context, index) {
-                          final food = foodList[index];
-                          return ListTile(
-                            title: Text(food.foodName),
-                            subtitle: Text(food.foodType),
-                          );
+              data: (foodList) => Expanded(
+                child: RefreshIndicator(
+                  onRefresh: () async =>
+                      foodSearchController.refresh(searchController.text),
+                  child: ListView.builder(
+                    controller: controller,
+                    itemCount: foodList.length,
+                    itemBuilder: (context, index) {
+                      final food = foodList[index];
+                      return ListTile(
+                        title: Text(food.foodName),
+                        subtitle: Text(food.foodType),
+                        onTap: () {
+                          ref
+                              .read(procalRouterProvider)
+                              .push('/food_detail/${food.foodId}');
                         },
-                      ),
-                    ),
+                      );
+                    },
                   ),
+                ),
+              ),
               orElse: () => const SizedBox.shrink(),
             ),
             if (foodSearchState.isLoading)

@@ -31,52 +31,50 @@ class HomePage extends HookConsumerWidget {
   ) async => WidgetsBinding.instance.addPostFrameCallback(
     (_) => showAdaptiveDialog(
       context: context,
-      builder:
-          (context) => CommonDialog(
-            title:
-                showProtein && showCalories
-                    ? DialogStrings.enterGoals
-                    : DialogStrings.enterGoal,
-            content: Column(
-              children: [
-                if (showProtein)
-                  FormFieldTitle(
-                    title: DialogStrings.proteinGoal,
-                    child: TextField(
-                      textAlign: TextAlign.center,
-                      keyboardType: TextInputType.number,
-                      controller: proteinController,
-                    ),
-                  ),
-                if (showCalories)
-                  FormFieldTitle(
-                    title: DialogStrings.caloriesGoal,
-                    child: TextField(
-                      textAlign: TextAlign.center,
-                      keyboardType: TextInputType.number,
-                      controller: caloriesController,
-                    ),
-                  ),
-              ],
-            ),
-            onSubmit: () async {
-              if (showProtein) {
-                final intValue = int.tryParse(proteinController.value.text);
-                if (intValue != null) {
-                  storageService.storeInt(SystemStrings.proteinGoal, intValue);
-                  proteinGoal.update((_) => intValue);
-                }
-              }
-              if (showCalories) {
-                final intValue = int.tryParse(caloriesController.value.text);
-                if (intValue != null) {
-                  storageService.storeInt(SystemStrings.caloriesGoal, intValue);
-                  caloriesGoal.update((_) => intValue);
-                }
-              }
-              Navigator.pop(context);
-            },
-          ),
+      builder: (context) => CommonDialog(
+        title: showProtein && showCalories
+            ? DialogStrings.enterGoals
+            : DialogStrings.enterGoal,
+        content: Column(
+          children: [
+            if (showProtein)
+              FormFieldTitle(
+                title: DialogStrings.proteinGoal,
+                child: TextField(
+                  textAlign: TextAlign.center,
+                  keyboardType: TextInputType.number,
+                  controller: proteinController,
+                ),
+              ),
+            if (showCalories)
+              FormFieldTitle(
+                title: DialogStrings.caloriesGoal,
+                child: TextField(
+                  textAlign: TextAlign.center,
+                  keyboardType: TextInputType.number,
+                  controller: caloriesController,
+                ),
+              ),
+          ],
+        ),
+        onSubmit: () async {
+          if (showProtein) {
+            final intValue = int.tryParse(proteinController.value.text);
+            if (intValue != null) {
+              storageService.storeInt(SystemStrings.proteinGoal, intValue);
+              proteinGoal.update((_) => intValue);
+            }
+          }
+          if (showCalories) {
+            final intValue = int.tryParse(caloriesController.value.text);
+            if (intValue != null) {
+              storageService.storeInt(SystemStrings.caloriesGoal, intValue);
+              caloriesGoal.update((_) => intValue);
+            }
+          }
+          Navigator.pop(context);
+        },
+      ),
     ),
   );
 
@@ -136,10 +134,11 @@ class HomePage extends HookConsumerWidget {
       ),
       floatingActionButton: IconButton(
         onPressed: () {
-          showAdaptiveDialog(
-            context: context,
-            builder: (context) => const AddProteinDialog(),
-          );
+          ref.read(procalRouterProvider).go('/search');
+          // showAdaptiveDialog(
+          //   context: context,
+          //   builder: (context) => const AddProteinDialog(),
+          // );
         },
         icon: const Icon(Icons.add, size: 50),
       ),

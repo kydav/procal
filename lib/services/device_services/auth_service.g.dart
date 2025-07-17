@@ -14,10 +14,9 @@ final authServiceProvider =
     AutoDisposeAsyncNotifierProvider<AuthService, void>.internal(
       AuthService.new,
       name: r'authServiceProvider',
-      debugGetCreateSourceHash:
-          const bool.fromEnvironment('dart.vm.product')
-              ? null
-              : _$authServiceHash,
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$authServiceHash,
       dependencies: null,
       allTransitiveDependencies: null,
     );

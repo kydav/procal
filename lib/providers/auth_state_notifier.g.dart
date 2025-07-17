@@ -10,19 +10,19 @@ String _$authStateNotifierHash() => r'427058fb5e010600326f7cfb241f236dccfaa0e8';
 
 /// See also [AuthStateNotifier].
 @ProviderFor(AuthStateNotifier)
-final authStateNotifierProvider = AutoDisposeAsyncNotifierProvider<
-  AuthStateNotifier,
-  CurrentAuthState
->.internal(
-  AuthStateNotifier.new,
-  name: r'authStateNotifierProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product')
+final authStateNotifierProvider =
+    AutoDisposeAsyncNotifierProvider<
+      AuthStateNotifier,
+      CurrentAuthState
+    >.internal(
+      AuthStateNotifier.new,
+      name: r'authStateNotifierProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
           ? null
           : _$authStateNotifierHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
 typedef _$AuthStateNotifier = AutoDisposeAsyncNotifier<CurrentAuthState>;
 // ignore_for_file: type=lint

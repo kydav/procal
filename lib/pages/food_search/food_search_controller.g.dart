@@ -15,10 +15,9 @@ final foodSearchControllerProvider =
     AutoDisposeAsyncNotifierProvider<FoodSearchController, List<Food>>.internal(
       FoodSearchController.new,
       name: r'foodSearchControllerProvider',
-      debugGetCreateSourceHash:
-          const bool.fromEnvironment('dart.vm.product')
-              ? null
-              : _$foodSearchControllerHash,
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$foodSearchControllerHash,
       dependencies: null,
       allTransitiveDependencies: null,
     );

@@ -14,10 +14,9 @@ final procalServiceProvider =
     AutoDisposeNotifierProvider<ProcalService, void>.internal(
       ProcalService.new,
       name: r'procalServiceProvider',
-      debugGetCreateSourceHash:
-          const bool.fromEnvironment('dart.vm.product')
-              ? null
-              : _$procalServiceHash,
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$procalServiceHash,
       dependencies: null,
       allTransitiveDependencies: null,
     );

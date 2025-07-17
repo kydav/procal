@@ -62,10 +62,6 @@ final procalRouterProvider = Provider(
         return null;
       }
 
-      if (isAuthenticated) {
-        return Routes.search.path;
-      }
-
       return null;
     },
   ),
@@ -73,5 +69,11 @@ final procalRouterProvider = Provider(
 
 GoRouter _routeConfig({GoRouterRedirect? redirect}) => GoRouter(
   redirect: redirect,
-  routes: [Routes.home, Routes.intro, Routes.login, Routes.search],
+  routes: [
+    Routes.home,
+    Routes.intro,
+    Routes.login,
+    Routes.search,
+    Routes.foodDetail,
+  ],
 );

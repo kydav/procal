@@ -7,10 +7,9 @@ part of 'serving.dart';
 // **************************************************************************
 
 Servings _$ServingsFromJson(Map<String, dynamic> json) => Servings(
-  serving:
-      (json['serving'] as List<dynamic>)
-          .map((e) => Serving.fromJson(e as Map<String, dynamic>))
-          .toList(),
+  serving: (json['serving'] as List<dynamic>)
+      .map((e) => Serving.fromJson(e as Map<String, dynamic>))
+      .toList(),
 );
 
 Map<String, dynamic> _$ServingsToJson(Servings instance) => <String, dynamic>{
