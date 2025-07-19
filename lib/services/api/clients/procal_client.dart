@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:procal/services/api/models/food/food.dart';
+import 'package:procal/services/api/models/food/foods_search.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'procal_client.g.dart';
@@ -15,7 +16,7 @@ abstract class ProcalClient {
   Future<FatSecretFood> getFoodByBarcode(@Path('barcode') String barcode);
 
   @GET('/food/{foodName}/search/{page}')
-  Future<List<Food>> searchFoodsByName(
+  Future<FoodsSearchData> searchFoodsByName(
     @Path('foodName') String foodName,
     @Path('page') int page,
   );

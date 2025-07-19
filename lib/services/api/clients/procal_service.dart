@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:procal/services/api/clients/procal_client.dart';
 import 'package:procal/services/api/models/food/food.dart';
+import 'package:procal/services/api/models/food/foods_search.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'procal_service.g.dart';
@@ -21,15 +22,13 @@ class ProcalService extends _$ProcalService {
     baseUrl: dotenv.env['BASE_URL'] ?? 'https://procal-api.fly.dev/api/',
   );
   @override
-  void build() {
-    // Initialize your Procal client here
-  }
+  void build() {}
 
   Future<FatSecretFood> getFoodById(String id) async => _client.getFoodById(id);
 
   Future<FatSecretFood> getFoodByBarcode(String barcode) async =>
       _client.getFoodByBarcode(barcode);
 
-  Future<List<Food>> searchFoodsByName(String foodName, int page) async =>
-      _client.searchFoodsByName(Uri.encodeComponent(foodName), page);
+  Future<FoodsSearchData> searchFoodsByName(String foodName, int page) async =>
+      _client.searchFoodsByName(foodName.split(' ').join('+'), page);
 }

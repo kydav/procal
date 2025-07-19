@@ -9,7 +9,7 @@ part 'food_search_controller.g.dart';
 
 @riverpod
 class FoodSearchController extends _$FoodSearchController {
-  int _page = 1;
+  int _page = 0;
   String _searchQuery = '';
   List<Food> _foodList = <Food>[];
   Timer _timer = Timer(Duration.zero, () {});
@@ -20,8 +20,11 @@ class FoodSearchController extends _$FoodSearchController {
     _page = 1;
     _searchQuery = query;
     final procalService = ref.read(procalServiceProvider.notifier);
-    final list = await procalService.searchFoodsByName(_searchQuery, _page);
-    _foodList = list;
+    final searchData = await procalService.searchFoodsByName(
+      _searchQuery,
+      _page,
+    );
+    _foodList = searchData.results.foods;
     state = AsyncData(_foodList);
   }
 
@@ -37,8 +40,11 @@ class FoodSearchController extends _$FoodSearchController {
     while (attempts > 0) {
       try {
         final procalService = ref.read(procalServiceProvider.notifier);
-        final list = await procalService.searchFoodsByName(_searchQuery, _page);
-        _foodList = [..._foodList, ...list];
+        final foodSearch = await procalService.searchFoodsByName(
+          _searchQuery,
+          _page,
+        );
+        _foodList = [..._foodList, ...foodSearch.results.foods];
         state = AsyncData(_foodList);
         return;
       } on Exception catch (e) {
@@ -54,8 +60,8 @@ class FoodSearchController extends _$FoodSearchController {
   Future<void> refresh(String query) async {
     _page = 1;
     final procalService = ref.read(procalServiceProvider.notifier);
-    final list = await procalService.searchFoodsByName(query, _page);
-    _foodList = list;
+    final foodSearch = await procalService.searchFoodsByName(query, _page);
+    _foodList = foodSearch.results.foods;
     state = AsyncData(_foodList);
   }
 }

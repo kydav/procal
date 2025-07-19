@@ -7,7 +7,7 @@ part of 'food_search_controller.dart';
 // **************************************************************************
 
 String _$foodSearchControllerHash() =>
-    r'6bdf9ccfc0ce1daddd4222a523aa4bea3f88d9f5';
+    r'1522c1db3a6c3e000964091bcfba2843a48e6da2';
 
 /// See also [FoodSearchController].
 @ProviderFor(FoodSearchController)

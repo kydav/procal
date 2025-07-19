@@ -60,8 +60,30 @@ class FoodSearchPage extends HookConsumerWidget {
                     itemBuilder: (context, index) {
                       final food = foodList[index];
                       return ListTile(
-                        title: Text(food.foodName),
-                        subtitle: Text(food.foodType),
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(food.foodName, maxLines: 2, softWrap: true),
+                          ],
+                        ),
+                        subtitle: Column(
+                          children: [
+                            Text(food.serving.serving.first.servingDescription),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(food.brandName ?? ''),
+                                Text(
+                                  'Protein: ${food.serving.serving.first.protein ?? ''}g',
+                                ),
+                                Text(
+                                  'Calories: ${food.serving.serving.first.calories ?? ''}',
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+
                         onTap: () {
                           ref
                               .read(procalRouterProvider)
