@@ -17,7 +17,7 @@ class FoodSearchController extends _$FoodSearchController {
   Future<List<Food>> build() async => _foodList;
 
   FutureOr<void> init(String query) async {
-    _page = 1;
+    _page = 0;
     _searchQuery = query;
     final procalService = ref.read(procalServiceProvider.notifier);
     final searchData = await procalService.searchFoodsByName(

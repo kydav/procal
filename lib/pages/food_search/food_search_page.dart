@@ -63,16 +63,24 @@ class FoodSearchPage extends HookConsumerWidget {
                         title: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(food.foodName, maxLines: 2, softWrap: true),
+                            Expanded(
+                              child: Text(
+                                food.foodName,
+                                maxLines: 2,
+                                softWrap: true,
+                                overflow: TextOverflow.fade,
+                              ),
+                            ),
                           ],
                         ),
                         subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(food.serving.serving.first.servingDescription),
+                            Text(food.brandName ?? ''),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(food.brandName ?? ''),
                                 Text(
                                   'Protein: ${food.serving.serving.first.protein ?? ''}g',
                                 ),

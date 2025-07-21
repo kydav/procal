@@ -49,8 +49,6 @@ final procalRouterProvider = Provider(
       ref.watch(firebaseAuthProvider).authStateChanges().listen((User? user) {
         if (user == null) {
           debugPrint('User is currently signed out!');
-        } else {
-          debugPrint('User is signed in!');
         }
       });
 

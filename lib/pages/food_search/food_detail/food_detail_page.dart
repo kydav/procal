@@ -25,8 +25,9 @@ class FoodDetailPage extends HookConsumerWidget {
             spacing: 8,
             children: [
               Text(food.food.foodName),
-              Text('Type: ${food.food.foodType}'),
-              Text('Brand: ${food.food.brandName ?? 'N/A'}'),
+
+              if (food.food.foodType == 'Brand')
+                Text(food.food.brandName ?? ''),
               const Text('Servings:'),
               ...food.food.serving.serving.map(
                 (serving) => Column(
