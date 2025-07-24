@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:procal/providers/auth_state_notifier.dart';
+import 'package:procal/services/api/clients/procal_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:procal/services/api/models/user/user.dart' as user_model;
 
 part 'auth_service.g.dart';
 
@@ -27,6 +29,21 @@ class AuthService extends _$AuthService {
         email: email,
         password: password,
       );
+      final test = await ref
+          .read(procalServiceProvider.notifier)
+          .getUserByEmail(email);
+      if (test == null) {
+        final user = await ref
+            .read(procalServiceProvider.notifier)
+            .createUser(
+              user_model.User(
+                email: email,
+                firstName: '',
+                lastName: '',
+                isActive: true,
+              ),
+            );
+      }
 
       return credential;
     } on Exception {

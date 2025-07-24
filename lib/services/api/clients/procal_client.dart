@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:procal/models/user.dart';
 import 'package:procal/services/api/models/food/food.dart';
 import 'package:procal/services/api/models/food/foods_search.dart';
+import 'package:procal/services/api/models/user/user.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'procal_client.g.dart';
@@ -20,4 +22,13 @@ abstract class ProcalClient {
     @Path('foodName') String foodName,
     @Path('page') int page,
   );
+
+  @POST('/user/create')
+  Future<User> createUser(@Body() User user);
+
+  @GET('/user/{id}')
+  Future<User> getUserById(@Path('id') String id);
+
+  @GET('/user/email/{email}')
+  Future<HttpResponse<User?>> getUserByEmail(@Path('email') String email);
 }
