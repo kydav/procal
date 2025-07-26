@@ -2,10 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart' as user_model;
 import 'package:flutter/material.dart';
 import 'package:procal/pages/login/models/login_errors.dart';
+import 'package:procal/procal_router.dart';
 import 'package:procal/providers/auth_state_notifier.dart';
+import 'package:procal/routes.dart';
 import 'package:procal/services/api/clients/procal_service.dart';
 import 'package:procal/services/api/models/user/procal_user.dart';
 import 'package:procal/services/device_services/auth_service.dart';
+import 'package:procal/top_level_providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'login_controller.g.dart';
@@ -23,6 +26,17 @@ class LoginController extends _$LoginController {
       final result = await ref
           .read(authServiceProvider.notifier)
           .createUser(username, password);
+
+      await ref
+          .read(procalServiceProvider)
+          .createUser(
+            ProcalUser(
+              email: username,
+              firstName: 'Kyler',
+              lastName: 'Tester',
+              isActive: true,
+            ),
+          );
       ref.read(authStateNotifierProvider.notifier).setLoggedIn(result.user!);
       state = const AsyncValue.data(null);
     } on FirebaseAuthException catch (e, stk) {
@@ -43,22 +57,20 @@ class LoginController extends _$LoginController {
           .read(authServiceProvider.notifier)
           .loginUser(username, password);
 
-      final user = await ref
-          .read(procalServiceProvider)
-          .getUserByEmail(username);
-
-      if (user.data == null) {
-        await ref
-            .read(procalServiceProvider)
-            .createUser(
-              ProcalUser(
-                email: username,
-                firstName: '',
-                lastName: '',
-                isActive: true,
-              ),
-            );
-      }
+      // final user = await ref
+      //     .read(procalServiceProvider)
+      //     .getUserByEmail(username);
+      // await ref
+      //     .read(procalServiceProvider)
+      //     .createUser(
+      //       ProcalUser(
+      //         email: username,
+      //         firstName: 'Kyler',
+      //         lastName: 'Tester',
+      //         isActive: true,
+      //       ),
+      //     );
+      ref.read(procalRouterProvider).go(Routes.intro.path);
       ref.read(authStateNotifierProvider.notifier).setLoggedIn(result.user!);
       state = const AsyncValue.data(null);
     } on FirebaseAuthException catch (e, stk) {

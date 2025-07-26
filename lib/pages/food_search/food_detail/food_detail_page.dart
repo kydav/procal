@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:procal/pages/food_search/food_detail/food_detail_controller.dart';
-import 'package:procal/top_level_providers.dart';
+import 'package:procal/procal_router.dart';
 
 class FoodDetailPage extends HookConsumerWidget {
   const FoodDetailPage({required this.foodId, super.key});

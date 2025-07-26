@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:health/health.dart';
+import 'package:procal/procal_router.dart';
 import 'package:procal/theme.dart';
 import 'package:procal/top_level_providers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -52,12 +53,11 @@ class ProCalApp extends ConsumerWidget {
         ),
         textTheme: Typography.whiteCupertino,
       ),
-      builder:
-          (ctx, child) => initializeApp.when(
-            loading: () => const CircularProgressIndicator(),
-            data: (_) => child!,
-            error: (err, _) => Text(err.toString()),
-          ),
+      builder: (ctx, child) => initializeApp.when(
+        loading: () => const CircularProgressIndicator(),
+        data: (_) => child!,
+        error: (err, _) => Text(err.toString()),
+      ),
     );
   }
 }

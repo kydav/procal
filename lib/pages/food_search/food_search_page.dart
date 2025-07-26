@@ -3,7 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:procal/pages/food_search/food_search_controller.dart';
-import 'package:procal/top_level_providers.dart';
+import 'package:procal/procal_router.dart';
 
 class FoodSearchPage extends HookConsumerWidget {
   const FoodSearchPage({super.key});

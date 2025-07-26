@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:procal/common/form_field_title.dart';
 import 'package:procal/constants/strings.dart';
+import 'package:procal/procal_router.dart';
 import 'package:procal/top_level_providers.dart';
 
 class AddProteinDialog extends HookConsumerWidget {
@@ -33,20 +34,25 @@ class AddProteinDialog extends HookConsumerWidget {
       return null;
     }, []);
     return Dialog(
-      insetPadding:
-          const EdgeInsets.only(left: 20, top: 100, right: 20, bottom: 100),
+      insetPadding: const EdgeInsets.only(
+        left: 20,
+        top: 100,
+        right: 20,
+        bottom: 100,
+      ),
       child: Container(
         padding: const EdgeInsets.only(left: 30, right: 30, bottom: 30),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Align(
+              alignment: Alignment.topRight,
+              child: IconButton(
                 alignment: Alignment.topRight,
-                child: IconButton(
-                  alignment: Alignment.topRight,
-                  icon: const Icon(Icons.close),
-                  onPressed: () => ref.read(procalRouterProvider).pop(),
-                )),
+                icon: const Icon(Icons.close),
+                onPressed: () => ref.read(procalRouterProvider).pop(),
+              ),
+            ),
             FormFieldTitle(
               title: DialogStrings.mealProtein,
               child: TextField(
@@ -57,7 +63,7 @@ class AddProteinDialog extends HookConsumerWidget {
                 onEditingComplete: () => caloriesFocusNode.requestFocus,
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
-                  LengthLimitingTextInputFormatter(4)
+                  LengthLimitingTextInputFormatter(4),
                 ],
               ),
             ),
@@ -71,7 +77,7 @@ class AddProteinDialog extends HookConsumerWidget {
                 onEditingComplete: () {},
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
-                  LengthLimitingTextInputFormatter(4)
+                  LengthLimitingTextInputFormatter(4),
                 ],
               ),
             ),
@@ -94,7 +100,7 @@ class AddProteinDialog extends HookConsumerWidget {
                     }
                   : null,
               child: Text(GeneralStrings.submit),
-            )
+            ),
           ],
         ),
       ),
