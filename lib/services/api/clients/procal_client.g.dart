@@ -99,13 +99,13 @@ class _ProcalClient implements ProcalClient {
   }
 
   @override
-  Future<User> createUser(User user) async {
+  Future<ProcalUser> createUser(ProcalUser user) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(user.toJson());
-    final _options = _setStreamType<User>(
+    final _options = _setStreamType<ProcalUser>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -116,9 +116,9 @@ class _ProcalClient implements ProcalClient {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late User _value;
+    late ProcalUser _value;
     try {
-      _value = User.fromJson(_result.data!);
+      _value = ProcalUser.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -127,12 +127,12 @@ class _ProcalClient implements ProcalClient {
   }
 
   @override
-  Future<User> getUserById(String id) async {
+  Future<ProcalUser> getUserById(String id) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<User>(
+    final _options = _setStreamType<ProcalUser>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -143,9 +143,9 @@ class _ProcalClient implements ProcalClient {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late User _value;
+    late ProcalUser _value;
     try {
-      _value = User.fromJson(_result.data!);
+      _value = ProcalUser.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -154,12 +154,12 @@ class _ProcalClient implements ProcalClient {
   }
 
   @override
-  Future<HttpResponse<User?>> getUserByEmail(String email) async {
+  Future<HttpResponse<ProcalUser?>> getUserByEmail(String email) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<HttpResponse<User?>>(
+    final _options = _setStreamType<HttpResponse<ProcalUser?>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -170,9 +170,9 @@ class _ProcalClient implements ProcalClient {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>?>(_options);
-    late User? _value;
+    late ProcalUser? _value;
     try {
-      _value = _result.data == null ? null : User.fromJson(_result.data!);
+      _value = _result.data == null ? null : ProcalUser.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

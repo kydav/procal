@@ -1,7 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' as user_model;
 import 'package:flutter/material.dart';
 import 'package:procal/pages/login/models/login_errors.dart';
 import 'package:procal/providers/auth_state_notifier.dart';
+import 'package:procal/services/api/clients/procal_service.dart';
+import 'package:procal/services/api/models/user/procal_user.dart';
 import 'package:procal/services/device_services/auth_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -39,6 +42,23 @@ class LoginController extends _$LoginController {
       final result = await ref
           .read(authServiceProvider.notifier)
           .loginUser(username, password);
+
+      final user = await ref
+          .read(procalServiceProvider)
+          .getUserByEmail(username);
+
+      if (user.data == null) {
+        await ref
+            .read(procalServiceProvider)
+            .createUser(
+              ProcalUser(
+                email: username,
+                firstName: '',
+                lastName: '',
+                isActive: true,
+              ),
+            );
+      }
       ref.read(authStateNotifierProvider.notifier).setLoggedIn(result.user!);
       state = const AsyncValue.data(null);
     } on FirebaseAuthException catch (e, stk) {

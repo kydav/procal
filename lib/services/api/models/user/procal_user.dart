@@ -1,10 +1,10 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'user.g.dart';
+part 'procal_user.g.dart';
 
 @JsonSerializable(explicitToJson: true, fieldRename: FieldRename.snake)
-class User {
-  User({
+class ProcalUser {
+  ProcalUser({
     required this.email,
     required this.firstName,
     required this.lastName,
@@ -12,11 +12,12 @@ class User {
     this.id,
   });
 
-  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+  factory ProcalUser.fromJson(Map<String, dynamic> json) =>
+      _$ProcalUserFromJson(json);
   final String email;
   final String firstName;
   final String lastName;
   final bool isActive;
   final String? id;
-  Map<String, dynamic> toJson() => _$UserToJson(this);
+  Map<String, dynamic> toJson() => _$ProcalUserToJson(this);
 }
