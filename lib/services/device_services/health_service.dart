@@ -1,13 +1,17 @@
 import 'package:collection/collection.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:health/health.dart';
 import 'package:procal/top_level_providers.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-class HealthService {
-  HealthService({required this.healthManager, required this.ref});
+part 'health_service.g.dart';
 
-  final Health healthManager;
-  final Ref ref;
+@riverpod
+class HealthService extends _$HealthService {
+  late Health healthManager;
+  @override
+  FutureOr<void> build() async {
+    healthManager = Health();
+  }
 
   final proteinType = HealthDataType.DIETARY_PROTEIN_CONSUMED;
   final calorieType = HealthDataType.DIETARY_ENERGY_CONSUMED;
@@ -43,18 +47,17 @@ class HealthService {
     if (healthDataList.isEmpty) {
       return 0;
     } else {
-      final total =
-          healthDataList
-              .map((healthData) {
-                if (healthData.value.$type == 'NumericHealthValue') {
-                  final healthValue = healthData.value as NumericHealthValue;
-                  return healthValue.numericValue.toInt();
-                } else {
-                  return 0;
-                }
-              })
-              .toList()
-              .sum;
+      final total = healthDataList
+          .map((healthData) {
+            if (healthData.value.$type == 'NumericHealthValue') {
+              final healthValue = healthData.value as NumericHealthValue;
+              return healthValue.numericValue.toInt();
+            } else {
+              return 0;
+            }
+          })
+          .toList()
+          .sum;
 
       return total;
     }
@@ -71,18 +74,17 @@ class HealthService {
     if (healthDataList.isEmpty) {
       return 0;
     } else {
-      final total =
-          healthDataList
-              .map((healthData) {
-                if (healthData.value.$type == 'NumericHealthValue') {
-                  final healthValue = healthData.value as NumericHealthValue;
-                  return healthValue.numericValue.toInt();
-                } else {
-                  return 0;
-                }
-              })
-              .toList()
-              .sum;
+      final total = healthDataList
+          .map((healthData) {
+            if (healthData.value.$type == 'NumericHealthValue') {
+              final healthValue = healthData.value as NumericHealthValue;
+              return healthValue.numericValue.toInt();
+            } else {
+              return 0;
+            }
+          })
+          .toList()
+          .sum;
       return total;
     }
   }

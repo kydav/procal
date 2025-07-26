@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:procal/common/form_field_title.dart';
 import 'package:procal/constants/strings.dart';
 import 'package:procal/procal_router.dart';
-import 'package:procal/top_level_providers.dart';
+import 'package:procal/services/device_services/health_service.dart';
 
 class AddProteinDialog extends HookConsumerWidget {
   const AddProteinDialog({super.key});
@@ -15,7 +15,7 @@ class AddProteinDialog extends HookConsumerWidget {
     final proteinUpdate = useValueListenable(proteinController);
     final caloriesController = useTextEditingController();
     final caloriesUpdate = useValueListenable(caloriesController);
-    final healthService = ref.read(healthServiceProvider);
+    final healthService = ref.read(healthServiceProvider.notifier);
     final proteinFocusNode = useFocusNode();
     final caloriesFocusNode = useFocusNode();
     final isValid = useState(false);

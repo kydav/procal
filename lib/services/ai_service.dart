@@ -3,10 +3,17 @@ import 'dart:convert';
 import 'package:firebase_ai/firebase_ai.dart';
 import 'package:procal/models/generated_goals.dart';
 import 'package:procal/models/generated_meal_response.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-class AiService {
-  AiService({required this.model});
-  final GenerativeModel model;
+part 'ai_service.g.dart';
+
+@riverpod
+class AiService extends _$AiService {
+  @override
+  void build() {}
+  final GenerativeModel model = FirebaseAI.googleAI().generativeModel(
+    model: 'gemini-2.5-flash',
+  );
 
   Future<GenerateContentResponse> _getResponse(
     Iterable<Content> prompt,
