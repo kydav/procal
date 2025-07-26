@@ -7,24 +7,24 @@ part 'health_service.g.dart';
 
 @riverpod
 class HealthService extends _$HealthService {
-  late Health healthManager;
+  late Health _healthManager;
   @override
   FutureOr<void> build() async {
-    healthManager = Health();
+    _healthManager = Health();
   }
 
-  final proteinType = HealthDataType.DIETARY_PROTEIN_CONSUMED;
-  final calorieType = HealthDataType.DIETARY_ENERGY_CONSUMED;
-  final healthTypes = [
+  final _proteinType = HealthDataType.DIETARY_PROTEIN_CONSUMED;
+  final _calorieType = HealthDataType.DIETARY_ENERGY_CONSUMED;
+  final _healthTypes = [
     HealthDataType.DIETARY_PROTEIN_CONSUMED,
     HealthDataType.DIETARY_ENERGY_CONSUMED,
   ];
 
   Future<bool> requestDataAccess() async {
-    final hasAccess = await healthManager.hasPermissions(healthTypes);
+    final hasAccess = await _healthManager.hasPermissions(_healthTypes);
     if (hasAccess == null || !hasAccess) {
-      final access = await healthManager.requestAuthorization(
-        healthTypes,
+      final access = await _healthManager.requestAuthorization(
+        _healthTypes,
         permissions: [HealthDataAccess.READ_WRITE, HealthDataAccess.READ_WRITE],
       );
       if (access) {
@@ -39,8 +39,8 @@ class HealthService extends _$HealthService {
 
   Future<int> getProtein() async {
     final now = DateTime.now();
-    final healthDataList = await healthManager.getHealthDataFromTypes(
-      types: [proteinType],
+    final healthDataList = await _healthManager.getHealthDataFromTypes(
+      types: [_proteinType],
       startTime: now.subtract(Duration(hours: now.hour, minutes: now.minute)),
       endTime: now,
     );
@@ -66,8 +66,8 @@ class HealthService extends _$HealthService {
   Future<int> getCalories() async {
     final now = DateTime.now();
 
-    final healthDataList = await healthManager.getHealthDataFromTypes(
-      types: [calorieType],
+    final healthDataList = await _healthManager.getHealthDataFromTypes(
+      types: [_calorieType],
       startTime: now.subtract(Duration(hours: now.hour, minutes: now.minute)),
       endTime: now,
     );
@@ -90,7 +90,7 @@ class HealthService extends _$HealthService {
   }
 
   Future<bool> submitProtein(int protein) async {
-    final saved = await healthManager.writeHealthData(
+    final saved = await _healthManager.writeHealthData(
       value: protein.toDouble(),
       type: HealthDataType.DIETARY_PROTEIN_CONSUMED,
       startTime: DateTime.now(),
@@ -104,7 +104,7 @@ class HealthService extends _$HealthService {
   }
 
   Future<bool> submitCalories(int calories) async {
-    final saved = await healthManager.writeHealthData(
+    final saved = await _healthManager.writeHealthData(
       value: calories.toDouble(),
       type: HealthDataType.DIETARY_ENERGY_CONSUMED,
       startTime: DateTime.now(),
