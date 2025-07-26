@@ -19,7 +19,7 @@ class FoodSearchController extends _$FoodSearchController {
   FutureOr<void> init(String query) async {
     _page = 0;
     _searchQuery = query;
-    final procalService = ref.read(procalServiceProvider.notifier);
+    final procalService = ref.read(procalServiceProvider);
     final searchData = await procalService.searchFoodsByName(
       _searchQuery,
       _page,
@@ -39,7 +39,7 @@ class FoodSearchController extends _$FoodSearchController {
     var attempts = 3;
     while (attempts > 0) {
       try {
-        final procalService = ref.read(procalServiceProvider.notifier);
+        final procalService = ref.read(procalServiceProvider);
         final foodSearch = await procalService.searchFoodsByName(
           _searchQuery,
           _page,
@@ -59,7 +59,7 @@ class FoodSearchController extends _$FoodSearchController {
 
   Future<void> refresh(String query) async {
     _page = 1;
-    final procalService = ref.read(procalServiceProvider.notifier);
+    final procalService = ref.read(procalServiceProvider);
     final foodSearch = await procalService.searchFoodsByName(query, _page);
     _foodList = foodSearch.results.foods;
     state = AsyncData(_foodList);

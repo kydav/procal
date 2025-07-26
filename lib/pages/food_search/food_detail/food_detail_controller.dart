@@ -8,7 +8,7 @@ part 'food_detail_controller.g.dart';
 class FoodDetailController extends _$FoodDetailController {
   @override
   Future<FatSecretFood> build(String foodId) async {
-    final procalService = ref.read(procalServiceProvider.notifier);
+    final procalService = ref.read(procalServiceProvider);
     return procalService.getFoodById(foodId);
   }
 }
