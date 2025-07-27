@@ -6,7 +6,7 @@ part of 'procal_router.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$procalRouterHash() => r'edde24fb3cf39c24e6b3709587e9cae717acb542';
+String _$procalRouterHash() => r'801ae01b46d1ecba36aa7da5d76eb1efa730a9ba';
 
 /// See also [ProcalRouter].
 @ProviderFor(ProcalRouter)

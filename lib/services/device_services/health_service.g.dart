@@ -6,7 +6,7 @@ part of 'health_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$healthServiceHash() => r'84656feaebb2c489dbd7ee3257537c654c38e6f4';
+String _$healthServiceHash() => r'4bc7249247d5a4486c9021de2ebd5de75b99522a';
 
 /// See also [HealthService].
 @ProviderFor(HealthService)

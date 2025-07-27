@@ -21,10 +21,7 @@ class FoodSearchPage extends HookConsumerWidget {
     controller.addListener(() {
       final maxScroll = controller.position.maxScrollExtent;
       final currentScroll = controller.position.pixels;
-      //const delta = 360 * 0.20;
       if (maxScroll == currentScroll) {
-        //print('Max Scroll: $maxScroll, Current Scroll: $currentScroll');
-
         foodSearchController.getNextPage();
       }
     });

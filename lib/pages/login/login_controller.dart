@@ -35,6 +35,7 @@ class LoginController extends _$LoginController {
               isActive: true,
             ),
           );
+      ref.read(procalRouterProvider).go(Routes.welcome.path);
       ref.read(authStateNotifierProvider.notifier).setLoggedIn(result.user!);
       state = const AsyncValue.data(null);
     } on FirebaseAuthException catch (e, stk) {
@@ -68,8 +69,10 @@ class LoginController extends _$LoginController {
       //         isActive: true,
       //       ),
       //     );
+      ref.read(procalRouterProvider).go(Routes.welcome.path);
+
       //ref.read(procalRouterProvider).go(Routes.intro.path);
-      ref.read(procalRouterProvider).go(Routes.home.path);
+      //ref.read(procalRouterProvider).go(Routes.home.path);
       ref.read(authStateNotifierProvider.notifier).setLoggedIn(result.user!);
       state = const AsyncValue.data(null);
     } on FirebaseAuthException catch (e, stk) {

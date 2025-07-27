@@ -34,6 +34,7 @@ class LoginContainer extends HookConsumerWidget {
         key: formKey,
         child: AutofillGroup(
           child: Column(
+            spacing: 20,
             children: [
               LoginTextInput(
                 controller: usernameController,
@@ -67,29 +68,28 @@ class LoginContainer extends HookConsumerWidget {
                 hintText: 'Password',
                 isPassword: true,
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20.0),
-                child: ElevatedButton(
-                  child: loginState.isLoading
-                      ? const CircularProgressIndicator()
-                      : Text(isSignUp.value ? 'Sign Up' : 'Login'),
-                  onPressed: () async {
-                    if (formKey.currentState!.validate() &&
-                        loginFormModel.isValid()) {
-                      isSignUp.value
-                          ? await loginModel.createUser(
-                              usernameController.text,
-                              passwordController.text,
-                            )
-                          : await loginModel.login(
-                              usernameController.text,
-                              passwordController.text,
-                            );
-                    }
-                  },
-                ),
+              FilledButton(
+                child: loginState.isLoading
+                    ? CircularProgressIndicator(
+                        color: Theme.of(context).colorScheme.onSurface,
+                      )
+                    : Text(isSignUp.value ? 'Sign Up' : 'Login'),
+                onPressed: () async {
+                  if (formKey.currentState!.validate() &&
+                      loginFormModel.isValid()) {
+                    isSignUp.value
+                        ? await loginModel.createUser(
+                            usernameController.text,
+                            passwordController.text,
+                          )
+                        : await loginModel.login(
+                            usernameController.text,
+                            passwordController.text,
+                          );
+                  }
+                },
               ),
-              TextButton(
+              OutlinedButton(
                 onPressed: () => isSignUp.value = !isSignUp.value,
                 child: Text(
                   isSignUp.value

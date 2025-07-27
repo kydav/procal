@@ -13,6 +13,7 @@ class ProcalRouter extends _$ProcalRouter {
       Routes.home,
       Routes.intro,
       Routes.login,
+      Routes.welcome,
       Routes.search,
       Routes.foodDetail,
     ],

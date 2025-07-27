@@ -33,8 +33,9 @@ class LoginTextInput extends HookWidget {
       obscureText: isPassword && isObscured.value,
       enableSuggestions: !isPassword,
       autocorrect: false,
-      keyboardType:
-          isPassword ? TextInputType.visiblePassword : TextInputType.text,
+      keyboardType: isPassword
+          ? TextInputType.visiblePassword
+          : TextInputType.text,
       textInputAction: textInputAction,
       onFieldSubmitted: onFieldSubmitted,
       onChanged: onChanged,
@@ -43,18 +44,18 @@ class LoginTextInput extends HookWidget {
         hintText: hintText,
         errorText: error,
         errorStyle: const TextStyle(fontSize: 10, color: Colors.red),
-        suffixIcon:
-            isPassword
-                ? isObscured.value
-                    ? IconButton(
+        border: const OutlineInputBorder(),
+        suffixIcon: isPassword
+            ? isObscured.value
+                  ? IconButton(
                       icon: const Icon(Icons.visibility_off),
                       onPressed: () => isObscured.value = false,
                     )
-                    : IconButton(
+                  : IconButton(
                       icon: const Icon(Icons.visibility),
                       onPressed: () => isObscured.value = true,
                     )
-                : null,
+            : null,
       ),
     );
   }
