@@ -7,7 +7,9 @@ import 'package:procal/pages/login/forgot_password_container.dart';
 import 'package:procal/pages/login/login_container.dart';
 
 class LoginPage extends HookConsumerWidget {
-  const LoginPage({super.key});
+  const LoginPage({this.isSignUp = false, super.key});
+
+  final bool isSignUp;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -28,7 +30,7 @@ class LoginPage extends HookConsumerWidget {
           ),
 
           items: [
-            LoginContainer(carouselController: controller),
+            LoginContainer(carouselController: controller, signUp: isSignUp),
             ForgotPasswordContainer(carouselController: controller),
             //ForgotPasswordCodeContainer(carouselController: controller),
           ],

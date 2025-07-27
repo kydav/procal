@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:health/health.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:procal/constants/system_strings.dart';
 import 'package:procal/procal_router.dart';
+import 'package:procal/routes.dart';
 import 'package:procal/theme.dart';
 import 'package:procal/top_level_providers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,6 +16,10 @@ final initializeAppProvider = FutureProvider<void>((ref) async {
   await Firebase.initializeApp();
   final prefs = await SharedPreferences.getInstance();
   ref.read(localStorageServiceProvider).sharedPreferences = prefs;
+  final shownIntro = prefs.getBool(SystemStrings.shownLoginIntro);
+  if (shownIntro == null || !shownIntro) {
+    ref.read(procalRouterProvider).go(Routes.intro.path);
+  }
   await Health().configure();
   //await dotenv.load(fileName: 'dev.env');
   await dotenv.load(fileName: 'local.env');

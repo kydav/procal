@@ -1,5 +1,12 @@
 class IntroStrings {
-  static String welcome = 'Welcome to ProCal Tracker!';
+  static String welcome = 'Say hello to ';
+  static String proteinAndCalorieTracker = 'Protein and Calorie Tracker';
+  static String aNewKindOfTracker =
+      'Simplify your tracking with Procal, a new kind of tracker app for only calories and protein.';
+  static String aiIntegration =
+      'Procal also uses AI to provide coaching and recommendations.';
+  static String helpingYou =
+      'Helping you to achieve your health and fitness goals!';
   static String healthAccess =
       'For the best ProCal Experience, please enable Health Access.';
   static String writeRead =
@@ -39,4 +46,6 @@ class GeneralStrings {
   static String enableAccess = 'Enable Access';
   static String protein = 'Protein';
   static String calories = 'Calories';
+  static String login = 'Login';
+  static String signUp = 'Sign Up';
 }

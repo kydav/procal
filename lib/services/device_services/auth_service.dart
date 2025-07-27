@@ -36,6 +36,7 @@ class AuthService extends _$AuthService {
 
   Future<void> logoutUser() async {
     await FirebaseAuth.instance.signOut();
+    //ref.read(procalRouterProvider).go(Routes.login.path);
     ref.read(authStateNotifierProvider.notifier).clearCurrentUser();
   }
 

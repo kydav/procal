@@ -15,8 +15,11 @@ class Routes {
     builder: (context, state) => const IntroPage(),
   );
   static final login = GoRoute(
-    path: '/login',
-    builder: (context, state) => const LoginPage(),
+    path: '/login/:isSignUp',
+    builder: (context, state) {
+      final isSignUp = state.pathParameters['isSignUp'] == 'true';
+      return LoginPage(isSignUp: isSignUp);
+    },
   );
 
   static final search = GoRoute(

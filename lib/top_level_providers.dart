@@ -12,11 +12,8 @@ final localStorageServiceProvider = Provider<LocalStorageService>(
   (_) => LocalStorageService(),
 );
 
-final firebaseAuthProvider = Provider<FirebaseAuth>(
-  (_) => FirebaseAuth.instance,
-);
-
 final currentUserProvider = StreamProvider<User?>((ref) {
-  final auth = ref.watch(firebaseAuthProvider);
+  final auth = FirebaseAuth.instance;
+
   return auth.authStateChanges();
 });

@@ -11,7 +11,7 @@ part 'ai_service.g.dart';
 class AiService extends _$AiService {
   @override
   void build() {}
-  final GenerativeModel model = FirebaseAI.googleAI().generativeModel(
+  final GenerativeModel _model = FirebaseAI.googleAI().generativeModel(
     model: 'gemini-2.5-flash',
   );
 
@@ -19,7 +19,7 @@ class AiService extends _$AiService {
     Iterable<Content> prompt,
     Schema? jsonSchema,
   ) async {
-    final response = await model.generateContent(
+    final response = await _model.generateContent(
       prompt,
       generationConfig: GenerationConfig(
         responseMimeType: 'application/json',

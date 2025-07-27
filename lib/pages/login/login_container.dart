@@ -7,8 +7,13 @@ import 'package:procal/pages/login/common/login_text_input.dart';
 import 'package:procal/pages/login/login_controller.dart';
 
 class LoginContainer extends HookConsumerWidget {
-  const LoginContainer({required this.carouselController, super.key});
+  const LoginContainer({
+    required this.carouselController,
+    this.signUp = false,
+    super.key,
+  });
   final CarouselSliderController carouselController;
+  final bool signUp;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -16,7 +21,7 @@ class LoginContainer extends HookConsumerWidget {
     final passwordController = useTextEditingController();
     final usernameFocusNode = useFocusNode();
     final passwordFocusNode = useFocusNode();
-    final isSignUp = useState(false);
+    final isSignUp = useState(signUp);
     final loginModel = ref.read(loginControllerProvider.notifier);
     final loginState = ref.watch(loginControllerProvider);
 
@@ -50,39 +55,36 @@ class LoginContainer extends HookConsumerWidget {
                 validator: loginFormModel.validatePassword,
                 error: loginFormState.password.error,
                 onChanged: (_) => loginFormModel.clearPasswordValidation(),
-                onFieldSubmitted:
-                    (_) =>
-                        isSignUp.value
-                            ? loginModel.createUser(
-                              usernameController.text,
-                              passwordController.text,
-                            )
-                            : loginModel.login(
-                              usernameController.text,
-                              passwordController.text,
-                            ),
+                onFieldSubmitted: (_) => isSignUp.value
+                    ? loginModel.createUser(
+                        usernameController.text,
+                        passwordController.text,
+                      )
+                    : loginModel.login(
+                        usernameController.text,
+                        passwordController.text,
+                      ),
                 hintText: 'Password',
                 isPassword: true,
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20.0),
                 child: ElevatedButton(
-                  child:
-                      loginState.isLoading
-                          ? const CircularProgressIndicator()
-                          : Text(isSignUp.value ? 'Sign Up' : 'Login'),
+                  child: loginState.isLoading
+                      ? const CircularProgressIndicator()
+                      : Text(isSignUp.value ? 'Sign Up' : 'Login'),
                   onPressed: () async {
                     if (formKey.currentState!.validate() &&
                         loginFormModel.isValid()) {
                       isSignUp.value
                           ? await loginModel.createUser(
-                            usernameController.text,
-                            passwordController.text,
-                          )
+                              usernameController.text,
+                              passwordController.text,
+                            )
                           : await loginModel.login(
-                            usernameController.text,
-                            passwordController.text,
-                          );
+                              usernameController.text,
+                              passwordController.text,
+                            );
                     }
                   },
                 ),
