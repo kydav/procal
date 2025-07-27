@@ -14,27 +14,26 @@ class LoginPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = useCarouselSliderController();
-    return Material(
-      child: Scaffold(
-        appBar: AppBar(
-          title: Image.asset(AssetIcons.horizontalTransparentLogo, height: 45),
-          centerTitle: true,
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        title: Image.asset(AssetIcons.horizontalTransparentLogo, height: 45),
+        centerTitle: true,
+      ),
+      body: CarouselSlider(
+        carouselController: controller,
+        options: CarouselOptions(
+          height: MediaQuery.of(context).size.height * 0.7,
+          scrollPhysics: const NeverScrollableScrollPhysics(),
+          viewportFraction: 1,
+          enableInfiniteScroll: false,
         ),
-        body: CarouselSlider(
-          carouselController: controller,
-          options: CarouselOptions(
-            height: MediaQuery.of(context).size.height * 0.7,
-            scrollPhysics: const NeverScrollableScrollPhysics(),
-            viewportFraction: 1,
-            enableInfiniteScroll: false,
-          ),
 
-          items: [
-            LoginContainer(carouselController: controller, signUp: isSignUp),
-            ForgotPasswordContainer(carouselController: controller),
-            //ForgotPasswordCodeContainer(carouselController: controller),
-          ],
-        ),
+        items: [
+          LoginContainer(carouselController: controller, signUp: isSignUp),
+          ForgotPasswordContainer(carouselController: controller),
+          //ForgotPasswordCodeContainer(carouselController: controller),
+        ],
       ),
     );
   }

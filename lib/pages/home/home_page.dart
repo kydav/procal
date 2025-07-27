@@ -111,17 +111,11 @@ class HomePage extends HookConsumerWidget {
     //final date = DateTime.now();
 
     return Scaffold(
-      resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        elevation: 4,
-        titleSpacing: -30,
-        title: Padding(
-          padding: EdgeInsets.zero,
-          child: Image.asset(AssetIcons.horizontalTransparentLogo, height: 45),
-        ),
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        title: Image.asset(AssetIcons.horizontalTransparentLogo, height: 45),
         actions: [
           IconButton(
-            color: Theme.of(context).colorScheme.surfaceBright,
             icon: const Icon(Icons.menu, size: 30),
             onPressed: () {
               ref.read(authServiceProvider.notifier).logoutUser();

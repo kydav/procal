@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:procal/procal_router.dart';
 import 'package:procal/providers/auth_state_notifier.dart';
+import 'package:procal/routes.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'auth_service.g.dart';
@@ -36,7 +38,7 @@ class AuthService extends _$AuthService {
 
   Future<void> logoutUser() async {
     await FirebaseAuth.instance.signOut();
-    //ref.read(procalRouterProvider).go(Routes.login.path);
+    ref.read(procalRouterProvider).go(Routes.login.path);
     ref.read(authStateNotifierProvider.notifier).clearCurrentUser();
   }
 
