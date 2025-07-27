@@ -9,16 +9,18 @@ import 'package:procal/constants/system_strings.dart';
 import 'package:procal/procal_router.dart';
 import 'package:procal/providers/auth_state_notifier.dart';
 import 'package:procal/routes.dart';
+import 'package:procal/services/device_services/local_storage_service.dart';
 import 'package:procal/theme.dart';
-import 'package:procal/top_level_providers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final initializeAppProvider = FutureProvider<void>((ref) async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   final prefs = await SharedPreferences.getInstance();
-  ref.read(localStorageServiceProvider).sharedPreferences = prefs;
-  final shownIntro = prefs.getBool(SystemStrings.shownLoginIntro);
+  ref.read(localStorageServiceProvider.notifier).initialize(prefs);
+  final shownIntro = ref
+      .read(localStorageServiceProvider.notifier)
+      .getBool(SystemStrings.shownLoginIntro);
   if (shownIntro == null || !shownIntro) {
     ref.read(procalRouterProvider).go(Routes.intro.path);
   }

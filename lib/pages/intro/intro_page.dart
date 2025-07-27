@@ -9,7 +9,7 @@ import 'package:procal/constants/text_styles.dart';
 import 'package:procal/hooks/carousel_hook.dart';
 import 'package:procal/procal_router.dart';
 import 'package:procal/routes.dart';
-import 'package:procal/top_level_providers.dart';
+import 'package:procal/services/device_services/local_storage_service.dart';
 
 class IntroPage extends HookConsumerWidget {
   const IntroPage({super.key});
@@ -115,7 +115,7 @@ class IntroPage extends HookConsumerWidget {
           FilledButton(
             onPressed: () {
               ref
-                  .read(localStorageServiceProvider)
+                  .read(localStorageServiceProvider.notifier)
                   .setBool(key: SystemStrings.shownLoginIntro, value: true);
               ref.read(procalRouterProvider).go(Routes.login.path);
             },
@@ -124,7 +124,7 @@ class IntroPage extends HookConsumerWidget {
           OutlinedButton(
             onPressed: () {
               ref
-                  .read(localStorageServiceProvider)
+                  .read(localStorageServiceProvider.notifier)
                   .setBool(key: SystemStrings.shownLoginIntro, value: true);
               ref.read(procalRouterProvider).pushReplacement('/login/true');
             },

@@ -51,7 +51,7 @@ class HomeModel extends StateNotifier<HomeState> {
 
 final homeModelProvider = StateNotifierProvider<HomeModel, HomeState>((ref) {
   final healthService = ref.read(healthServiceProvider.notifier);
-  final localStorage = ref.read(localStorageServiceProvider);
+  final localStorage = ref.read(localStorageServiceProvider.notifier);
   final proteinConsumed = ref.read(proteinConsumedProvider.notifier);
   final proteinGoal = ref.read(proteinGoalProvider.notifier);
   final caloriesConsumed = ref.read(caloriesConsumedProvider.notifier);
