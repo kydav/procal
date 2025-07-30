@@ -20,6 +20,11 @@ class HealthService extends _$HealthService {
     HealthDataType.DIETARY_ENERGY_CONSUMED,
   ];
 
+  Future<bool> hasDataAccess() async {
+    final hasAccess = await _healthManager.hasPermissions(_healthTypes);
+    return hasAccess ?? false;
+  }
+
   Future<bool> requestDataAccess() async {
     final hasAccess = await _healthManager.hasPermissions(_healthTypes);
     if (hasAccess == null || !hasAccess) {

@@ -27,6 +27,22 @@ class IntroStrings {
   static String recommendCalorieGoal = 'Your recommended Calorie Goal is:';
 }
 
+class WelcomeStrings {
+  static String welcome = 'Welcome,';
+  static String letsGetToKnowYou = "First, let's get to know you!";
+  static String firstName = 'First Name';
+  static String lastName = 'Last Name (Optional)';
+
+  static String primaryGoal = 'What is your primary goal?';
+  static String loseWeight = 'Lose Weight';
+  static String buildMuscle = 'Build Muscle';
+  static String maintainWeight = 'Maintain Weight';
+
+  static String forTheBestExperience =
+      'For the best experience, it is recommended that you enable health permissions';
+  static String enableHealthPermissions = 'Enable Health Permissions';
+}
+
 class DialogStrings {
   static String proteinGoal = 'Enter your protein goal';
   static String mealProtein = 'Enter protein';

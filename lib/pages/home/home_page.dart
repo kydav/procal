@@ -11,8 +11,8 @@ import 'package:procal/pages/home/home_model.dart';
 import 'package:procal/pages/home/home_state.dart';
 import 'package:procal/procal_router.dart';
 import 'package:procal/services/device_services/auth_service.dart';
-import 'package:procal/services/device_services/local_storage_service.dart';
 import 'package:procal/top_level_providers.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends HookConsumerWidget {
   const HomePage({super.key});
@@ -23,7 +23,6 @@ class HomePage extends HookConsumerWidget {
     bool showCalories,
     TextEditingController proteinController,
     TextEditingController caloriesController,
-    LocalStorageService storageService,
     StateController<int?> proteinGoal,
     StateController<int?> caloriesGoal,
   ) async => WidgetsBinding.instance.addPostFrameCallback(
@@ -59,14 +58,16 @@ class HomePage extends HookConsumerWidget {
           if (showProtein) {
             final intValue = int.tryParse(proteinController.value.text);
             if (intValue != null) {
-              storageService.storeInt(SystemStrings.proteinGoal, intValue);
+              final prefs = await SharedPreferences.getInstance();
+              await prefs.setInt(SystemStrings.proteinGoal, intValue);
               proteinGoal.update((_) => intValue);
             }
           }
           if (showCalories) {
             final intValue = int.tryParse(caloriesController.value.text);
             if (intValue != null) {
-              storageService.storeInt(SystemStrings.caloriesGoal, intValue);
+              final prefs = await SharedPreferences.getInstance();
+              await prefs.setInt(SystemStrings.caloriesGoal, intValue);
               caloriesGoal.update((_) => intValue);
             }
           }
@@ -92,8 +93,6 @@ class HomePage extends HookConsumerWidget {
 
     final homeModel = ref.watch(homeModelProvider);
     final homeModelNotifier = ref.read(homeModelProvider.notifier);
-
-    final storageService = ref.read(localStorageServiceProvider);
 
     final proteinController = useTextEditingController();
     final proteinGoal = ref.watch(proteinGoalProvider);
