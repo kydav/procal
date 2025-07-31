@@ -11,6 +11,11 @@ ProcalUser _$ProcalUserFromJson(Map<String, dynamic> json) => ProcalUser(
   firstName: json['first_name'] as String,
   lastName: json['last_name'] as String,
   isActive: json['is_active'] as bool,
+  birthDate: json['birth_date'] == null
+      ? null
+      : DateTime.parse(json['birth_date'] as String),
+  height: (json['height'] as num?)?.toDouble(),
+  currentWeight: (json['current_weight'] as num?)?.toDouble(),
   id: json['id'] as String?,
 );
 
@@ -19,6 +24,9 @@ Map<String, dynamic> _$ProcalUserToJson(ProcalUser instance) =>
       'email': instance.email,
       'first_name': instance.firstName,
       'last_name': instance.lastName,
+      'birth_date': instance.birthDate?.toIso8601String(),
+      'height': instance.height,
+      'current_weight': instance.currentWeight,
       'is_active': instance.isActive,
       'id': instance.id,
     };

@@ -1,26 +1,29 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'health_service.dart';
+part of 'welcome_controller.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$healthServiceHash() => r'e475a934bc598e8ae2c66129d6052de858fec853';
+String _$welcomeControllerHash() => r'2b570219b0c137500ddc3f58ca2208f1d02c411b';
 
-/// See also [HealthService].
-@ProviderFor(HealthService)
-final healthServiceProvider =
-    AutoDisposeAsyncNotifierProvider<HealthService, void>.internal(
-      HealthService.new,
-      name: r'healthServiceProvider',
+/// See also [WelcomeController].
+@ProviderFor(WelcomeController)
+final welcomeControllerProvider =
+    AutoDisposeNotifierProvider<
+      WelcomeController,
+      WelcomeControllerState
+    >.internal(
+      WelcomeController.new,
+      name: r'welcomeControllerProvider',
       debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
           ? null
-          : _$healthServiceHash,
+          : _$welcomeControllerHash,
       dependencies: null,
       allTransitiveDependencies: null,
     );
 
-typedef _$HealthService = AutoDisposeAsyncNotifier<void>;
+typedef _$WelcomeController = AutoDisposeNotifier<WelcomeControllerState>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

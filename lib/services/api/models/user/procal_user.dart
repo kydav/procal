@@ -9,6 +9,9 @@ class ProcalUser {
     required this.firstName,
     required this.lastName,
     required this.isActive,
+    this.birthDate,
+    this.height,
+    this.currentWeight,
     this.id,
   });
 
@@ -17,6 +20,9 @@ class ProcalUser {
   final String email;
   final String firstName;
   final String lastName;
+  final DateTime? birthDate;
+  final double? height;
+  final double? currentWeight;
   final bool isActive;
   final String? id;
   Map<String, dynamic> toJson() => _$ProcalUserToJson(this);

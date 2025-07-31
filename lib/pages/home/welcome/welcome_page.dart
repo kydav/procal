@@ -5,8 +5,12 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:procal/constants/asset_icons.dart';
 import 'package:procal/constants/strings.dart';
 import 'package:procal/hooks/carousel_hook.dart';
+import 'package:procal/pages/home/welcome/personal_info_page.dart';
+import 'package:procal/pages/home/welcome/weight_objective_page.dart';
 import 'package:procal/services/device_services/health_service.dart';
 import 'package:toastification/toastification.dart';
+
+enum GoalSettingMode { ai, manual }
 
 class WelcomePage extends HookConsumerWidget {
   const WelcomePage({super.key});
@@ -16,20 +20,23 @@ class WelcomePage extends HookConsumerWidget {
     final healthService = ref.watch(healthServiceProvider.notifier);
     final carouselController = useCarouselSliderController();
     final index = useState(0);
-    final firstNameController = useTextEditingController();
-    final lastNameController = useTextEditingController();
-    final primaryGoal = useState<String?>(null);
+
+    final goalSettingMode = useState<GoalSettingMode?>(GoalSettingMode.ai);
+    final currentWeightController = useTextEditingController();
+    final targetWeightController = useTextEditingController();
 
     final isNextDisabled = useState(true);
+    final isFirstPageDisabled = useState(true);
+    final isSecondPageDisabled = useState(true);
 
-    firstNameController.addListener(() {
+    isFirstPageDisabled.addListener(() {
       if (index.value == 0) {
-        isNextDisabled.value = firstNameController.text.isEmpty;
+        isNextDisabled.value = isFirstPageDisabled.value;
       }
     });
-    primaryGoal.addListener(() {
+    isSecondPageDisabled.addListener(() {
       if (index.value == 1) {
-        isNextDisabled.value = primaryGoal.value == null;
+        isNextDisabled.value = isSecondPageDisabled.value;
       }
     });
 
@@ -42,7 +49,7 @@ class WelcomePage extends HookConsumerWidget {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.only(
-            top: 50.0,
+            top: 25.0,
             left: 20,
             right: 20,
             bottom: 10,
@@ -50,135 +57,92 @@ class WelcomePage extends HookConsumerWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              SingleChildScrollView(
-                child: CarouselSlider(
-                  carouselController: carouselController,
-                  items: [
-                    Column(
-                      spacing: 20.0,
-                      children: [
-                        Text(WelcomeStrings.welcome),
-                        Text(WelcomeStrings.letsGetToKnowYou),
-                        TextField(
-                          controller: firstNameController,
-                          textInputAction: TextInputAction.next,
-                          onEditingComplete: () {
-                            FocusScope.of(context).nextFocus();
-                          },
-                          autofillHints: const [AutofillHints.givenName],
-                          decoration: InputDecoration(
-                            labelText: WelcomeStrings.firstName,
-                            border: const OutlineInputBorder(),
+              Expanded(
+                child: LayoutBuilder(
+                  builder: (context, constraints) => CarouselSlider(
+                    carouselController: carouselController,
+                    items: [
+                      PersonalInfoPage(firstPageDisabled: isFirstPageDisabled),
+                      WeightObjectivePage(
+                        secondPageDisabled: isSecondPageDisabled,
+                      ),
+
+                      Column(children: [Text(WelcomeStrings.letsSetYourGoals)]),
+                      Column(
+                        children: [
+                          Text(WelcomeStrings.letsSetYourGoals),
+                          const SizedBox(height: 20),
+                          Text(WelcomeStrings.aiOrManual),
+                          const SizedBox(height: 20),
+                          ListTile(
+                            title: Text(WelcomeStrings.aiGoalSetting),
+                            trailing: Radio<GoalSettingMode>(
+                              value: GoalSettingMode.ai,
+                              groupValue: goalSettingMode.value,
+                              onChanged: (value) {
+                                goalSettingMode.value = value;
+                              },
+                            ),
                           ),
-                        ),
-                        TextField(
-                          controller: lastNameController,
-                          textInputAction: TextInputAction.done,
-                          onEditingComplete: () {
-                            FocusScope.of(context).unfocus();
-                            carouselController.nextPage();
-                          },
-                          autofillHints: const [AutofillHints.familyName],
-                          decoration: InputDecoration(
-                            labelText: WelcomeStrings.lastName,
-                            border: const OutlineInputBorder(),
+                          ListTile(
+                            title: Text(WelcomeStrings.manualGoalSetting),
+                            trailing: Radio(
+                              value: GoalSettingMode.manual,
+                              groupValue: goalSettingMode.value,
+                              onChanged: (value) {
+                                goalSettingMode.value = value;
+                              },
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Text(WelcomeStrings.primaryGoal),
-                        ListTile(
-                          title: Text(WelcomeStrings.loseWeight),
-                          trailing: Radio(
-                            value: 'lose_weight',
-                            groupValue: primaryGoal.value,
-                            onChanged: (value) {
-                              primaryGoal.value = value;
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Text(WelcomeStrings.forTheBestExperience),
+                          const SizedBox(height: 20),
+                          OutlinedButton(
+                            onPressed: () async {
+                              final hasAccess = await healthService
+                                  .requestDataAccess();
+                              if (hasAccess && context.mounted) {
+                                toastification.show(
+                                  context: context,
+                                  title: Text(ToastStrings.healthGranted),
+                                  type: ToastificationType.success,
+                                  style: ToastificationStyle.fillColored,
+                                  alignment: Alignment.bottomCenter,
+                                  autoCloseDuration: const Duration(seconds: 3),
+                                  showProgressBar: false,
+                                );
+                                await Future.delayed(
+                                  const Duration(seconds: 1),
+                                );
+                                await carouselController.nextPage();
+                              } else if (context.mounted) {
+                                toastification.show(
+                                  context: context,
+                                  title: Text(ToastStrings.healthDenied),
+                                  type: ToastificationType.error,
+                                  style: ToastificationStyle.fillColored,
+                                  alignment: Alignment.bottomCenter,
+                                  autoCloseDuration: const Duration(seconds: 3),
+                                  showProgressBar: false,
+                                );
+                              }
                             },
+                            child: Text(WelcomeStrings.enableHealthPermissions),
                           ),
-                        ),
-                        ListTile(
-                          title: Text(WelcomeStrings.buildMuscle),
-                          trailing: Radio(
-                            value: 'build_muscle',
-                            groupValue: primaryGoal.value,
-                            onChanged: (value) {
-                              primaryGoal.value = value;
-                            },
-                          ),
-                        ),
-                        ListTile(
-                          title: Text(WelcomeStrings.maintainWeight),
-                          trailing: Radio(
-                            value: 'maintain_weight',
-                            groupValue: primaryGoal.value,
-                            onChanged: (value) {
-                              primaryGoal.value = value;
-                            },
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
+                    ],
+                    options: CarouselOptions(
+                      onPageChanged: (idx, _) => index.value = idx,
+                      height:
+                          constraints.maxHeight -
+                          MediaQuery.of(context).viewInsets.bottom,
+                      enlargeCenterPage: true,
+                      viewportFraction: 1.0,
                     ),
-                    Column(
-                      children: [
-                        Text(
-                          'For the best experience, it is recommended that you enable health permissions',
-                        ),
-                        const SizedBox(height: 20),
-                        OutlinedButton(
-                          onPressed: () async {
-                            final hasAccess = await healthService
-                                .requestDataAccess();
-                            if (hasAccess && context.mounted) {
-                              toastification.show(
-                                context: context,
-                                title: Text(ToastStrings.healthGranted),
-                                type: ToastificationType.success,
-                                style: ToastificationStyle.fillColored,
-                                alignment: Alignment.bottomCenter,
-                                autoCloseDuration: const Duration(seconds: 3),
-                                showProgressBar: false,
-                              );
-                              await Future.delayed(const Duration(seconds: 1));
-                              await carouselController.nextPage();
-                            } else if (context.mounted) {
-                              toastification.show(
-                                context: context,
-                                title: Text(ToastStrings.healthDenied),
-                                type: ToastificationType.error,
-                                style: ToastificationStyle.fillColored,
-                                alignment: Alignment.bottomCenter,
-                                autoCloseDuration: const Duration(seconds: 3),
-                                showProgressBar: false,
-                              );
-                            }
-                          },
-                          child: Text(WelcomeStrings.enableHealthPermissions),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Text('Stay motivated'),
-                        const SizedBox(height: 20),
-                        Text('Set goals and track your progress'),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Text('Join our community'),
-                        const SizedBox(height: 20),
-                        Text('Connect with others on the same journey'),
-                      ],
-                    ),
-                  ],
-                  options: CarouselOptions(
-                    onPageChanged: (idx, _) => index.value = idx,
-                    height: MediaQuery.of(context).size.height * 0.3,
-                    enlargeCenterPage: true,
-                    viewportFraction: 1.0,
                   ),
                 ),
               ),

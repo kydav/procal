@@ -32,6 +32,7 @@ class WelcomeStrings {
   static String letsGetToKnowYou = "First, let's get to know you!";
   static String firstName = 'First Name';
   static String lastName = 'Last Name (Optional)';
+  static String age = 'Age';
 
   static String primaryGoal = 'What is your primary goal?';
   static String loseWeight = 'Lose Weight';
@@ -41,6 +42,13 @@ class WelcomeStrings {
   static String forTheBestExperience =
       'For the best experience, it is recommended that you enable health permissions';
   static String enableHealthPermissions = 'Enable Health Permissions';
+
+  static String letsSetYourGoals = "Now, let's set your goals";
+  static String aiOrManual =
+      'You can either use AI to set your goals or do it manually';
+  static String aiGoalSetting = 'Use AI to set my goals';
+  static String manualGoalSetting =
+      "I know what I'm doing, set my goals manually";
 }
 
 class DialogStrings {
