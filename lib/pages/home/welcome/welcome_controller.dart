@@ -9,7 +9,7 @@ class WelcomeController extends _$WelcomeController {
     firstName: '',
     lastName: '',
     age: '',
-    primaryGoal: '',
+    primaryGoal: null,
   );
 
   void setFirstName(String firstName) {
@@ -39,7 +39,7 @@ class WelcomeControllerState {
   final String firstName;
   final String lastName;
   final String age;
-  final String primaryGoal;
+  final String? primaryGoal;
   WelcomeControllerState copyWith({
     String? firstName,
     String? lastName,

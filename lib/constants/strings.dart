@@ -39,6 +39,17 @@ class WelcomeStrings {
   static String buildMuscle = 'Build Muscle';
   static String maintainWeight = 'Maintain Weight';
 
+  static String aLittleMorePersonal = "Now, let's get a little more personal";
+  static String currentWeight = 'Current Weight';
+  static String lbs = 'lbs';
+  static String kgs = 'kgs';
+  static String height = 'Height';
+  static String feet = 'Feet';
+  static String inches = 'Inches';
+  static String cm = 'cm';
+  static String metric = 'Metric';
+  static String imperial = 'Imperial';
+
   static String forTheBestExperience =
       'For the best experience, it is recommended that you enable health permissions';
   static String enableHealthPermissions = 'Enable Health Permissions';

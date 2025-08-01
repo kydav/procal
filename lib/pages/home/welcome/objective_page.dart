@@ -4,20 +4,22 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:procal/constants/strings.dart';
 import 'package:procal/pages/home/welcome/welcome_controller.dart';
 
-class WeightObjectivePage extends HookConsumerWidget {
-  const WeightObjectivePage({required this.secondPageDisabled, super.key});
-  final ValueNotifier<bool> secondPageDisabled;
+class ObjectivePage extends HookConsumerWidget {
+  const ObjectivePage({required this.pageDisabled, super.key});
+  final ValueNotifier<bool> pageDisabled;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final primaryGoal = useState<String?>(null);
+    final welcomeState = ref.watch(welcomeControllerProvider);
+
+    final primaryGoal = useState<String?>(welcomeState.primaryGoal);
     primaryGoal.addListener(() {
+      ref
+          .read(welcomeControllerProvider.notifier)
+          .setPrimaryGoal(primaryGoal.value!);
       if (primaryGoal.value != null) {
-        secondPageDisabled.value = false;
-        ref
-            .read(welcomeControllerProvider.notifier)
-            .setPrimaryGoal(primaryGoal.value!);
+        pageDisabled.value = false;
       } else {
-        secondPageDisabled.value = true;
+        pageDisabled.value = true;
       }
     });
     return Column(

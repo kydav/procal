@@ -6,7 +6,9 @@ import 'package:procal/constants/asset_icons.dart';
 import 'package:procal/constants/strings.dart';
 import 'package:procal/hooks/carousel_hook.dart';
 import 'package:procal/pages/home/welcome/personal_info_page.dart';
-import 'package:procal/pages/home/welcome/weight_objective_page.dart';
+import 'package:procal/pages/home/welcome/objective_page.dart';
+import 'package:procal/pages/home/welcome/weight_page.dart';
+import 'package:procal/pages/home/welcome/welcome_controller.dart';
 import 'package:procal/services/device_services/health_service.dart';
 import 'package:toastification/toastification.dart';
 
@@ -22,20 +24,16 @@ class WelcomePage extends HookConsumerWidget {
     final index = useState(0);
 
     final goalSettingMode = useState<GoalSettingMode?>(GoalSettingMode.ai);
-    final currentWeightController = useTextEditingController();
-    final targetWeightController = useTextEditingController();
 
     final isNextDisabled = useState(true);
     final isFirstPageDisabled = useState(true);
     final isSecondPageDisabled = useState(true);
+    final isThirdPageDisabled = useState(true);
 
-    isFirstPageDisabled.addListener(() {
+    index.addListener(() {
       if (index.value == 0) {
         isNextDisabled.value = isFirstPageDisabled.value;
-      }
-    });
-    isSecondPageDisabled.addListener(() {
-      if (index.value == 1) {
+      } else if (index.value == 1) {
         isNextDisabled.value = isSecondPageDisabled.value;
       }
     });
@@ -62,11 +60,9 @@ class WelcomePage extends HookConsumerWidget {
                   builder: (context, constraints) => CarouselSlider(
                     carouselController: carouselController,
                     items: [
-                      PersonalInfoPage(firstPageDisabled: isFirstPageDisabled),
-                      WeightObjectivePage(
-                        secondPageDisabled: isSecondPageDisabled,
-                      ),
-
+                      PersonalInfoPage(pageDisabled: isFirstPageDisabled),
+                      ObjectivePage(pageDisabled: isSecondPageDisabled),
+                      WeightPage(pageDisabled: isThirdPageDisabled),
                       Column(children: [Text(WelcomeStrings.letsSetYourGoals)]),
                       Column(
                         children: [

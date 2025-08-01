@@ -124,7 +124,9 @@ class IntroPage extends HookConsumerWidget {
             onPressed: () async {
               final prefs = await SharedPreferences.getInstance();
               await prefs.setBool(SystemStrings.shownLoginIntro, true);
-              ref.read(procalRouterProvider).pushReplacement('/login/true');
+              await ref
+                  .read(procalRouterProvider)
+                  .pushReplacement('/login/true');
             },
             child: Text(GeneralStrings.signUp),
           ),

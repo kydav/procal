@@ -6,8 +6,8 @@ import 'package:procal/constants/strings.dart';
 import 'package:procal/pages/home/welcome/welcome_controller.dart';
 
 class PersonalInfoPage extends HookConsumerWidget {
-  const PersonalInfoPage({required this.firstPageDisabled, super.key});
-  final ValueNotifier<bool> firstPageDisabled;
+  const PersonalInfoPage({required this.pageDisabled, super.key});
+  final ValueNotifier<bool> pageDisabled;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -19,23 +19,19 @@ class PersonalInfoPage extends HookConsumerWidget {
       text: welcomeState.lastName,
     );
     final ageController = useTextEditingController(text: welcomeState.age);
-    final welcomeController = ref.read(welcomeControllerProvider.notifier);
-    final heightControllerMetric = useTextEditingController();
-    final heightControllerImperialFeet = useTextEditingController();
-    final heightControllerImperialInches = useTextEditingController();
-    final heightUnit = useState('metric'); // 'metric' or 'imperial'
-    void checkDisabled() {
-      if (firstNameController.value.text.isEmpty ||
-          lastNameController.value.text.isEmpty ||
-          ageController.value.text.isEmpty) {
-        welcomeController
-          ..setFirstName(firstNameController.value.text)
-          ..setLastName(lastNameController.value.text)
-          ..setAge(ageController.value.text);
 
-        firstPageDisabled.value = true;
+    final welcomeController = ref.read(welcomeControllerProvider.notifier);
+
+    void checkDisabled() {
+      welcomeController
+        ..setFirstName(firstNameController.value.text)
+        ..setLastName(lastNameController.value.text)
+        ..setAge(ageController.value.text);
+      if (firstNameController.value.text.isEmpty ||
+          ageController.value.text.isEmpty) {
+        pageDisabled.value = true;
       } else {
-        firstPageDisabled.value = false;
+        pageDisabled.value = false;
       }
     }
 
@@ -48,10 +44,7 @@ class PersonalInfoPage extends HookConsumerWidget {
           TextField(
             controller: firstNameController,
             textInputAction: TextInputAction.next,
-            // onEditingComplete: () {
-            //   welcomeController.setFirstName(firstNameController.text);
-            //   FocusScope.of(context).nextFocus();
-            // },
+            onEditingComplete: () => FocusScope.of(context).nextFocus(),
             onChanged: (_) => checkDisabled(),
             autofillHints: const [AutofillHints.givenName],
             decoration: InputDecoration(
@@ -63,6 +56,7 @@ class PersonalInfoPage extends HookConsumerWidget {
             controller: lastNameController,
             textInputAction: TextInputAction.next,
             onChanged: (_) => checkDisabled(),
+            onEditingComplete: () => FocusScope.of(context).nextFocus(),
             autofillHints: const [AutofillHints.familyName],
             decoration: InputDecoration(
               labelText: WelcomeStrings.lastName,
@@ -73,6 +67,7 @@ class PersonalInfoPage extends HookConsumerWidget {
             controller: ageController,
             textInputAction: TextInputAction.next,
             onChanged: (_) => checkDisabled(),
+            onEditingComplete: () => FocusScope.of(context).nextFocus(),
             keyboardType: TextInputType.number,
             inputFormatters: <TextInputFormatter>[
               FilteringTextInputFormatter.digitsOnly,
