@@ -19,7 +19,6 @@ class PersonalInfoPage extends HookConsumerWidget {
       text: welcomeState.lastName,
     );
     final ageController = useTextEditingController(text: welcomeState.age);
-
     final welcomeController = ref.read(welcomeControllerProvider.notifier);
 
     void checkDisabled() {

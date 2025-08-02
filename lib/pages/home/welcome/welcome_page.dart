@@ -25,18 +25,10 @@ class WelcomePage extends HookConsumerWidget {
 
     final goalSettingMode = useState<GoalSettingMode?>(GoalSettingMode.ai);
 
-    final isNextDisabled = useState(true);
+    final isNextDisabled = useState(false);
     final isFirstPageDisabled = useState(true);
     final isSecondPageDisabled = useState(true);
     final isThirdPageDisabled = useState(true);
-
-    index.addListener(() {
-      if (index.value == 0) {
-        isNextDisabled.value = isFirstPageDisabled.value;
-      } else if (index.value == 1) {
-        isNextDisabled.value = isSecondPageDisabled.value;
-      }
-    });
 
     return Scaffold(
       resizeToAvoidBottomInset: true,

@@ -42,7 +42,7 @@ class WelcomeStrings {
   static String aLittleMorePersonal = "Now, let's get a little more personal";
   static String currentWeight = 'Current Weight';
   static String lbs = 'lbs';
-  static String kgs = 'kgs';
+  static String kg = 'kg';
   static String height = 'Height';
   static String feet = 'Feet';
   static String inches = 'Inches';
