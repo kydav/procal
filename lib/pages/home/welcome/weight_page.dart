@@ -56,7 +56,22 @@ class WeightPage extends HookConsumerWidget {
                 ],
                 onChanged: (value) {
                   if (value != null) {
-                    weightUnit.value = value;
+                    if (weightUnit.value != value) {
+                      if (value == WeightUnit.lb) {
+                        weightController.text =
+                            (weightController.text.isNotEmpty
+                            ? (double.parse(weightController.text) * 2.20462)
+                                  .toStringAsFixed(0)
+                            : '');
+                      } else {
+                        weightController.text =
+                            (weightController.text.isNotEmpty
+                            ? (double.parse(weightController.text) / 2.20462)
+                                  .toStringAsFixed(0)
+                            : '');
+                      }
+                      weightUnit.value = value;
+                    }
                   }
                 },
               ),
@@ -116,6 +131,34 @@ class WeightPage extends HookConsumerWidget {
                 ],
                 onChanged: (value) {
                   if (value != null) {
+                    if (heightUnit.value != value) {
+                      if (value == HeightUnit.imperial) {
+                        final current = heightControllerCmOrFt.text.isNotEmpty
+                            ? double.parse(heightControllerCmOrFt.text) / 30.48
+                            : 0.0;
+
+                        final feet = current.toInt();
+
+                        final inches = ((current - feet) * 12).toStringAsFixed(
+                          0,
+                        );
+
+                        heightControllerCmOrFt.text = feet.toString();
+                        heightControllerInches.text = inches;
+                      } else {
+                        final cm = heightControllerCmOrFt.text.isNotEmpty
+                            ? ((double.parse(heightControllerInches.text) +
+                                          (double.parse(
+                                                heightControllerCmOrFt.text,
+                                              ) *
+                                              12)) *
+                                      2.54)
+                                  .toStringAsFixed(0)
+                            : '';
+                        heightControllerCmOrFt.text = cm;
+                        heightControllerInches.clear();
+                      }
+                    }
                     heightUnit.value = value;
                   }
                 },
