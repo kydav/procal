@@ -4,168 +4,165 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:procal/constants/strings.dart';
 import 'package:procal/pages/home/welcome/welcome_controller.dart';
+import 'package:procal/pages/home/welcome/welcome_wrapper.dart';
 
 class WeightPage extends HookConsumerWidget {
-  const WeightPage({required this.pageDisabled, super.key});
-  final ValueNotifier<bool> pageDisabled;
+  const WeightPage({required this.pageController, super.key});
+  final PageController pageController;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final welcomeController = ref.read(welcomeControllerProvider.notifier);
+    final welcomeState = ref.watch(welcomeControllerProvider);
     final weightController = useTextEditingController();
-    final weightUnit = useState(WeightUnit.lb);
     final heightControllerCmOrFt = useTextEditingController();
     final heightControllerInches = useTextEditingController();
-    final heightUnit = useState(HeightUnit.imperial);
+    final measurementUnit = useState(MeasurementUnit.imperial);
+    final isNextDisabled = useState(true);
 
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Text(WelcomeStrings.aLittleMorePersonal),
-          Padding(
-            padding: const EdgeInsets.only(top: 20.0),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Text(WelcomeStrings.height),
+    useEffect(() {
+      if (welcomeState.currentWeight != null) {
+        weightController.text = welcomeState.currentWeight.toString();
+      }
+      return null;
+    }, []);
+
+    return WelcomeWrapper(
+      pageController: pageController,
+      isNextDisabled: isNextDisabled.value,
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Text(WelcomeStrings.aLittleMorePersonal),
+            Padding(
+              padding: const EdgeInsets.only(top: 20.0),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(WelcomeStrings.height),
+              ),
             ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            spacing: 10.0,
-            children: [
-              Expanded(
-                child: TextField(
-                  controller: weightController,
-                  textInputAction: TextInputAction.next,
-                  onEditingComplete: () => FocusScope.of(context).nextFocus(),
-                  onChanged: (_) => {},
-                  autofillHints: const [AutofillHints.givenName],
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  decoration: InputDecoration(
-                    labelText: weightUnit.value == WeightUnit.lb
-                        ? WelcomeStrings.lbs
-                        : WelcomeStrings.kg,
-                    border: const OutlineInputBorder(),
-                  ),
-                ),
-              ),
-              DropdownButton<WeightUnit>(
-                value: weightUnit.value,
-                items: const [
-                  DropdownMenuItem(value: WeightUnit.lb, child: Text('lbs')),
-                  DropdownMenuItem(value: WeightUnit.kg, child: Text('kg')),
-                ],
-                onChanged: (value) {
-                  if (value != null) {
-                    if (weightUnit.value != value) {
-                      if (value == WeightUnit.lb) {
-                        weightController.text =
-                            (weightController.text.isNotEmpty
-                            ? (double.parse(weightController.text) * 2.20462)
-                                  .toStringAsFixed(0)
-                            : '');
-                      } else {
-                        weightController.text =
-                            (weightController.text.isNotEmpty
-                            ? (double.parse(weightController.text) / 2.20462)
-                                  .toStringAsFixed(0)
-                            : '');
-                      }
-                      weightUnit.value = value;
-                    }
-                  }
-                },
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 20.0),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Text(WelcomeStrings.height),
-            ),
-          ),
-          Row(
-            spacing: 10.0,
-            children: [
-              Expanded(
-                child: TextField(
-                  controller: heightControllerCmOrFt,
-                  textInputAction: TextInputAction.next,
-                  onEditingComplete: () => FocusScope.of(context).nextFocus(),
-                  onChanged: (_) => {},
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  decoration: InputDecoration(
-                    labelText: heightUnit.value == HeightUnit.imperial
-                        ? WelcomeStrings.feet
-                        : WelcomeStrings.cm,
-                    border: const OutlineInputBorder(),
-                  ),
-                ),
-              ),
-              if (heightUnit.value == HeightUnit.imperial) ...[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              spacing: 10.0,
+              children: [
                 Expanded(
                   child: TextField(
-                    controller: heightControllerInches,
+                    controller: weightController,
                     textInputAction: TextInputAction.next,
                     onEditingComplete: () => FocusScope.of(context).nextFocus(),
-                    onChanged: (_) => {},
+                    onChanged: (value) {
+                      if (value.isNotEmpty) {
+                        welcomeController.setCurrentWeight(int.parse(value));
+                      }
+                    },
+                    autofillHints: const [AutofillHints.givenName],
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     decoration: InputDecoration(
-                      labelText: WelcomeStrings.inches,
+                      labelText:
+                          measurementUnit.value == MeasurementUnit.imperial
+                          ? WelcomeStrings.lbs
+                          : WelcomeStrings.kg,
                       border: const OutlineInputBorder(),
                     ),
                   ),
                 ),
+                DropdownButton<MeasurementUnit>(
+                  value: measurementUnit.value,
+                  items: const [
+                    DropdownMenuItem(
+                      value: MeasurementUnit.imperial,
+                      child: Text('Imperial'),
+                    ),
+                    DropdownMenuItem(
+                      value: MeasurementUnit.metric,
+                      child: Text('Metric'),
+                    ),
+                  ],
+                  onChanged: (value) {
+                    if (value != null) {
+                      if (measurementUnit.value != value) {
+                        if (value == MeasurementUnit.imperial) {
+                          final current = heightControllerCmOrFt.text.isNotEmpty
+                              ? double.parse(heightControllerCmOrFt.text) /
+                                    30.48
+                              : 0.0;
+
+                          final feet = current.toInt();
+
+                          final inches = ((current - feet) * 12)
+                              .toStringAsFixed(0);
+
+                          heightControllerCmOrFt.text = feet.toString();
+                          heightControllerInches.text = inches;
+                        } else {
+                          final cm = heightControllerCmOrFt.text.isNotEmpty
+                              ? ((double.parse(heightControllerInches.text) +
+                                            (double.parse(
+                                                  heightControllerCmOrFt.text,
+                                                ) *
+                                                12)) *
+                                        2.54)
+                                    .toStringAsFixed(0)
+                              : '';
+                          heightControllerCmOrFt.text = cm;
+                          heightControllerInches.clear();
+                        }
+                      }
+                      measurementUnit.value = value;
+                      welcomeController.setMeasurementUnit(value);
+                    }
+                  },
+                ),
               ],
-              DropdownButton<HeightUnit>(
-                value: heightUnit.value,
-                items: const [
-                  DropdownMenuItem(
-                    value: HeightUnit.imperial,
-                    child: Text('Imperial'),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 20.0),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(WelcomeStrings.height),
+              ),
+            ),
+            Row(
+              spacing: 10.0,
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: heightControllerCmOrFt,
+                    textInputAction: TextInputAction.next,
+                    onEditingComplete: () => FocusScope.of(context).nextFocus(),
+                    onChanged: (value) {
+                      if (value.isNotEmpty) {}
+                    },
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    decoration: InputDecoration(
+                      labelText:
+                          measurementUnit.value == MeasurementUnit.imperial
+                          ? WelcomeStrings.feet
+                          : WelcomeStrings.cm,
+                      border: const OutlineInputBorder(),
+                    ),
                   ),
-                  DropdownMenuItem(
-                    value: HeightUnit.metric,
-                    child: Text('Metric'),
+                ),
+                if (measurementUnit.value == MeasurementUnit.imperial) ...[
+                  Expanded(
+                    child: TextField(
+                      controller: heightControllerInches,
+                      textInputAction: TextInputAction.next,
+                      onEditingComplete: () =>
+                          FocusScope.of(context).nextFocus(),
+                      onChanged: (_) => {},
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      decoration: InputDecoration(
+                        labelText: WelcomeStrings.inches,
+                        border: const OutlineInputBorder(),
+                      ),
+                    ),
                   ),
                 ],
-                onChanged: (value) {
-                  if (value != null) {
-                    if (heightUnit.value != value) {
-                      if (value == HeightUnit.imperial) {
-                        final current = heightControllerCmOrFt.text.isNotEmpty
-                            ? double.parse(heightControllerCmOrFt.text) / 30.48
-                            : 0.0;
-
-                        final feet = current.toInt();
-
-                        final inches = ((current - feet) * 12).toStringAsFixed(
-                          0,
-                        );
-
-                        heightControllerCmOrFt.text = feet.toString();
-                        heightControllerInches.text = inches;
-                      } else {
-                        final cm = heightControllerCmOrFt.text.isNotEmpty
-                            ? ((double.parse(heightControllerInches.text) +
-                                          (double.parse(
-                                                heightControllerCmOrFt.text,
-                                              ) *
-                                              12)) *
-                                      2.54)
-                                  .toStringAsFixed(0)
-                            : '';
-                        heightControllerCmOrFt.text = cm;
-                        heightControllerInches.clear();
-                      }
-                    }
-                    heightUnit.value = value;
-                  }
-                },
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

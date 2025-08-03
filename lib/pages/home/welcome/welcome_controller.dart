@@ -11,9 +11,8 @@ class WelcomeController extends _$WelcomeController {
     age: '',
     primaryGoal: null,
     currentWeight: null,
-    weightUnit: WeightUnit.lb,
     height: null,
-    heightUnit: HeightUnit.imperial,
+    measurementUnit: MeasurementUnit.imperial,
   );
 
   void setFirstName(String firstName) {
@@ -36,16 +35,12 @@ class WelcomeController extends _$WelcomeController {
     state = state.copyWith(currentWeight: currentWeight);
   }
 
-  void setWeightUnit(WeightUnit weightUnit) {
-    state = state.copyWith(weightUnit: weightUnit);
-  }
-
   void setHeight(int height) {
     state = state.copyWith(height: height);
   }
 
-  void setHeightUnit(HeightUnit heightUnit) {
-    state = state.copyWith(heightUnit: heightUnit);
+  void setMeasurementUnit(MeasurementUnit measurementUnit) {
+    state = state.copyWith(measurementUnit: measurementUnit);
   }
 }
 
@@ -56,62 +51,44 @@ class WelcomeControllerState {
     required this.age,
     required this.primaryGoal,
     required this.currentWeight,
-    required this.weightUnit,
     required this.height,
-    required this.heightUnit,
+    required this.measurementUnit,
   });
   final String firstName;
   final String lastName;
   final String age;
   final String? primaryGoal;
   final int? currentWeight;
-  final WeightUnit? weightUnit;
   final int? height;
-  final HeightUnit? heightUnit;
+  final MeasurementUnit? measurementUnit;
   WelcomeControllerState copyWith({
     String? firstName,
     String? lastName,
     String? age,
     String? primaryGoal,
     int? currentWeight,
-    WeightUnit? weightUnit,
     int? height,
-    HeightUnit? heightUnit,
+    MeasurementUnit? measurementUnit,
   }) => WelcomeControllerState(
     firstName: firstName ?? this.firstName,
     lastName: lastName ?? this.lastName,
     age: age ?? this.age,
     primaryGoal: primaryGoal ?? this.primaryGoal,
     currentWeight: currentWeight ?? this.currentWeight,
-    weightUnit: weightUnit ?? this.weightUnit,
     height: height ?? this.height,
-    heightUnit: heightUnit ?? this.heightUnit,
+    measurementUnit: measurementUnit ?? this.measurementUnit,
   );
 }
 
-enum WeightUnit {
-  kg,
-  lb;
-
-  String get name {
-    switch (this) {
-      case WeightUnit.kg:
-        return 'kg';
-      case WeightUnit.lb:
-        return 'lb';
-    }
-  }
-}
-
-enum HeightUnit {
+enum MeasurementUnit {
   metric,
   imperial;
 
   String get name {
     switch (this) {
-      case HeightUnit.metric:
+      case MeasurementUnit.metric:
         return 'metric';
-      case HeightUnit.imperial:
+      case MeasurementUnit.imperial:
         return 'imperial';
     }
   }
