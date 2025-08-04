@@ -6,6 +6,7 @@ class WelcomeWrapper extends StatelessWidget {
     required this.pageController,
     required this.isNextDisabled,
     this.showBackButton = true,
+    this.onNextPressed,
     super.key,
   });
 
@@ -13,6 +14,7 @@ class WelcomeWrapper extends StatelessWidget {
   final PageController pageController;
   final bool isNextDisabled;
   final bool showBackButton;
+  final VoidCallback? onNextPressed;
 
   @override
   Widget build(BuildContext context) => SafeArea(
@@ -48,6 +50,7 @@ class WelcomeWrapper extends StatelessWidget {
                   onPressed: isNextDisabled
                       ? null
                       : () async {
+                          onNextPressed?.call();
                           await pageController.nextPage(
                             duration: Durations.medium1,
                             curve: Curves.bounceIn,

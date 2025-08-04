@@ -10,26 +10,96 @@ class WeightPage extends HookConsumerWidget {
   const WeightPage({required this.pageController, super.key});
   final PageController pageController;
 
+  void checkDisabled(
+    TextEditingController weightController,
+    TextEditingController heightControllerCmOrFt,
+    ValueNotifier<bool> isNextDisabled,
+  ) {
+    if (weightController.value.text.isNotEmpty &&
+        heightControllerCmOrFt.value.text.isNotEmpty) {
+      isNextDisabled.value = false;
+    } else {
+      isNextDisabled.value = true;
+    }
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final welcomeController = ref.read(welcomeControllerProvider.notifier);
     final welcomeState = ref.watch(welcomeControllerProvider);
-    final weightController = useTextEditingController();
+    final measurementUnit = useState(
+      welcomeState.measurementUnit ?? MeasurementUnit.imperial,
+    );
+    final weightController = useTextEditingController(
+      text: welcomeState.currentWeight != null
+          ? (measurementUnit.value == MeasurementUnit.imperial
+                ? (welcomeState.currentWeight! * 2.20462).toString()
+                : welcomeState.currentWeight.toString())
+          : null,
+    );
+
     final heightControllerCmOrFt = useTextEditingController();
     final heightControllerInches = useTextEditingController();
-    final measurementUnit = useState(MeasurementUnit.imperial);
+
     final isNextDisabled = useState(true);
 
     useEffect(() {
-      if (welcomeState.currentWeight != null) {
-        weightController.text = welcomeState.currentWeight.toString();
+      if (welcomeState.height != null) {
+        if (measurementUnit.value == MeasurementUnit.imperial) {
+          final feet = (welcomeState.height! / 30.48).toInt();
+          final inches = ((welcomeState.height! / 30.48) - feet) * 12;
+          heightControllerCmOrFt.text = feet.toString();
+          heightControllerInches.text = inches.toStringAsFixed(0);
+        } else {
+          heightControllerCmOrFt.text = welcomeState.height.toString();
+        }
       }
       return null;
     }, []);
 
+    heightControllerCmOrFt.addListener(
+      () => checkDisabled(
+        weightController,
+        heightControllerCmOrFt,
+        isNextDisabled,
+      ),
+    );
+
+    weightController.addListener(
+      () => checkDisabled(
+        weightController,
+        heightControllerCmOrFt,
+        isNextDisabled,
+      ),
+    );
+
     return WelcomeWrapper(
       pageController: pageController,
       isNextDisabled: isNextDisabled.value,
+      onNextPressed: () {
+        welcomeController.setMeasurementUnit(measurementUnit.value);
+        if (measurementUnit.value == MeasurementUnit.imperial) {
+          if (heightControllerInches.text.isNotEmpty) {
+            welcomeController
+              ..setHeight(
+                (double.parse(heightControllerCmOrFt.text) * 30.48 +
+                        double.parse(heightControllerInches.text) * 2.54)
+                    .toInt(),
+              )
+              ..setCurrentWeight(
+                (double.parse(weightController.text) / 2.20462).toInt(),
+              );
+          } else {
+            welcomeController
+              ..setHeight(
+                (double.parse(heightControllerCmOrFt.text) * 30.48).toInt(),
+              )
+              ..setCurrentWeight(int.parse(weightController.text));
+          }
+        } else {
+          welcomeController.setHeight(int.parse(heightControllerCmOrFt.text));
+        }
+      },
       child: SingleChildScrollView(
         child: Column(
           children: [
@@ -50,11 +120,6 @@ class WeightPage extends HookConsumerWidget {
                     controller: weightController,
                     textInputAction: TextInputAction.next,
                     onEditingComplete: () => FocusScope.of(context).nextFocus(),
-                    onChanged: (value) {
-                      if (value.isNotEmpty) {
-                        welcomeController.setCurrentWeight(int.parse(value));
-                      }
-                    },
                     autofillHints: const [AutofillHints.givenName],
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     decoration: InputDecoration(
@@ -81,7 +146,8 @@ class WeightPage extends HookConsumerWidget {
                   onChanged: (value) {
                     if (value != null) {
                       if (measurementUnit.value != value) {
-                        if (value == MeasurementUnit.imperial) {
+                        if (value == MeasurementUnit.imperial &&
+                            heightControllerCmOrFt.text.isNotEmpty) {
                           final current = heightControllerCmOrFt.text.isNotEmpty
                               ? double.parse(heightControllerCmOrFt.text) /
                                     30.48
@@ -94,7 +160,7 @@ class WeightPage extends HookConsumerWidget {
 
                           heightControllerCmOrFt.text = feet.toString();
                           heightControllerInches.text = inches;
-                        } else {
+                        } else if (value == MeasurementUnit.metric) {
                           final cm = heightControllerCmOrFt.text.isNotEmpty
                               ? ((double.parse(heightControllerInches.text) +
                                             (double.parse(
@@ -130,9 +196,6 @@ class WeightPage extends HookConsumerWidget {
                     controller: heightControllerCmOrFt,
                     textInputAction: TextInputAction.next,
                     onEditingComplete: () => FocusScope.of(context).nextFocus(),
-                    onChanged: (value) {
-                      if (value.isNotEmpty) {}
-                    },
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     decoration: InputDecoration(
                       labelText:
@@ -150,7 +213,7 @@ class WeightPage extends HookConsumerWidget {
                       textInputAction: TextInputAction.next,
                       onEditingComplete: () =>
                           FocusScope.of(context).nextFocus(),
-                      onChanged: (_) => {},
+                      // onChanged: (_) => {},
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                       decoration: InputDecoration(
                         labelText: WelcomeStrings.inches,

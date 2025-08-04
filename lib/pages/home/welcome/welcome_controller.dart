@@ -15,6 +15,14 @@ class WelcomeController extends _$WelcomeController {
     measurementUnit: MeasurementUnit.imperial,
   );
 
+  @override
+  bool updateShouldNotify(
+    WelcomeControllerState previous,
+    WelcomeControllerState next,
+  ) =>
+      previous.currentWeight != next.currentWeight ||
+      previous.height != next.height;
+
   void setFirstName(String firstName) {
     state = state.copyWith(firstName: firstName);
   }
