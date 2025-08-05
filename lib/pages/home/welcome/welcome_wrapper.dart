@@ -51,12 +51,9 @@ class WelcomeWrapper extends StatelessWidget {
                       ? null
                       : () async {
                           onNextPressed?.call();
-                          await pageController.nextPage(
-                            duration: Durations.medium1,
-                            curve: Curves.bounceIn,
-                          );
-                          if (!context.mounted) return;
-                          FocusScope.of(context).unfocus();
+
+                          // if (!context.mounted) return;
+                          // FocusScope.of(context).unfocus();
                         },
                   icon: const Icon(Icons.arrow_forward),
                 ),

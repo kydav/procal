@@ -20,16 +20,16 @@ class PersonalInfoPage extends HookConsumerWidget {
       text: welcomeState.lastName,
     );
     final ageController = useTextEditingController(text: welcomeState.age);
+    final gender = useState<String?>(
+      welcomeState.gender.isEmpty ? null : welcomeState.gender,
+    );
     final welcomeController = ref.read(welcomeControllerProvider.notifier);
     final nextDisabled = useState(true);
 
     void checkDisabled() {
-      welcomeController
-        ..setFirstName(firstNameController.value.text)
-        ..setLastName(lastNameController.value.text)
-        ..setAge(ageController.value.text);
       if (firstNameController.value.text.isEmpty ||
-          ageController.value.text.isEmpty) {
+          ageController.value.text.isEmpty ||
+          gender.value == null) {
         nextDisabled.value = true;
       } else {
         nextDisabled.value = false;
@@ -38,7 +38,8 @@ class PersonalInfoPage extends HookConsumerWidget {
 
     useEffect(() {
       if (firstNameController.text.isNotEmpty &&
-          ageController.text.isNotEmpty) {
+          ageController.text.isNotEmpty &&
+          gender.value != null) {
         nextDisabled.value = false;
       } else {
         nextDisabled.value = true;
@@ -50,6 +51,17 @@ class PersonalInfoPage extends HookConsumerWidget {
       pageController: pageController,
       isNextDisabled: nextDisabled.value,
       showBackButton: false,
+      onNextPressed: () async {
+        welcomeController
+          ..setFirstName(firstNameController.text)
+          ..setLastName(lastNameController.text)
+          ..setAge(ageController.text)
+          ..setGender(gender.value!);
+        await pageController.nextPage(
+          duration: Durations.medium1,
+          curve: Curves.bounceIn,
+        );
+      },
       child: Column(
         children: [
           SingleChildScrollView(
@@ -94,39 +106,42 @@ class PersonalInfoPage extends HookConsumerWidget {
                     border: const OutlineInputBorder(),
                   ),
                 ),
+                Row(
+                  children: [
+                    Text(
+                      WelcomeStrings.gender,
+                      style: const TextStyle(fontSize: 20),
+                    ),
+                    const SizedBox(width: 40),
+                    Expanded(
+                      child: DropdownButton(
+                        isExpanded: true,
+                        hint: const Text('Select'),
+                        value: gender.value,
+                        items: const [
+                          DropdownMenuItem(value: 'male', child: Text('Male')),
+                          DropdownMenuItem(
+                            value: 'female',
+                            child: Text('Female'),
+                          ),
+                          DropdownMenuItem(
+                            value: 'other',
+                            child: Text('Other'),
+                          ),
+                        ],
+                        onChanged: (value) {
+                          gender.value = value;
+                          if (value != null) {
+                            checkDisabled();
+                          }
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //   children: [
-          //     //if (index.value > 0)
-          //       CircleAvatar(
-          //         child: IconButton(
-          //           onPressed: () async => carouselController.previousPage(
-          //             duration: Durations.medium1,
-          //             curve: Curves.bounceIn,
-          //           ),
-          //           icon: const Icon(Icons.arrow_back),
-          //         ),
-          //       ),
-          //     //if (index.value == 0) const SizedBox(),
-          //     CircleAvatar(
-          //       child: IconButton(
-          //         onPressed: isNextDisabled.value
-          //             ? null
-          //             : () async {
-          //                 await carouselController.nextPage(
-          //                   duration: Durations.medium1,
-          //                   curve: Curves.bounceIn,
-          //                 );
-          //                 FocusScope.of(context).unfocus();
-          //               },
-          //         icon: const Icon(Icons.arrow_forward),
-          //       ),
-          //     ),
-          //   ],
-          // ),
         ],
       ),
     );

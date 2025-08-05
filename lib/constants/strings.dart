@@ -49,6 +49,7 @@ class WelcomeStrings {
   static String cm = 'cm';
   static String metric = 'Metric';
   static String imperial = 'Imperial';
+  static String gender = 'Gender:';
 
   static String forTheBestExperience =
       'For the best experience, it is recommended that you enable health permissions';

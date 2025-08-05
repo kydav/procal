@@ -15,18 +15,32 @@ class ObjectivePage extends HookConsumerWidget {
     final primaryGoal = useState<String?>(welcomeState.primaryGoal);
     final nextDisabled = useState(true);
     primaryGoal.addListener(() {
-      ref
-          .read(welcomeControllerProvider.notifier)
-          .setPrimaryGoal(primaryGoal.value!);
       if (primaryGoal.value != null) {
         nextDisabled.value = false;
       } else {
         nextDisabled.value = true;
       }
     });
+    useEffect(() {
+      if (primaryGoal.value != null) {
+        nextDisabled.value = false;
+      } else {
+        nextDisabled.value = true;
+      }
+      return null;
+    }, []);
     return WelcomeWrapper(
       pageController: pageController,
       isNextDisabled: nextDisabled.value,
+      onNextPressed: () async {
+        ref
+            .read(welcomeControllerProvider.notifier)
+            .setPrimaryGoal(primaryGoal.value!);
+        await pageController.nextPage(
+          duration: Durations.medium1,
+          curve: Curves.bounceIn,
+        );
+      },
       child: Column(
         children: [
           Text(WelcomeStrings.primaryGoal),

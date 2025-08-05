@@ -30,21 +30,20 @@ class AiService extends _$AiService {
   }
 
   Future<GeneratedGoals> generateProteinCalorieGoals(
-    int weight,
+    String weight,
     String height,
+    String age,
+    String gender,
+    String objective,
   ) async {
     final jsonSchema = Schema.object(
       properties: {
         'goals': Schema.object(
           properties: {
-            'gainMuscleProtein': Schema.integer(),
-            'gainMuscleProteinReasoning': Schema.string(),
-            'loseWeightProtein': Schema.integer(),
-            'loseWeightProteinReasoning': Schema.string(),
-            'gainMuscleCalories': Schema.integer(),
-            'gainMuscleCaloriesReasoning': Schema.string(),
-            'loseWeightCalories': Schema.integer(),
-            'loseWeightCaloriesReasoning': Schema.string(),
+            'protein': Schema.integer(),
+            'proteinReasoning': Schema.string(),
+            'calories': Schema.integer(),
+            'caloriesReasoning': Schema.string(),
           },
         ),
       },
@@ -52,10 +51,9 @@ class AiService extends _$AiService {
     final response = await _getResponse([
       Content.text(
         '''
-          Generate two different protein goals and calorie goals
-          that are optimal protein in grams and calories for a person 
-          who weighs $weight lb and is $height that is looking to 
-          build muscle and separately looking to lose fat with reasoning for each?''',
+          Generate an optimal protein goal in grams and an optimal calorie goal
+          in calories for a person who is $age, weighs $weight lb 
+          and is $height that is looking to $objective, with reasoning for each.''',
       ),
     ], jsonSchema);
     final goalsJson = json.decode(response.text!);
