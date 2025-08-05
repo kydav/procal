@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:procal/constants/strings.dart';
-import 'package:procal/pages/home/welcome/welcome_controller.dart';
+import 'package:procal/pages/home/welcome/welcome_page_state.dart';
 import 'package:procal/pages/home/welcome/welcome_wrapper.dart';
 
 enum GoalSettingMode { ai, manual }
@@ -13,9 +13,9 @@ class GoalSettingModePage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final welcomeState = ref.watch(welcomeControllerProvider);
+    final welcomeState = ref.watch(welcomePageStateProvider);
     final goalSettingMode = useState<GoalSettingMode?>(
-      welcomeState.goalSettingMode ?? GoalSettingMode.ai,
+      welcomeState.value?.goalSettingMode ?? GoalSettingMode.ai,
     );
 
     return WelcomeWrapper(
@@ -23,9 +23,9 @@ class GoalSettingModePage extends HookConsumerWidget {
       isNextDisabled: false,
       onNextPressed: () {
         ref
-            .read(welcomeControllerProvider.notifier)
+            .read(welcomePageStateProvider.notifier)
             .setGoalSettingMode(goalSettingMode.value ?? GoalSettingMode.ai);
-        ref.read(welcomeControllerProvider.notifier).getGoals();
+        ref.read(welcomePageStateProvider.notifier).getGoals();
         pageController.nextPage(
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeInOut,

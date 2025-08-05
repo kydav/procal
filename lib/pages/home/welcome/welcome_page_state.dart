@@ -1,14 +1,15 @@
+import 'package:flutter/material.dart';
 import 'package:procal/models/generated_goals.dart';
 import 'package:procal/pages/home/welcome/goal_setting_mode_page.dart';
 import 'package:procal/services/ai_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'welcome_controller.g.dart';
+part 'welcome_page_state.g.dart';
 
 @riverpod
-class WelcomeController extends _$WelcomeController {
+class WelcomePageState extends _$WelcomePageState {
   @override
-  WelcomeControllerState build() => WelcomeControllerState(
+  FutureOr<WelcomeState> build() async => WelcomeState(
     firstName: '',
     lastName: '',
     age: '',
@@ -20,76 +21,79 @@ class WelcomeController extends _$WelcomeController {
     goalSettingMode: GoalSettingMode.ai,
   );
 
-  @override
-  bool updateShouldNotify(
-    WelcomeControllerState previous,
-    WelcomeControllerState next,
-  ) =>
-      previous.currentWeight != next.currentWeight ||
-      previous.height != next.height;
+  // @override
+  // bool updateShouldNotify(
+  //   WelcomeControllerState previous,
+  //   WelcomeControllerState next,
+  // ) =>
+  //     previous.currentWeight != next.currentWeight ||
+  //     previous.height != next.height;
 
   void setFirstName(String firstName) {
-    state = state.copyWith(firstName: firstName);
+    state = AsyncData(state.value!.copyWith(firstName: firstName));
   }
 
   void setLastName(String lastName) {
-    state = state.copyWith(lastName: lastName);
+    state = AsyncData(state.value!.copyWith(lastName: lastName));
   }
 
   void setAge(String age) {
-    state = state.copyWith(age: age);
+    state = AsyncData(state.value!.copyWith(age: age));
   }
 
   void setGender(String gender) {
-    state = state.copyWith(gender: gender);
+    state = AsyncData(state.value!.copyWith(gender: gender));
   }
 
   void setPrimaryGoal(String primaryGoal) {
-    state = state.copyWith(primaryGoal: primaryGoal);
+    state = AsyncData(state.value!.copyWith(primaryGoal: primaryGoal));
   }
 
   void setCurrentWeight(int currentWeight) {
-    state = state.copyWith(currentWeight: currentWeight);
+    state = AsyncData(state.value!.copyWith(currentWeight: currentWeight));
   }
 
   void setHeight(int height) {
-    state = state.copyWith(height: height);
+    state = AsyncData(state.value!.copyWith(height: height));
   }
 
   void setMeasurementUnit(MeasurementUnit measurementUnit) {
-    state = state.copyWith(measurementUnit: measurementUnit);
+    state = AsyncData(state.value!.copyWith(measurementUnit: measurementUnit));
   }
 
   void setGoalSettingMode(GoalSettingMode goalSettingMode) {
-    state = state.copyWith(goalSettingMode: goalSettingMode);
+    state = AsyncData(state.value!.copyWith(goalSettingMode: goalSettingMode));
   }
 
   Future<void> getGoals() async {
-    state = state.copyWith(isLoading: true);
+    state = const AsyncLoading();
     try {
       final goals = await ref
           .read(aiServiceProvider.notifier)
           .generateProteinCalorieGoals(
-            state.measurementUnit == MeasurementUnit.imperial
-                ? '${(state.currentWeight! * 2.20462).toStringAsFixed(0)} lbs'
-                : '${state.currentWeight!} kg',
-            state.measurementUnit == MeasurementUnit.imperial
-                ? '${(state.height! / 30.48).toInt()} ft ${(((state.height! / 30.48) - (state.height! / 30.48).toInt()) * 12).toStringAsFixed(0)} in'
-                : '${state.height!} cm',
-            state.age,
-            state.gender,
-            state.primaryGoal!.split('_').join(' '),
+            state.value!.measurementUnit == MeasurementUnit.imperial
+                ? '${(state.value!.currentWeight! * 2.20462).toStringAsFixed(0)} lbs'
+                : '${state.value!.currentWeight!} kg',
+            state.value!.measurementUnit == MeasurementUnit.imperial
+                ? '${(state.value!.height! / 30.48).toInt()} ft ${(((state.value!.height! / 30.48) - (state.value!.height! / 30.48).toInt()) * 12).toStringAsFixed(0)} in'
+                : '${state.value!.height!} cm',
+            state.value!.age,
+            state.value!.gender,
+            state.value!.primaryGoal!.split('_').join(' '),
           );
-      state = state.copyWith(generatedGoals: goals, isLoading: false);
-    } on Exception catch (e) {
-      state = state.copyWith(isLoading: false);
+      state = AsyncData(
+        state.value!.copyWith(generatedGoals: goals, isLoading: false),
+      );
+    } on Exception catch (e, stk) {
+      debugPrint('Error generating goals: $e');
+      state = AsyncError(e, stk);
       return;
     }
   }
 }
 
-class WelcomeControllerState {
-  WelcomeControllerState({
+class WelcomeState {
+  WelcomeState({
     required this.firstName,
     required this.lastName,
     required this.age,
@@ -113,7 +117,7 @@ class WelcomeControllerState {
   final GoalSettingMode? goalSettingMode;
   final bool isLoading;
   final GeneratedGoals? generatedGoals;
-  WelcomeControllerState copyWith({
+  WelcomeState copyWith({
     String? firstName,
     String? lastName,
     String? age,
@@ -125,7 +129,7 @@ class WelcomeControllerState {
     GoalSettingMode? goalSettingMode,
     bool? isLoading,
     GeneratedGoals? generatedGoals,
-  }) => WelcomeControllerState(
+  }) => WelcomeState(
     firstName: firstName ?? this.firstName,
     lastName: lastName ?? this.lastName,
     age: age ?? this.age,

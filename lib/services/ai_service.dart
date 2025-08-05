@@ -42,19 +42,22 @@ class AiService extends _$AiService {
           properties: {
             'protein': Schema.integer(),
             'proteinReasoning': Schema.string(),
-            'calories': Schema.integer(),
+            'caloriesSedentary': Schema.integer(),
+            'caloriesLightlyActive': Schema.integer(),
+            'caloriesModeratelyActive': Schema.integer(),
+            'caloriesVeryActive': Schema.integer(),
             'caloriesReasoning': Schema.string(),
           },
         ),
       },
     );
     final response = await _getResponse([
-      Content.text(
-        '''
-          Generate an optimal protein goal in grams and an optimal calorie goal
-          in calories for a person who is $age, weighs $weight lb 
-          and is $height that is looking to $objective, with reasoning for each.''',
-      ),
+      Content.text('''
+          For a person who is $weight, $gender, $height tall, and $age years old,
+          that is looking to $objective, generate an optimal protein goal in grams and reasoning for it.  
+          Also generate optimal calories for sedentary, lightly active, moderately active, and very active lifestyles,
+          with reasoning for the calorie goals.
+          '''),
     ], jsonSchema);
     final goalsJson = json.decode(response.text!);
     return GeneratedGoals.fromJson(goalsJson['goals']);

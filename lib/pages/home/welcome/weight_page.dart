@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:procal/constants/strings.dart';
-import 'package:procal/pages/home/welcome/welcome_controller.dart';
+import 'package:procal/pages/home/welcome/welcome_page_state.dart';
 import 'package:procal/pages/home/welcome/welcome_wrapper.dart';
 
 class WeightPage extends HookConsumerWidget {
@@ -25,10 +25,10 @@ class WeightPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final welcomeController = ref.read(welcomeControllerProvider.notifier);
-    final welcomeState = ref.watch(welcomeControllerProvider);
+    final welcomeController = ref.read(welcomePageStateProvider.notifier);
+    final welcomeState = ref.watch(welcomePageStateProvider);
     final measurementUnit = useState(
-      welcomeState.measurementUnit ?? MeasurementUnit.imperial,
+      welcomeState.value?.measurementUnit ?? MeasurementUnit.imperial,
     );
     final weightController = useTextEditingController();
     final heightControllerCmOrFt = useTextEditingController();
@@ -37,20 +37,22 @@ class WeightPage extends HookConsumerWidget {
     final isNextDisabled = useState(true);
 
     useEffect(() {
-      if (welcomeState.height != null) {
+      if (welcomeState.value?.height != null) {
         if (measurementUnit.value == MeasurementUnit.imperial) {
-          final feet = (welcomeState.height! / 30.48).toInt();
-          final inches = ((welcomeState.height! / 30.48) - feet) * 12;
+          final feet = (welcomeState.value!.height! / 30.48).toInt();
+          final inches = ((welcomeState.value!.height! / 30.48) - feet) * 12;
           heightControllerCmOrFt.text = feet.toString();
           heightControllerInches.text = inches.toStringAsFixed(0);
         } else {
-          heightControllerCmOrFt.text = welcomeState.height.toString();
+          heightControllerCmOrFt.text = welcomeState.value!.height!.toString();
         }
-        if (welcomeState.currentWeight != null) {
+        if (welcomeState.value?.currentWeight != null) {
           weightController.text =
               measurementUnit.value == MeasurementUnit.imperial
-              ? (welcomeState.currentWeight! * 2.20462).toStringAsFixed(0)
-              : welcomeState.currentWeight.toString();
+              ? (welcomeState.value!.currentWeight! * 2.20462).toStringAsFixed(
+                  0,
+                )
+              : welcomeState.value!.currentWeight!.toString();
         }
         checkDisabled(weightController, heightControllerCmOrFt, isNextDisabled);
       }

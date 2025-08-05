@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:procal/constants/strings.dart';
-import 'package:procal/pages/home/welcome/welcome_controller.dart';
+import 'package:procal/pages/home/welcome/welcome_page_state.dart';
 import 'package:procal/pages/home/welcome/welcome_wrapper.dart';
 
 class PersonalInfoPage extends HookConsumerWidget {
@@ -12,18 +12,22 @@ class PersonalInfoPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final welcomeState = ref.watch(welcomeControllerProvider);
+    final welcomeState = ref.watch(welcomePageStateProvider);
     final firstNameController = useTextEditingController(
-      text: welcomeState.firstName,
+      text: welcomeState.value?.firstName,
     );
     final lastNameController = useTextEditingController(
-      text: welcomeState.lastName,
+      text: welcomeState.value?.lastName,
     );
-    final ageController = useTextEditingController(text: welcomeState.age);
+    final ageController = useTextEditingController(
+      text: welcomeState.value?.age,
+    );
     final gender = useState<String?>(
-      welcomeState.gender.isEmpty ? null : welcomeState.gender,
+      welcomeState.value?.gender.isEmpty ?? true
+          ? null
+          : welcomeState.value?.gender,
     );
-    final welcomeController = ref.read(welcomeControllerProvider.notifier);
+    final welcomeController = ref.read(welcomePageStateProvider.notifier);
     final nextDisabled = useState(true);
 
     void checkDisabled() {
