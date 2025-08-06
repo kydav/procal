@@ -13,7 +13,7 @@ class WelcomePage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final pageController = usePageController(initialPage: 0);
+    final pageController = usePageController();
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
