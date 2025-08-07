@@ -25,7 +25,7 @@ class LoginController extends _$LoginController {
           .read(authServiceProvider.notifier)
           .createUser(username, password);
 
-      await ref
+      final user = await ref
           .read(procalServiceProvider)
           .createUser(
             ProcalUser(
@@ -36,7 +36,9 @@ class LoginController extends _$LoginController {
             ),
           );
       ref.read(procalRouterProvider).go(Routes.welcome.path);
-      ref.read(authStateNotifierProvider.notifier).setLoggedIn(result.user!);
+      ref
+          .read(authStateNotifierProvider.notifier)
+          .setLoggedIn(result.user!, user);
       state = const AsyncValue.data(null);
     } on FirebaseAuthException catch (e, stk) {
       final error = CreateUserError.fromCode(e.code);
@@ -56,24 +58,14 @@ class LoginController extends _$LoginController {
           .read(authServiceProvider.notifier)
           .loginUser(username, password);
 
-      // final user = await ref
-      //     .read(procalServiceProvider)
-      //     .getUserByEmail(username);
-      // await ref
-      //     .read(procalServiceProvider)
-      //     .createUser(
-      //       ProcalUser(
-      //         email: username,
-      //         firstName: 'Kyler',
-      //         lastName: 'Tester',
-      //         isActive: true,
-      //       ),
-      //     );
+      final user = await ref
+          .read(procalServiceProvider)
+          .getUserByEmail(username);
+      ref
+          .read(authStateNotifierProvider.notifier)
+          .setLoggedIn(result.user!, user.data!);
       ref.read(procalRouterProvider).go(Routes.welcome.path);
 
-      //ref.read(procalRouterProvider).go(Routes.intro.path);
-      //ref.read(procalRouterProvider).go(Routes.home.path);
-      ref.read(authStateNotifierProvider.notifier).setLoggedIn(result.user!);
       state = const AsyncValue.data(null);
     } on FirebaseAuthException catch (e, stk) {
       final error = LoginError.fromCode(e.code);

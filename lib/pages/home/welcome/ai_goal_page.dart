@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:procal/constants/strings.dart';
+import 'package:procal/pages/home/home_page.dart';
 import 'package:procal/pages/home/welcome/welcome_page_state.dart';
 import 'package:procal/pages/home/welcome/welcome_wrapper.dart';
+import 'package:procal/procal_router.dart';
+import 'package:procal/routes.dart';
 
 enum ActivityLevel {
   sedentary,
@@ -58,28 +61,46 @@ class AiGoalPage extends HookConsumerWidget {
         return WelcomeWrapper(
           pageController: pageController,
           isNextDisabled: false,
-          onNextPressed: () {
-            // TODO: go to dashboard, maybe show animation
-            // and update state/send to api
+          finalPage: true,
+          onNextPressed: () async {
+            await ref
+                .read(welcomePageStateProvider.notifier)
+                .setGoals(
+                  int.parse(proteinController.text),
+                  int.parse(calorieController.text),
+                );
+            ref.read(procalRouterProvider).go(Routes.home.path);
           },
           child: Column(
-            spacing: 10,
             children: [
-              Text(WelcomeStrings.goalsGenerated),
-              Row(
-                children: [
-                  Text(WelcomeStrings.proteinGoal),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: TextField(
-                      controller: proteinController,
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
+              Text(
+                WelcomeStrings.goalsGenerated,
+                style: const TextStyle(fontSize: 16),
+              ),
+              Text(WelcomeStrings.changeNowOrLater),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5.0),
+                child: Row(
+                  children: [
+                    Text(
+                      WelcomeStrings.proteinGoal,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 16,
                       ),
                     ),
-                  ),
-                ],
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: TextField(
+                        controller: proteinController,
+                        keyboardType: TextInputType.number,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
               Align(
                 alignment: Alignment.centerLeft,
@@ -89,7 +110,7 @@ class AiGoalPage extends HookConsumerWidget {
                 ),
               ),
               SizedBox(
-                height: 125,
+                height: MediaQuery.of(context).size.height * 0.12,
                 child: Scrollbar(
                   controller: firstController,
                   thickness: 10,
@@ -109,21 +130,30 @@ class AiGoalPage extends HookConsumerWidget {
                   ),
                 ),
               ),
-              Divider(),
-              Row(
-                children: [
-                  Text(WelcomeStrings.calorieGoal),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: TextField(
-                      controller: calorieController,
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
+              const Divider(height: 10, thickness: 4),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5.0),
+                child: Row(
+                  children: [
+                    Text(
+                      WelcomeStrings.calorieGoal,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 16,
                       ),
                     ),
-                  ),
-                ],
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: TextField(
+                        controller: calorieController,
+                        keyboardType: TextInputType.number,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
               DropdownButton<int>(
                 items:
@@ -144,6 +174,7 @@ class AiGoalPage extends HookConsumerWidget {
                         .toList(),
                 value: calorieSelection.value,
                 hint: const Text('Select Activity Level'),
+
                 onChanged: (value) {
                   if (value != null) {
                     calorieSelection.value = value;
@@ -159,7 +190,7 @@ class AiGoalPage extends HookConsumerWidget {
                 ),
               ),
               SizedBox(
-                height: 125,
+                height: MediaQuery.of(context).size.height * 0.12,
                 child: Scrollbar(
                   controller: secondController,
                   thickness: 10,
@@ -179,6 +210,8 @@ class AiGoalPage extends HookConsumerWidget {
                   ),
                 ),
               ),
+              const Spacer(),
+              Text(WelcomeStrings.aiGoalSettingDisclaimer),
             ],
           ),
         );

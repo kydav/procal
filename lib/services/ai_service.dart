@@ -19,6 +19,8 @@ class AiService extends _$AiService {
     Iterable<Content> prompt,
     Schema? jsonSchema,
   ) async {
+    // TODO: Look into docs and see if more is supposed to be done before calling
+    // if not, then implement try/retry logic for handling errors
     final response = await _model.generateContent(
       prompt,
       generationConfig: GenerationConfig(

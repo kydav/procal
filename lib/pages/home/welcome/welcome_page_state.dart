@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:procal/models/generated_goals.dart';
 import 'package:procal/pages/home/welcome/goal_setting_mode_page.dart';
+import 'package:procal/providers/auth_state_notifier.dart';
 import 'package:procal/services/ai_service.dart';
+import 'package:procal/services/api/clients/procal_service.dart';
+import 'package:procal/services/api/models/goal/goal.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'welcome_page_state.g.dart';
@@ -20,14 +23,6 @@ class WelcomePageState extends _$WelcomePageState {
     measurementUnit: MeasurementUnit.imperial,
     goalSettingMode: GoalSettingMode.ai,
   );
-
-  // @override
-  // bool updateShouldNotify(
-  //   WelcomeControllerState previous,
-  //   WelcomeControllerState next,
-  // ) =>
-  //     previous.currentWeight != next.currentWeight ||
-  //     previous.height != next.height;
 
   void setFirstName(String firstName) {
     state = AsyncData(state.value!.copyWith(firstName: firstName));
@@ -63,6 +58,30 @@ class WelcomePageState extends _$WelcomePageState {
 
   void setGoalSettingMode(GoalSettingMode goalSettingMode) {
     state = AsyncData(state.value!.copyWith(goalSettingMode: goalSettingMode));
+  }
+
+  Future<void> setGoals(int proteinGoal, int calorieGoal) async {
+    state = const AsyncLoading();
+    final authState = ref.watch(authStateNotifierProvider);
+    final userId = authState.value?.procalUser?.id;
+    await ref
+        .read(procalServiceProvider)
+        .createGoal(
+          Goal(
+            proteinGoal: proteinGoal,
+            calorieGoal: calorieGoal,
+            objective: state.value!.primaryGoal ?? '',
+            currentWeight: state.value!.currentWeight ?? 0,
+            userId: userId,
+          ),
+        )
+        .then((goal) {
+          state = AsyncData(state.value!);
+        })
+        .catchError((e, stk) {
+          debugPrint('Error setting goals: $e');
+          state = AsyncError(e, stk);
+        });
   }
 
   Future<void> getGoals() async {

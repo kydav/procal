@@ -46,6 +46,7 @@ class ObjectivePage extends HookConsumerWidget {
           Text(WelcomeStrings.primaryGoal),
           ListTile(
             title: Text(WelcomeStrings.loseWeight),
+            onTap: () => primaryGoal.value = 'lose_weight',
             trailing: Radio(
               value: 'lose_weight',
               groupValue: primaryGoal.value,
@@ -56,6 +57,7 @@ class ObjectivePage extends HookConsumerWidget {
           ),
           ListTile(
             title: Text(WelcomeStrings.buildMuscle),
+            onTap: () => primaryGoal.value = 'build_muscle',
             trailing: Radio(
               value: 'build_muscle',
               groupValue: primaryGoal.value,
@@ -66,6 +68,7 @@ class ObjectivePage extends HookConsumerWidget {
           ),
           ListTile(
             title: Text(WelcomeStrings.maintainWeight),
+            onTap: () => primaryGoal.value = 'maintain_weight',
             trailing: Radio(
               value: 'maintain_weight',
               groupValue: primaryGoal.value,

@@ -20,11 +20,11 @@ final initializeAppProvider = FutureProvider<void>((ref) async {
   if (shownIntro == null || !shownIntro) {
     ref.read(procalRouterProvider).go(Routes.intro.path);
   }
-  final currentUser = FirebaseAuth.instance.currentUser;
-  if (currentUser != null) {
-    ref.read(authStateNotifierProvider.notifier).setLoggedIn(currentUser);
-    ref.read(procalRouterProvider).go(Routes.home.path);
-  }
+  // final currentUser = FirebaseAuth.instance.currentUser;
+  // if (currentUser != null) {
+  //   ref.read(authStateNotifierProvider.notifier).setLoggedIn(currentUser);
+  //   ref.read(procalRouterProvider).go(Routes.home.path);
+  // }
   await Health().configure();
   //await dotenv.load(fileName: 'dev.env');
   await dotenv.load(fileName: 'local.env');

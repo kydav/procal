@@ -7,6 +7,7 @@ import 'package:procal/pages/home/welcome/goal_setting_mode_page.dart';
 import 'package:procal/pages/home/welcome/objective_page.dart';
 import 'package:procal/pages/home/welcome/personal_info_page.dart';
 import 'package:procal/pages/home/welcome/weight_page.dart';
+import 'package:procal/providers/auth_state_notifier.dart';
 
 class WelcomePage extends HookConsumerWidget {
   const WelcomePage({super.key});
@@ -14,7 +15,14 @@ class WelcomePage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final pageController = usePageController();
-
+    final authState = ref.watch(authStateNotifierProvider);
+    final userId = authState.value?.procalUser?.id;
+    print(userId);
+    authState.whenData((auth) {
+      if (auth.isLoggedIn && userId != null) {
+        print(auth.procalUser);
+      }
+    });
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(

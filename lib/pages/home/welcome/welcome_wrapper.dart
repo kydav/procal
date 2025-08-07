@@ -7,6 +7,7 @@ class WelcomeWrapper extends StatelessWidget {
     required this.isNextDisabled,
     this.showBackButton = true,
     this.onNextPressed,
+    this.finalPage = false,
     super.key,
   });
 
@@ -15,6 +16,7 @@ class WelcomeWrapper extends StatelessWidget {
   final bool isNextDisabled;
   final bool showBackButton;
   final VoidCallback? onNextPressed;
+  final bool finalPage;
 
   @override
   Widget build(BuildContext context) => SafeArea(
@@ -55,7 +57,7 @@ class WelcomeWrapper extends StatelessWidget {
                           // if (!context.mounted) return;
                           // FocusScope.of(context).unfocus();
                         },
-                  icon: const Icon(Icons.arrow_forward),
+                  icon: Icon(finalPage ? Icons.check : Icons.arrow_forward),
                 ),
               ),
             ],
