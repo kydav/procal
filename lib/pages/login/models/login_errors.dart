@@ -62,7 +62,6 @@ enum LoginError {
   tooManyRequests('too-many-requests'),
   userTokenExpired('user-token-expired'),
   networkRequestFailed('network-request-failed'),
-  invalidLoginCredentials('invalid-login-credentials'),
   invalidCredential('invalid-credential'),
   operationNotAllowed('operation-not-allowed'),
   unknown('unknown');
@@ -84,8 +83,8 @@ enum LoginError {
         return LoginError.userTokenExpired;
       case 'network-request-failed':
         return LoginError.networkRequestFailed;
-      case 'invalid-login-credentials':
-        return LoginError.invalidLoginCredentials;
+      case 'invalid-credential':
+        return LoginError.invalidCredential;
       case 'operation-not-allowed':
         return LoginError.operationNotAllowed;
       default:
@@ -112,8 +111,8 @@ extension LoginErrorExtension on LoginError {
         return 'Your session has expired, please log in again.';
       case LoginError.networkRequestFailed:
         return 'Network request failed, please check your internet connection.';
-      case LoginError.invalidLoginCredentials:
       case LoginError.invalidCredential:
+        return 'Invalid login credentials.';
       case LoginError.operationNotAllowed:
       case LoginError.unknown:
         return 'An unknown error occurred.';

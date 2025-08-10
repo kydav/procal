@@ -6,9 +6,10 @@ part 'procal_user.g.dart';
 class ProcalUser {
   ProcalUser({
     required this.email,
-    required this.firstName,
-    required this.lastName,
+    required this.firebaseUid,
     required this.isActive,
+    this.firstName,
+    this.lastName,
     this.birthDate,
     this.height,
     this.currentWeight,
@@ -18,8 +19,9 @@ class ProcalUser {
   factory ProcalUser.fromJson(Map<String, dynamic> json) =>
       _$ProcalUserFromJson(json);
   final String email;
-  final String firstName;
-  final String lastName;
+  final String firebaseUid;
+  final String? firstName;
+  final String? lastName;
   final DateTime? birthDate;
   final double? height;
   final double? currentWeight;

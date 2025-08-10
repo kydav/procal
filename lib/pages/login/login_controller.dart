@@ -30,8 +30,7 @@ class LoginController extends _$LoginController {
           .createUser(
             ProcalUser(
               email: username,
-              firstName: 'Kyler',
-              lastName: 'Tester',
+              firebaseUid: result.user!.uid,
               isActive: true,
             ),
           );
@@ -60,11 +59,19 @@ class LoginController extends _$LoginController {
 
       final user = await ref
           .read(procalServiceProvider)
-          .getUserByEmail(username);
+          .getUserByUid(result.user!.uid)
+          .catchError((e) {
+            debugPrint(e);
+          });
       ref
           .read(authStateNotifierProvider.notifier)
-          .setLoggedIn(result.user!, user.data!);
-      ref.read(procalRouterProvider).go(Routes.welcome.path);
+          .setLoggedIn(result.user!, user!);
+
+      if (user.firstName == null || user.firstName!.isEmpty) {
+        ref.read(procalRouterProvider).go(Routes.welcome.path);
+      } else {
+        ref.read(procalRouterProvider).go(Routes.home.path);
+      }
 
       state = const AsyncValue.data(null);
     } on FirebaseAuthException catch (e, stk) {

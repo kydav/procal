@@ -8,9 +8,10 @@ part of 'procal_user.dart';
 
 ProcalUser _$ProcalUserFromJson(Map<String, dynamic> json) => ProcalUser(
   email: json['email'] as String,
-  firstName: json['first_name'] as String,
-  lastName: json['last_name'] as String,
+  firebaseUid: json['firebase_uid'] as String,
   isActive: json['is_active'] as bool,
+  firstName: json['first_name'] as String?,
+  lastName: json['last_name'] as String?,
   birthDate: json['birth_date'] == null
       ? null
       : DateTime.parse(json['birth_date'] as String),
@@ -22,6 +23,7 @@ ProcalUser _$ProcalUserFromJson(Map<String, dynamic> json) => ProcalUser(
 Map<String, dynamic> _$ProcalUserToJson(ProcalUser instance) =>
     <String, dynamic>{
       'email': instance.email,
+      'firebase_uid': instance.firebaseUid,
       'first_name': instance.firstName,
       'last_name': instance.lastName,
       'birth_date': instance.birthDate?.toIso8601String(),

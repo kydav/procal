@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -7,7 +6,6 @@ import 'package:health/health.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:procal/constants/system_strings.dart';
 import 'package:procal/procal_router.dart';
-import 'package:procal/providers/auth_state_notifier.dart';
 import 'package:procal/routes.dart';
 import 'package:procal/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';

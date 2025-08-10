@@ -8,9 +8,8 @@ part 'auth_state_notifier.g.dart';
 @Riverpod(keepAlive: true)
 class AuthStateNotifier extends _$AuthStateNotifier {
   @override
-  FutureOr<CurrentAuthState> build() {
-    return CurrentAuthState(isLoggedIn: false, user: null, procalUser: null);
-  }
+  FutureOr<CurrentAuthState> build() =>
+      const CurrentAuthState(isLoggedIn: false, user: null, procalUser: null);
 
   bool isLoggedIn() => state.hasValue && state.value!.isLoggedIn;
 
