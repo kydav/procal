@@ -7,28 +7,34 @@ part of 'procal_user.dart';
 // **************************************************************************
 
 ProcalUser _$ProcalUserFromJson(Map<String, dynamic> json) => ProcalUser(
-  email: json['email'] as String,
-  firebaseUid: json['firebase_uid'] as String,
-  isActive: json['is_active'] as bool,
-  firstName: json['first_name'] as String?,
-  lastName: json['last_name'] as String?,
-  birthDate: json['birth_date'] == null
+  email: json['Email'] as String,
+  firebaseUid: json['FirebaseUid'] as String,
+  isActive: json['IsActive'] as bool,
+  firstName: json['FirstName'] as String?,
+  lastName: json['LastName'] as String?,
+  birthDate: json['BirthDate'] == null
       ? null
-      : DateTime.parse(json['birth_date'] as String),
-  height: (json['height'] as num?)?.toDouble(),
-  currentWeight: (json['current_weight'] as num?)?.toDouble(),
-  id: json['id'] as String?,
+      : DateTime.parse(json['BirthDate'] as String),
+  height: (json['Height'] as num?)?.toDouble(),
+  currentWeight: (json['CurrentWeight'] as num?)?.toDouble(),
+  id: json['ID'] as String?,
+  age: (json['Age'] as num?)?.toInt(),
+  gender: json['Gender'] as String?,
+  measurementPreference: json['MeasurementPreference'] as String?,
 );
 
 Map<String, dynamic> _$ProcalUserToJson(ProcalUser instance) =>
     <String, dynamic>{
-      'email': instance.email,
-      'firebase_uid': instance.firebaseUid,
-      'first_name': instance.firstName,
-      'last_name': instance.lastName,
-      'birth_date': instance.birthDate?.toIso8601String(),
-      'height': instance.height,
-      'current_weight': instance.currentWeight,
-      'is_active': instance.isActive,
-      'id': instance.id,
+      'Email': instance.email,
+      'FirebaseUid': instance.firebaseUid,
+      'IsActive': instance.isActive,
+      'FirstName': instance.firstName,
+      'LastName': instance.lastName,
+      'BirthDate': instance.birthDate?.toIso8601String(),
+      'Height': instance.height,
+      'CurrentWeight': instance.currentWeight,
+      'ID': instance.id,
+      'Age': instance.age,
+      'Gender': instance.gender,
+      'MeasurementPreference': instance.measurementPreference,
     };

@@ -209,6 +209,34 @@ class _ProcalClient implements ProcalClient {
   }
 
   @override
+  Future<ProcalUser> updateUser(ProcalUser user) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(user.toJson());
+    final _options = _setStreamType<ProcalUser>(
+      Options(method: 'PUT', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/user',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late ProcalUser _value;
+    try {
+      _value = ProcalUser.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
   Future<Goal> getGoalByUserId(String userId) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

@@ -6,7 +6,7 @@ part of 'welcome_page_state.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$welcomePageStateHash() => r'd0ae3ab8e7bc20591fda4464bc279fd79c0f743e';
+String _$welcomePageStateHash() => r'2873e126acf11e28819cffe0cdd7ac58385d9897';
 
 /// See also [WelcomePageState].
 @ProviderFor(WelcomePageState)

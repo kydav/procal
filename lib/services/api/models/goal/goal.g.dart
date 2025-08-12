@@ -7,19 +7,19 @@ part of 'goal.dart';
 // **************************************************************************
 
 Goal _$GoalFromJson(Map<String, dynamic> json) => Goal(
-  userId: json['userId'] as String?,
-  proteinGoal: (json['proteinGoal'] as num).toInt(),
-  calorieGoal: (json['calorieGoal'] as num).toInt(),
-  currentWeight: (json['currentWeight'] as num).toInt(),
-  objective: json['objective'] as String,
-  weightGoal: (json['weightGoal'] as num?)?.toInt(),
+  userId: json['UserId'] as String?,
+  proteinGoal: (json['ProteinGoal'] as num).toInt(),
+  calorieGoal: (json['CalorieGoal'] as num).toInt(),
+  currentWeight: (json['CurrentWeight'] as num).toInt(),
+  objective: json['Objective'] as String,
+  weightGoal: (json['WeightGoal'] as num?)?.toInt(),
 );
 
 Map<String, dynamic> _$GoalToJson(Goal instance) => <String, dynamic>{
-  'userId': instance.userId,
-  'proteinGoal': instance.proteinGoal,
-  'calorieGoal': instance.calorieGoal,
-  'weightGoal': instance.weightGoal,
-  'currentWeight': instance.currentWeight,
-  'objective': instance.objective,
+  'UserId': instance.userId,
+  'ProteinGoal': instance.proteinGoal,
+  'CalorieGoal': instance.calorieGoal,
+  'WeightGoal': instance.weightGoal,
+  'CurrentWeight': instance.currentWeight,
+  'Objective': instance.objective,
 };

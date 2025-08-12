@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:procal/pages/login/models/login_errors.dart';
@@ -59,10 +60,7 @@ class LoginController extends _$LoginController {
 
       final user = await ref
           .read(procalServiceProvider)
-          .getUserByUid(result.user!.uid)
-          .catchError((e) {
-            debugPrint(e);
-          });
+          .getUserByUid(result.user!.uid);
       ref
           .read(authStateNotifierProvider.notifier)
           .setLoggedIn(result.user!, user!);
@@ -78,6 +76,9 @@ class LoginController extends _$LoginController {
       final error = LoginError.fromCode(e.code);
       state = AsyncValue.error(error.message, stk);
       return;
+    } on DioException catch (e, stk) {
+      debugPrint('DioException: ${e.toString()}');
+      state = AsyncValue.error('Failed to login user', stk);
     } on Exception catch (e, stk) {
       debugPrint('AuthException: ${e.toString()}');
       state = AsyncValue.error('Failed to login user', stk);

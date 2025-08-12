@@ -14,13 +14,6 @@ class WelcomePage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final pageController = usePageController();
-    //final authState = ref.watch(authStateNotifierProvider);
-    //final userId = authState.value?.procalUser?.id;
-    // authState.whenData((auth) {
-    //   if (auth.isLoggedIn && userId != null) {
-    //     print(auth.procalUser);
-    //   }
-    // });
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(

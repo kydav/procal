@@ -17,6 +17,13 @@ class AuthStateNotifier extends _$AuthStateNotifier {
     CurrentAuthState(isLoggedIn: true, user: user, procalUser: procalUser),
   );
 
+  void updateProcalUser(ProcalUser procalUser) {
+    if (state.hasValue) {
+      final currentState = state.value!;
+      state = AsyncData(currentState.copyWith(procalUser: procalUser));
+    }
+  }
+
   void clearCurrentUser() => state = const AsyncData(
     CurrentAuthState(isLoggedIn: false, user: null, procalUser: null),
   );

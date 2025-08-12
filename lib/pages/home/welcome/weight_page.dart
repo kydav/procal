@@ -83,7 +83,9 @@ class WeightPage extends HookConsumerWidget {
               ..setCurrentWeight(int.parse(weightController.text));
           }
         } else {
-          welcomeController.setHeight(int.parse(heightControllerCmOrFt.text));
+          welcomeController
+            ..setHeight(int.parse(heightControllerCmOrFt.text))
+            ..setCurrentWeight(int.parse(weightController.text));
         }
         await pageController.nextPage(
           duration: Durations.medium1,

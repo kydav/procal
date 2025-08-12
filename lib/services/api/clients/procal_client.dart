@@ -35,6 +35,9 @@ abstract class ProcalClient {
   @GET('/user/uid/{firebaseUid}')
   Future<ProcalUser?> getUserByUid(@Path('firebaseUid') String firebaseUid);
 
+  @PUT('/user')
+  Future<ProcalUser> updateUser(@Body() ProcalUser user);
+
   @GET('/goal/{userId}')
   Future<Goal> getGoalByUserId(@Path('userId') String userId);
 

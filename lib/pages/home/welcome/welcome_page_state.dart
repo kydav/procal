@@ -5,6 +5,7 @@ import 'package:procal/providers/auth_state_notifier.dart';
 import 'package:procal/services/ai_service.dart';
 import 'package:procal/services/api/clients/procal_service.dart';
 import 'package:procal/services/api/models/goal/goal.dart';
+import 'package:procal/services/api/models/user/procal_user.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'welcome_page_state.g.dart';
@@ -64,6 +65,35 @@ class WelcomePageState extends _$WelcomePageState {
     state = const AsyncLoading();
     final authState = ref.watch(authStateNotifierProvider);
     final userId = authState.value?.procalUser?.id;
+    final user = authState.value!.procalUser!;
+    await ref
+        .read(procalServiceProvider)
+        .updateUser(
+          ProcalUser(
+            id: userId,
+            email: user.email,
+            firebaseUid: user.firebaseUid,
+            isActive: user.isActive,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            currentWeight: state.value!.currentWeight?.toDouble(),
+            height: user.height,
+            measurementPreference: state.value!.measurementUnit?.name,
+            age: state.value!.age.isNotEmpty
+                ? int.tryParse(state.value!.age)
+                : null,
+            gender: state.value!.gender,
+          ),
+        )
+        .then(
+          (value) => ref
+              .read(authStateNotifierProvider.notifier)
+              .updateProcalUser(value),
+        )
+        .catchError((e, stk) {
+          debugPrint('Error updating user: $e');
+          state = AsyncError(e, stk);
+        });
     await ref
         .read(procalServiceProvider)
         .createGoal(
