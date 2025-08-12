@@ -23,7 +23,7 @@ abstract class ProcalClient {
     @Path('page') int page,
   );
 
-  @POST('/user/create')
+  @POST('/user')
   Future<ProcalUser> createUser(@Body() ProcalUser user);
 
   @GET('/user/{id}')
