@@ -74,10 +74,10 @@ class WelcomePageState extends _$WelcomePageState {
             email: user.email,
             firebaseUid: user.firebaseUid,
             isActive: user.isActive,
-            firstName: user.firstName,
-            lastName: user.lastName,
+            firstName: state.value!.firstName,
+            lastName: state.value!.lastName,
             currentWeight: state.value!.currentWeight?.toDouble(),
-            height: user.height,
+            height: state.value!.height?.toDouble(),
             measurementPreference: state.value!.measurementUnit?.name,
             age: state.value!.age.isNotEmpty
                 ? int.tryParse(state.value!.age)
@@ -101,7 +101,6 @@ class WelcomePageState extends _$WelcomePageState {
             proteinGoal: proteinGoal,
             calorieGoal: calorieGoal,
             objective: state.value!.primaryGoal ?? '',
-            currentWeight: state.value!.currentWeight ?? 0,
             userId: userId,
           ),
         )

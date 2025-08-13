@@ -13,7 +13,7 @@ class ProcalService extends _$ProcalService {
       baseUrl: dotenv.env['BASE_URL'] ?? 'https://procal-api.fly.dev/api/',
       connectTimeout: const Duration(seconds: 20),
       contentType: Headers.jsonContentType,
-      receiveTimeout: const Duration(seconds: 20),
+      receiveTimeout: const Duration(seconds: 60),
       validateStatus: (_) => true,
     ),
   );

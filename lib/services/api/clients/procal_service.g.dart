@@ -6,7 +6,7 @@ part of 'procal_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$procalServiceHash() => r'1e0f64dda9d67bdd7a4661289a61b821d10334e0';
+String _$procalServiceHash() => r'dfdf00e84945259c30028b406a63fd3ae4cb79bd';
 
 /// See also [ProcalService].
 @ProviderFor(ProcalService)

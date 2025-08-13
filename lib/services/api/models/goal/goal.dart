@@ -8,7 +8,6 @@ class Goal {
     required this.userId,
     required this.proteinGoal,
     required this.calorieGoal,
-    required this.currentWeight,
     required this.objective,
     this.weightGoal,
   });
@@ -25,9 +24,6 @@ class Goal {
 
   @JsonKey(name: 'WeightGoal')
   final int? weightGoal;
-
-  @JsonKey(name: 'CurrentWeight')
-  final int currentWeight;
 
   @JsonKey(name: 'Objective')
   final String objective;
