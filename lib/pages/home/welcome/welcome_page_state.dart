@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:procal/models/generated_goals.dart';
 import 'package:procal/pages/home/welcome/goal_setting_mode_page.dart';
+import 'package:procal/procal_router.dart';
 import 'package:procal/providers/auth_state_notifier.dart';
 import 'package:procal/services/ai_service.dart';
 import 'package:procal/services/api/clients/procal_service.dart';
@@ -111,6 +112,7 @@ class WelcomePageState extends _$WelcomePageState {
           debugPrint('Error setting goals: $e');
           state = AsyncError(e, stk);
         });
+    ref.read(procalRouterProvider).go('/home');
   }
 
   Future<void> getGoals() async {

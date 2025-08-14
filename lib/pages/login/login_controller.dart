@@ -35,10 +35,11 @@ class LoginController extends _$LoginController {
               isActive: true,
             ),
           );
-      ref.read(procalRouterProvider).go(Routes.welcome.path);
       ref
           .read(authStateNotifierProvider.notifier)
           .setLoggedIn(result.user!, user);
+      ref.read(procalRouterProvider).go(Routes.welcome.path);
+
       state = const AsyncValue.data(null);
     } on FirebaseAuthException catch (e, stk) {
       final error = CreateUserError.fromCode(e.code);

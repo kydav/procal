@@ -20,15 +20,7 @@ class ProcalService extends _$ProcalService {
 
   @override
   ProcalClient build() {
-    _dio.interceptors.addAll([
-      LoggingInterceptor(),
-      LogInterceptor(
-        request: true,
-        responseBody: true,
-        requestBody: true,
-        error: true,
-      ),
-    ]);
+    _dio.interceptors.addAll([LoggingInterceptor()]);
     return ProcalClient(
       _dio,
       baseUrl: dotenv.env['BASE_URL'] ?? 'https://procal-api.fly.dev/api/',

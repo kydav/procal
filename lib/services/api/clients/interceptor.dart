@@ -7,8 +7,10 @@ class LoggingInterceptor extends Interceptor {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    debugPrint('request: ${options.path}');
-    debugPrint(options.data.toString());
+    if (options.data != null) {
+      debugPrint('***Request Data***');
+      debugPrint(options.data.toString());
+    }
     super.onRequest(options, handler);
   }
 
@@ -23,8 +25,12 @@ class LoggingInterceptor extends Interceptor {
       _ => '❌',
     };
     debugPrint(
-      '$emoji ${response.statusCode ?? ''} $emoji ${response.requestOptions.path}',
+      '$emoji ${response.statusCode ?? ''} $emoji  ${response.requestOptions.baseUrl}${response.requestOptions.path}',
     );
+    if (response.data != null) {
+      debugPrint('***Response***');
+      debugPrint(response.data.toString());
+    }
     super.onResponse(response, handler);
   }
 }

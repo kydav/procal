@@ -110,50 +110,50 @@ class HomePage extends HookConsumerWidget {
       }
     });
 
-    useEffect(() {
-      // addPostFrameCallback is used to ensure that the widget is fully built before showing the dialog
-      WidgetsBinding.instance.addPostFrameCallback((_) async {
-        //showBottom sheet
-        Scaffold.of(context).showBottomSheet(
-          (context) => Column(
-            children: [
-              Text(WelcomeStrings.forTheBestExperience),
-              const SizedBox(height: 20),
-              OutlinedButton(
-                onPressed: () async {
-                  final hasAccess = await ref
-                      .read(healthServiceProvider.notifier)
-                      .requestDataAccess();
-                  if (hasAccess && context.mounted) {
-                    toastification.show(
-                      context: context,
-                      title: Text(ToastStrings.healthGranted),
-                      type: ToastificationType.success,
-                      style: ToastificationStyle.fillColored,
-                      alignment: Alignment.bottomCenter,
-                      autoCloseDuration: const Duration(seconds: 3),
-                      showProgressBar: false,
-                    );
-                    ref.read(procalRouterProvider).pop();
-                  } else if (context.mounted) {
-                    // toastification.show(
-                    //   context: context,
-                    //   title: Text(ToastStrings.healthDenied),
-                    //   type: ToastificationType.error,
-                    //   style: ToastificationStyle.fillColored,
-                    //   alignment: Alignment.bottomCenter,
-                    //   autoCloseDuration: const Duration(seconds: 3),
-                    //   showProgressBar: false,
-                    // );
-                  }
-                },
-                child: Text(WelcomeStrings.enableHealthPermissions),
-              ),
-            ],
-          ),
-        );
-      });
-    }, []);
+    // useEffect(() {
+    //   // addPostFrameCallback is used to ensure that the widget is fully built before showing the dialog
+    //   WidgetsBinding.instance.addPostFrameCallback((_) async {
+    //     //showBottom sheet
+    //     Scaffold.of(context).showBottomSheet(
+    //       (context) => Column(
+    //         children: [
+    //           Text(WelcomeStrings.forTheBestExperience),
+    //           const SizedBox(height: 20),
+    //           OutlinedButton(
+    //             onPressed: () async {
+    //               final hasAccess = await ref
+    //                   .read(healthServiceProvider.notifier)
+    //                   .requestDataAccess();
+    //               if (hasAccess && context.mounted) {
+    //                 toastification.show(
+    //                   context: context,
+    //                   title: Text(ToastStrings.healthGranted),
+    //                   type: ToastificationType.success,
+    //                   style: ToastificationStyle.fillColored,
+    //                   alignment: Alignment.bottomCenter,
+    //                   autoCloseDuration: const Duration(seconds: 3),
+    //                   showProgressBar: false,
+    //                 );
+    //                 ref.read(procalRouterProvider).pop();
+    //               } else if (context.mounted) {
+    //                 // toastification.show(
+    //                 //   context: context,
+    //                 //   title: Text(ToastStrings.healthDenied),
+    //                 //   type: ToastificationType.error,
+    //                 //   style: ToastificationStyle.fillColored,
+    //                 //   alignment: Alignment.bottomCenter,
+    //                 //   autoCloseDuration: const Duration(seconds: 3),
+    //                 //   showProgressBar: false,
+    //                 // );
+    //               }
+    //             },
+    //             child: Text(WelcomeStrings.enableHealthPermissions),
+    //           ),
+    //         ],
+    //       ),
+    //     );
+    //   });
+    // }, []);
     //final date = DateTime.now();
 
     return Scaffold(
