@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:procal/constants/strings.dart';
-import 'package:procal/pages/home/home_page.dart';
 import 'package:procal/pages/home/welcome/welcome_page_state.dart';
 import 'package:procal/pages/home/welcome/welcome_wrapper.dart';
 import 'package:procal/procal_router.dart';
@@ -123,7 +122,7 @@ class AiGoalPage extends HookConsumerWidget {
                     child: Padding(
                       padding: const EdgeInsets.only(right: 15.0),
                       child: Text(
-                        data.generatedGoals!.proteinReasoning,
+                        data.generatedGoals?.proteinReasoning ?? '',
                         textAlign: TextAlign.justify,
                       ),
                     ),
@@ -158,10 +157,10 @@ class AiGoalPage extends HookConsumerWidget {
               DropdownButton<int>(
                 items:
                     [
-                          data.generatedGoals!.caloriesSedentary,
-                          data.generatedGoals!.caloriesLightlyActive,
-                          data.generatedGoals!.caloriesModeratelyActive,
-                          data.generatedGoals!.caloriesVeryActive,
+                          data.generatedGoals?.caloriesSedentary,
+                          data.generatedGoals?.caloriesLightlyActive,
+                          data.generatedGoals?.caloriesModeratelyActive,
+                          data.generatedGoals?.caloriesVeryActive,
                         ]
                         .map(
                           (value) => DropdownMenuItem<int>(
@@ -203,7 +202,7 @@ class AiGoalPage extends HookConsumerWidget {
                     child: Padding(
                       padding: const EdgeInsets.only(right: 15.0),
                       child: Text(
-                        data.generatedGoals!.caloriesReasoning,
+                        data.generatedGoals?.caloriesReasoning ?? '',
                         textAlign: TextAlign.justify,
                       ),
                     ),

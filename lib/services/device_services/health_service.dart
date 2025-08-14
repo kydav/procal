@@ -1,6 +1,5 @@
 import 'package:collection/collection.dart';
 import 'package:health/health.dart';
-import 'package:procal/top_level_providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'health_service.g.dart';
@@ -101,8 +100,7 @@ class HealthService extends _$HealthService {
       startTime: DateTime.now(),
     );
     if (saved) {
-      final currentProtein = await getProtein();
-      ref.read(proteinConsumedProvider.notifier).update((_) => currentProtein);
+      // TODO(me): update provider here?
       return saved;
     }
     return false;
@@ -115,10 +113,7 @@ class HealthService extends _$HealthService {
       startTime: DateTime.now(),
     );
     if (saved) {
-      final currentCalories = await getCalories();
-      ref
-          .read(caloriesConsumedProvider.notifier)
-          .update((_) => currentCalories);
+      // TODO(me): update provider here?
       return saved;
     }
     return false;

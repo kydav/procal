@@ -6,21 +6,50 @@ part of 'welcome_page_state.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$welcomePageStateHash() => r'51196d8879807cf1012c38a46e0f614375efb10e';
-
-/// See also [WelcomePageState].
 @ProviderFor(WelcomePageState)
-final welcomePageStateProvider =
-    AutoDisposeAsyncNotifierProvider<WelcomePageState, WelcomeState>.internal(
-      WelcomePageState.new,
-      name: r'welcomePageStateProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$welcomePageStateHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+const welcomePageStateProvider = WelcomePageStateProvider._();
 
-typedef _$WelcomePageState = AutoDisposeAsyncNotifier<WelcomeState>;
+final class WelcomePageStateProvider
+    extends $AsyncNotifierProvider<WelcomePageState, WelcomeState> {
+  const WelcomePageStateProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'welcomePageStateProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$welcomePageStateHash();
+
+  @$internal
+  @override
+  WelcomePageState create() => WelcomePageState();
+}
+
+String _$welcomePageStateHash() => r'29663b1a8678052e59c49b12fcf58fa36ad1953e';
+
+abstract class _$WelcomePageState extends $AsyncNotifier<WelcomeState> {
+  FutureOr<WelcomeState> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<AsyncValue<WelcomeState>, WelcomeState>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<WelcomeState>, WelcomeState>,
+              AsyncValue<WelcomeState>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
+
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

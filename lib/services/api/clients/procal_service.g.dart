@@ -6,21 +6,58 @@ part of 'procal_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$procalServiceHash() => r'dfdf00e84945259c30028b406a63fd3ae4cb79bd';
-
-/// See also [ProcalService].
 @ProviderFor(ProcalService)
-final procalServiceProvider =
-    AutoDisposeNotifierProvider<ProcalService, ProcalClient>.internal(
-      ProcalService.new,
-      name: r'procalServiceProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$procalServiceHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+const procalServiceProvider = ProcalServiceProvider._();
 
-typedef _$ProcalService = AutoDisposeNotifier<ProcalClient>;
+final class ProcalServiceProvider
+    extends $NotifierProvider<ProcalService, ProcalClient> {
+  const ProcalServiceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'procalServiceProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$procalServiceHash();
+
+  @$internal
+  @override
+  ProcalService create() => ProcalService();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ProcalClient value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<ProcalClient>(value),
+    );
+  }
+}
+
+String _$procalServiceHash() => r'519abdbda80b3af0d0af7c70b7a2e0955ab4cd8e';
+
+abstract class _$ProcalService extends $Notifier<ProcalClient> {
+  ProcalClient build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<ProcalClient, ProcalClient>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<ProcalClient, ProcalClient>,
+              ProcalClient,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
+
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

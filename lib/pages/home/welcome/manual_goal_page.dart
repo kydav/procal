@@ -5,7 +5,5 @@ class ManualGoalPage extends HookConsumerWidget {
   const ManualGoalPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return const Placeholder();
-  }
+  Widget build(BuildContext context, WidgetRef ref) => const Placeholder();
 }

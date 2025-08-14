@@ -6,169 +6,95 @@ part of 'food_detail_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$foodDetailControllerHash() =>
-    r'5a653cb52d36cdf5ec2bfea4ebfd0d788ee651b0';
-
-/// Copied from Dart SDK
-class _SystemHash {
-  _SystemHash._();
-
-  static int combine(int hash, int value) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + value);
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
-    return hash ^ (hash >> 6);
-  }
-
-  static int finish(int hash) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
-    // ignore: parameter_assignments
-    hash = hash ^ (hash >> 11);
-    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
-  }
-}
-
-abstract class _$FoodDetailController
-    extends BuildlessAutoDisposeAsyncNotifier<FatSecretFood> {
-  late final String foodId;
-
-  FutureOr<FatSecretFood> build(String foodId);
-}
-
-/// See also [FoodDetailController].
 @ProviderFor(FoodDetailController)
-const foodDetailControllerProvider = FoodDetailControllerFamily();
+const foodDetailControllerProvider = FoodDetailControllerFamily._();
 
-/// See also [FoodDetailController].
-class FoodDetailControllerFamily extends Family<AsyncValue<FatSecretFood>> {
-  /// See also [FoodDetailController].
-  const FoodDetailControllerFamily();
+final class FoodDetailControllerProvider
+    extends $AsyncNotifierProvider<FoodDetailController, FatSecretFood> {
+  const FoodDetailControllerProvider._({
+    required FoodDetailControllerFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'foodDetailControllerProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
-  /// See also [FoodDetailController].
-  FoodDetailControllerProvider call(String foodId) {
-    return FoodDetailControllerProvider(foodId);
+  @override
+  String debugGetCreateSourceHash() => _$foodDetailControllerHash();
+
+  @override
+  String toString() {
+    return r'foodDetailControllerProvider'
+        ''
+        '($argument)';
   }
 
+  @$internal
   @override
-  FoodDetailControllerProvider getProviderOverride(
-    covariant FoodDetailControllerProvider provider,
-  ) {
-    return call(provider.foodId);
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'foodDetailControllerProvider';
-}
-
-/// See also [FoodDetailController].
-class FoodDetailControllerProvider
-    extends
-        AutoDisposeAsyncNotifierProviderImpl<
-          FoodDetailController,
-          FatSecretFood
-        > {
-  /// See also [FoodDetailController].
-  FoodDetailControllerProvider(String foodId)
-    : this._internal(
-        () => FoodDetailController()..foodId = foodId,
-        from: foodDetailControllerProvider,
-        name: r'foodDetailControllerProvider',
-        debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-            ? null
-            : _$foodDetailControllerHash,
-        dependencies: FoodDetailControllerFamily._dependencies,
-        allTransitiveDependencies:
-            FoodDetailControllerFamily._allTransitiveDependencies,
-        foodId: foodId,
-      );
-
-  FoodDetailControllerProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.foodId,
-  }) : super.internal();
-
-  final String foodId;
-
-  @override
-  FutureOr<FatSecretFood> runNotifierBuild(
-    covariant FoodDetailController notifier,
-  ) {
-    return notifier.build(foodId);
-  }
-
-  @override
-  Override overrideWith(FoodDetailController Function() create) {
-    return ProviderOverride(
-      origin: this,
-      override: FoodDetailControllerProvider._internal(
-        () => create()..foodId = foodId,
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        foodId: foodId,
-      ),
-    );
-  }
-
-  @override
-  AutoDisposeAsyncNotifierProviderElement<FoodDetailController, FatSecretFood>
-  createElement() {
-    return _FoodDetailControllerProviderElement(this);
-  }
+  FoodDetailController create() => FoodDetailController();
 
   @override
   bool operator ==(Object other) {
-    return other is FoodDetailControllerProvider && other.foodId == foodId;
+    return other is FoodDetailControllerProvider && other.argument == argument;
   }
 
   @override
   int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, foodId.hashCode);
-
-    return _SystemHash.finish(hash);
+    return argument.hashCode;
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin FoodDetailControllerRef
-    on AutoDisposeAsyncNotifierProviderRef<FatSecretFood> {
-  /// The parameter `foodId` of this provider.
-  String get foodId;
-}
+String _$foodDetailControllerHash() =>
+    r'5a653cb52d36cdf5ec2bfea4ebfd0d788ee651b0';
 
-class _FoodDetailControllerProviderElement
-    extends
-        AutoDisposeAsyncNotifierProviderElement<
+final class FoodDetailControllerFamily extends $Family
+    with
+        $ClassFamilyOverride<
           FoodDetailController,
-          FatSecretFood
-        >
-    with FoodDetailControllerRef {
-  _FoodDetailControllerProviderElement(super.provider);
+          AsyncValue<FatSecretFood>,
+          FatSecretFood,
+          FutureOr<FatSecretFood>,
+          String
+        > {
+  const FoodDetailControllerFamily._()
+    : super(
+        retry: null,
+        name: r'foodDetailControllerProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  FoodDetailControllerProvider call(String foodId) =>
+      FoodDetailControllerProvider._(argument: foodId, from: this);
 
   @override
-  String get foodId => (origin as FoodDetailControllerProvider).foodId;
+  String toString() => r'foodDetailControllerProvider';
+}
+
+abstract class _$FoodDetailController extends $AsyncNotifier<FatSecretFood> {
+  late final _$args = ref.$arg as String;
+  String get foodId => _$args;
+
+  FutureOr<FatSecretFood> build(String foodId);
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build(_$args);
+    final ref = this.ref as $Ref<AsyncValue<FatSecretFood>, FatSecretFood>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<FatSecretFood>, FatSecretFood>,
+              AsyncValue<FatSecretFood>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
 }
 
 // ignore_for_file: type=lint

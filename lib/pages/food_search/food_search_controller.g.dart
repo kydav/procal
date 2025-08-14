@@ -6,22 +6,51 @@ part of 'food_search_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+@ProviderFor(FoodSearchController)
+const foodSearchControllerProvider = FoodSearchControllerProvider._();
+
+final class FoodSearchControllerProvider
+    extends $AsyncNotifierProvider<FoodSearchController, List<Food>> {
+  const FoodSearchControllerProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'foodSearchControllerProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$foodSearchControllerHash();
+
+  @$internal
+  @override
+  FoodSearchController create() => FoodSearchController();
+}
+
 String _$foodSearchControllerHash() =>
     r'f593807f5edc241e9b58b958e86efcb9b1cc00cc';
 
-/// See also [FoodSearchController].
-@ProviderFor(FoodSearchController)
-final foodSearchControllerProvider =
-    AutoDisposeAsyncNotifierProvider<FoodSearchController, List<Food>>.internal(
-      FoodSearchController.new,
-      name: r'foodSearchControllerProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$foodSearchControllerHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+abstract class _$FoodSearchController extends $AsyncNotifier<List<Food>> {
+  FutureOr<List<Food>> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<AsyncValue<List<Food>>, List<Food>>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<List<Food>>, List<Food>>,
+              AsyncValue<List<Food>>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
 
-typedef _$FoodSearchController = AutoDisposeAsyncNotifier<List<Food>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

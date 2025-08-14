@@ -6,21 +6,50 @@ part of 'login_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$loginControllerHash() => r'fd95b9588c16f4f1794caa3f9777d5fcdf76ce56';
-
-/// See also [LoginController].
 @ProviderFor(LoginController)
-final loginControllerProvider =
-    AutoDisposeAsyncNotifierProvider<LoginController, void>.internal(
-      LoginController.new,
-      name: r'loginControllerProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$loginControllerHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+const loginControllerProvider = LoginControllerProvider._();
 
-typedef _$LoginController = AutoDisposeAsyncNotifier<void>;
+final class LoginControllerProvider
+    extends $AsyncNotifierProvider<LoginController, void> {
+  const LoginControllerProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'loginControllerProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$loginControllerHash();
+
+  @$internal
+  @override
+  LoginController create() => LoginController();
+}
+
+String _$loginControllerHash() => r'f72fd810c1d8d573be25918cd2f70add355fa603';
+
+abstract class _$LoginController extends $AsyncNotifier<void> {
+  FutureOr<void> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    build();
+    final ref = this.ref as $Ref<AsyncValue<void>, void>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<void>, void>,
+              AsyncValue<void>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, null);
+  }
+}
+
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
