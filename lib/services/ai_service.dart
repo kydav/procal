@@ -19,8 +19,6 @@ class AiService extends _$AiService {
     Iterable<Content> prompt,
     Schema? jsonSchema,
   ) async {
-    // TODO(me): Look into docs and see if more is supposed to be done before calling
-    // if not, then implement try/retry logic for handling errors
     final response = await _model.generateContent(
       prompt,
       generationConfig: GenerationConfig(
@@ -70,6 +68,7 @@ class AiService extends _$AiService {
     required int mealCalories,
     required int goalProtein,
     required int goalCalories,
+    required String objective,
   }) async {
     final jsonSchema = Schema.object(
       properties: {
@@ -90,10 +89,10 @@ class AiService extends _$AiService {
 
     final response = await _getResponse([
       Content.text('''
-        Generate a response to the meal that contains $mealCalories calories 
+        Generate a response to a meal that contains $mealCalories calories 
         and $mealProtein grams of protein for a person who is attempting to 
         eat $goalCalories calories and $goalProtein grams of protein and attempting to 
-        eat clean and lose weight. The response should include the 
+        eat clean and $objective. The response should include the 
         reasoning for the meal and how it fits into the daily goals.'''),
     ], jsonSchema);
     final mealResponseJson = json.decode(response.text!);

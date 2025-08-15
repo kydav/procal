@@ -106,6 +106,7 @@ class WelcomePageState extends _$WelcomePageState {
           ),
         )
         .then((goal) {
+          ref.read(authStateNotifierProvider.notifier).setGoals(goal);
           state = AsyncData(state.value!);
         })
         .catchError((e, stk) {

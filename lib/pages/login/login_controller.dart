@@ -37,7 +37,7 @@ class LoginController extends _$LoginController {
           );
       ref
           .read(authStateNotifierProvider.notifier)
-          .setLoggedIn(result.user!, user);
+          .setLoggedIn(result.user!, user, null);
       ref.read(procalRouterProvider).go(Routes.welcome.path);
 
       state = const AsyncValue.data(null);
@@ -54,21 +54,24 @@ class LoginController extends _$LoginController {
 
   Future<void> login(String username, String password) async {
     state = const AsyncValue.loading();
+    final procalService = ref.read(procalServiceProvider);
+    final authState = ref.read(authStateNotifierProvider.notifier);
     try {
       final result = await ref
           .read(authServiceProvider.notifier)
           .loginUser(username, password);
 
-      final user = await ref
-          .read(procalServiceProvider)
-          .getUserByUid(result.user!.uid);
-      ref
-          .read(authStateNotifierProvider.notifier)
-          .setLoggedIn(result.user!, user!);
+      final user = await procalService.getUserByUid(result.user!.uid);
+
+      final goals = await procalService.getGoalByUserId(user!.id!);
+      authState.setLoggedIn(result.user!, user, goals);
 
       if (user.firstName == null || user.firstName!.isEmpty) {
+        authState.setLoggedIn(result.user!, user, null);
         ref.read(procalRouterProvider).go(Routes.welcome.path);
       } else {
+        final goals = await procalService.getGoalByUserId(user.id!);
+        authState.setLoggedIn(result.user!, user, goals);
         ref.read(procalRouterProvider).go(Routes.home.path);
       }
 

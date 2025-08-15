@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -6,7 +7,9 @@ import 'package:health/health.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:procal/constants/system_strings.dart';
 import 'package:procal/procal_router.dart';
+import 'package:procal/providers/auth_state_notifier.dart';
 import 'package:procal/routes.dart';
+import 'package:procal/services/api/clients/procal_service.dart';
 import 'package:procal/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -15,17 +18,29 @@ final initializeAppProvider = FutureProvider<void>((ref) async {
   await Firebase.initializeApp();
   final prefs = await SharedPreferences.getInstance();
   final shownIntro = prefs.getBool(SystemStrings.shownLoginIntro);
+  await dotenv.load(fileName: 'local.env');
+  //await dotenv.load(fileName: 'dev.env');
+
   if (shownIntro == null || !shownIntro) {
     ref.read(procalRouterProvider).go(Routes.intro.path);
   }
-  // final currentUser = FirebaseAuth.instance.currentUser;
-  // if (currentUser != null) {
-  //   ref.read(authStateNotifierProvider.notifier).setLoggedIn(currentUser);
-  //   ref.read(procalRouterProvider).go(Routes.home.path);
-  // }
+
+  final currentUser = FirebaseAuth.instance.currentUser;
+  if (currentUser != null) {
+    final procalUser = await ref
+        .read(procalServiceProvider)
+        .getUserByUid(currentUser.uid);
+    if (procalUser != null) {
+      final goals = await ref
+          .read(procalServiceProvider)
+          .getGoalByUserId(procalUser.id!);
+      ref
+          .read(authStateNotifierProvider.notifier)
+          .setLoggedIn(currentUser, procalUser, goals);
+      ref.read(procalRouterProvider).go(Routes.home.path);
+    }
+  }
   await Health().configure();
-  //await dotenv.load(fileName: 'dev.env');
-  await dotenv.load(fileName: 'local.env');
 });
 
 void main() {

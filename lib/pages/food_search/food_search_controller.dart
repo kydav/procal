@@ -33,6 +33,7 @@ class FoodSearchController extends _$FoodSearchController {
       return;
     }
     _timer = Timer(const Duration(seconds: 1), () {});
+    // ignore: invalid_use_of_internal_member
     state = const AsyncLoading<List<Food>>().copyWithPrevious(state);
     _page++;
     debugPrint('Getting next page: $_page');
