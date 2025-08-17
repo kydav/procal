@@ -15,7 +15,6 @@ class ProcalRouter extends _$ProcalRouter {
       Routes.login,
       Routes.welcome,
       Routes.search,
-      Routes.foodDetail,
     ],
     // redirect: (context, state) {
     //   final authState = ref.watch(currentUserProvider);

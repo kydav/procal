@@ -37,7 +37,7 @@ final class AiServiceProvider extends $NotifierProvider<AiService, void> {
   }
 }
 
-String _$aiServiceHash() => r'0918b60c399ee03fad492659ce2d0d167933e1e5';
+String _$aiServiceHash() => r'7513fd1ae9ee7824c51cb639a1f9848be500b03a';
 
 abstract class _$AiService extends $Notifier<void> {
   void build();

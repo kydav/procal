@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:procal/common/app_bar.dart';
+import 'package:procal/pages/food_search/food_detail/food_detail_page.dart';
 import 'package:procal/pages/food_search/food_search_controller.dart';
 import 'package:procal/procal_router.dart';
 
@@ -27,7 +29,11 @@ class FoodSearchPage extends HookConsumerWidget {
     });
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Food Search'), centerTitle: true),
+      appBar: ProcalAppBar(
+        showLogo: false,
+        showBackButton: true,
+        onBackPressed: () => ref.read(procalRouterProvider).pop(),
+      ),
       body: SafeArea(
         child: Column(
           children: [
@@ -90,9 +96,20 @@ class FoodSearchPage extends HookConsumerWidget {
                         ),
 
                         onTap: () {
-                          ref
-                              .read(procalRouterProvider)
-                              .push('/food_detail/${food.foodId}');
+                          showModalBottomSheet(
+                            context: context,
+                            clipBehavior: Clip.antiAlias,
+                            showDragHandle: true,
+                            elevation: 5,
+                            isScrollControlled: true,
+                            builder: (context) => SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              height: MediaQuery.of(context).size.height * 0.8,
+                              child: SingleChildScrollView(
+                                child: FoodDetailPage(foodId: food.foodId),
+                              ),
+                            ),
+                          );
                         },
                       );
                     },

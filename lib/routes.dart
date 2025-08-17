@@ -1,5 +1,5 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:procal/pages/food_search/food_detail/food_detail_page.dart';
 import 'package:procal/pages/food_search/food_search_page.dart';
 import 'package:procal/pages/home/home_page.dart';
 import 'package:procal/pages/home/welcome/welcome_page.dart';
@@ -30,12 +30,17 @@ class Routes {
 
   static final search = GoRoute(
     path: '/search',
-    builder: (context, state) => const FoodSearchPage(),
-  );
+    pageBuilder: (context, state) => CustomTransitionPage(
+      transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+          SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(0.0, 1.0),
+              end: Offset.zero,
+            ).animate(animation),
+            child: child,
+          ),
 
-  static final foodDetail = GoRoute(
-    path: '/food_detail/:foodId',
-    builder: (context, state) =>
-        FoodDetailPage(foodId: state.pathParameters['foodId']!),
+      child: const FoodSearchPage(),
+    ),
   );
 }

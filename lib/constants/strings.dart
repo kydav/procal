@@ -96,4 +96,5 @@ class GeneralStrings {
   static String calories = 'Calories';
   static String login = 'Login';
   static String signUp = 'Sign Up';
+  static String logOut = 'Log Out';
 }

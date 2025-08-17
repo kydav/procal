@@ -27,13 +27,10 @@ final initializeAppProvider = FutureProvider<void>((ref) async {
 
   final currentUser = FirebaseAuth.instance.currentUser;
   if (currentUser != null) {
-    final procalUser = await ref
-        .read(procalServiceProvider)
-        .getUserByUid(currentUser.uid);
+    final procalService = ref.read(procalServiceProvider);
+    final procalUser = await procalService.getUserByUid(currentUser.uid);
     if (procalUser != null) {
-      final goals = await ref
-          .read(procalServiceProvider)
-          .getGoalByUserId(procalUser.id!);
+      final goals = await procalService.getGoalByUserId(procalUser.id!);
       ref
           .read(authStateNotifierProvider.notifier)
           .setLoggedIn(currentUser, procalUser, goals);
@@ -79,7 +76,7 @@ class ProCalApp extends ConsumerWidget {
         textTheme: Typography.whiteCupertino,
       ),
       builder: (ctx, child) => initializeApp.when(
-        loading: () => const CircularProgressIndicator(),
+        loading: () => const Center(child: CircularProgressIndicator()),
         data: (_) => child!,
         error: (err, _) => Text(err.toString()),
       ),

@@ -30,7 +30,7 @@ final class WelcomePageStateProvider
   WelcomePageState create() => WelcomePageState();
 }
 
-String _$welcomePageStateHash() => r'29663b1a8678052e59c49b12fcf58fa36ad1953e';
+String _$welcomePageStateHash() => r'76bdf8c5c24be6fb6a040bd7a1ac76ff4a273659';
 
 abstract class _$WelcomePageState extends $AsyncNotifier<WelcomeState> {
   FutureOr<WelcomeState> build();

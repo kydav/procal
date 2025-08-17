@@ -30,7 +30,7 @@ final class HealthServiceProvider
   HealthService create() => HealthService();
 }
 
-String _$healthServiceHash() => r'e475a934bc598e8ae2c66129d6052de858fec853';
+String _$healthServiceHash() => r'28d2d2053645cca3e4248665654bd658c7a2a372';
 
 abstract class _$HealthService extends $AsyncNotifier<void> {
   FutureOr<void> build();

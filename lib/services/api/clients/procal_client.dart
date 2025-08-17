@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:procal/services/api/models/food/food.dart';
 import 'package:procal/services/api/models/food/foods_search.dart';
 import 'package:procal/services/api/models/goal/goal.dart';
+import 'package:procal/services/api/models/journal_entry/journal_entry.dart';
 import 'package:procal/services/api/models/user/procal_user.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -49,4 +50,19 @@ abstract class ProcalClient {
 
   @DELETE('/goal/{userId}')
   Future<void> deleteGoal(@Path('userId') String userId);
+
+  @GET('/journal/{userId}/{date}')
+  Future<List<JournalEntry>> getJournalEntriesByUserId(
+    @Path('userId') String userId,
+    @Path('date') String date,
+  );
+
+  @POST('/journal')
+  Future<JournalEntry> createJournalEntry(@Body() JournalEntry journalEntry);
+
+  @PUT('/journal')
+  Future<JournalEntry> updateJournalEntry(@Body() JournalEntry journalEntry);
+
+  @DELETE('/journal/{id}')
+  Future<void> deleteJournalEntry(@Path('id') String id);
 }
