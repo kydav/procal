@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:procal/common/protein_efficiency.dart';
 import 'package:procal/pages/food_search/food_detail/food_detail_controller.dart';
 
 class FoodDetailPage extends HookConsumerWidget {
@@ -18,32 +19,45 @@ class FoodDetailPage extends HookConsumerWidget {
       //     title: const Text('Add Food'),
       //   ),
       //   body:
-      data: (food) => Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          spacing: 8,
-          children: [
-            Text(food.food.foodName),
-
-            if (food.food.foodType == 'Brand') Text(food.food.brandName ?? ''),
-            const Text('Servings:'),
-            ...food.food.serving.serving.map(
-              (serving) => Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Name: ${serving.servingDescription}'),
-                  Text(
-                    'Amount: ${serving.metricServingAmount} ${serving.metricServingUnit}',
-                  ),
-                  Text('Calories: ${serving.calories}'),
-                  Text('Protein: ${serving.protein}g'),
-                ],
+      data: (food) {
+        final calories =
+            double.tryParse(food.food.serving.serving.first.calories ?? '0') ??
+            0;
+        final protein =
+            double.tryParse(food.food.serving.serving.first.protein ?? '0') ??
+            0;
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 8,
+            children: [
+              Text(
+                food.food.foodName,
+                style: Theme.of(context).textTheme.headlineMedium,
               ),
-            ),
-          ],
-        ),
-      ),
+              ProteinEfficiency(protein: protein, calories: calories),
+
+              if (food.food.foodType == 'Brand')
+                Text(food.food.brandName ?? ''),
+              const Text('Servings:'),
+              ...food.food.serving.serving.map(
+                (serving) => Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Name: ${serving.servingDescription}'),
+                    Text(
+                      'Amount: ${serving.metricServingAmount} ${serving.metricServingUnit}',
+                    ),
+                    Text('Calories: ${serving.calories}'),
+                    Text('Protein: ${serving.protein}g'),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
       // ),
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (error, stackTrace) => Center(child: Text('Error: $error')),

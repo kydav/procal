@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:intl/intl.dart';
 import 'package:procal/common/app_bar.dart';
 import 'package:procal/common/circular_progress.dart';
 import 'package:procal/constants/strings.dart';
@@ -12,7 +11,6 @@ class HomePage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final date = DateTime.now();
     final authState = ref.watch(authStateNotifierProvider);
     final proteinGoal = authState.asData?.value.goals?.proteinGoal ?? 0;
     final caloriesGoal = authState.asData?.value.goals?.calorieGoal ?? 0;
@@ -31,9 +29,27 @@ class HomePage extends HookConsumerWidget {
           child: Column(
             spacing: 30,
             children: [
-              Text(
-                DateFormat.MMMMEEEEd().format(date),
-                style: const TextStyle(fontSize: 22),
+              // Text(
+              //   DateFormat.MMMMEEEEd().format(date),
+              //   style: const TextStyle(fontSize: 22),
+              // ),
+              TextButton(
+                onPressed: () {},
+                child: const Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text('Today', style: TextStyle(fontSize: 22)),
+                    Icon(Icons.keyboard_arrow_down, size: 22),
+                  ],
+                ),
+              ),
+
+              SliderTheme(
+                data: SliderTheme.of(context).copyWith(
+                  thumbShape: SliderComponentShape.noThumb,
+                  trackHeight: 10,
+                ),
+                child: Slider(value: .8, onChanged: (value) {}),
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,

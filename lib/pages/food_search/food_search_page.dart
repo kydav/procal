@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:procal/common/app_bar.dart';
+import 'package:procal/common/protein_efficiency.dart';
 import 'package:procal/pages/food_search/food_detail/food_detail_page.dart';
 import 'package:procal/pages/food_search/food_search_controller.dart';
 import 'package:procal/procal_router.dart';
@@ -79,6 +80,19 @@ class FoodSearchPage extends HookConsumerWidget {
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            ProteinEfficiency(
+                              protein:
+                                  double.tryParse(
+                                    food.serving.serving.first.protein ?? '0',
+                                  ) ??
+                                  0,
+                              calories:
+                                  double.tryParse(
+                                    food.serving.serving.first.calories ?? '0',
+                                  ) ??
+                                  0,
+                              height: 5,
+                            ),
                             Text(food.serving.serving.first.servingDescription),
                             Text(food.brandName ?? ''),
                             Row(
