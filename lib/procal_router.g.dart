@@ -38,7 +38,7 @@ final class ProcalRouterProvider
   }
 }
 
-String _$procalRouterHash() => r'801ae01b46d1ecba36aa7da5d76eb1efa730a9ba';
+String _$procalRouterHash() => r'4e51f15404e640f64cb7913dd58971fbeb8214b3';
 
 abstract class _$ProcalRouter extends $Notifier<GoRouter> {
   GoRouter build();

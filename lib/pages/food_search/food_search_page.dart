@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:procal/common/app_bar.dart';
 import 'package:procal/common/protein_efficiency.dart';
+import 'package:procal/constants/asset_icons.dart';
 import 'package:procal/pages/food_search/food_detail/food_detail_page.dart';
 import 'package:procal/pages/food_search/food_search_controller.dart';
 import 'package:procal/procal_router.dart';
+import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
 class FoodSearchPage extends HookConsumerWidget {
   const FoodSearchPage({super.key});
@@ -46,10 +49,30 @@ class FoodSearchPage extends HookConsumerWidget {
               child: TextField(
                 controller: searchController,
                 onSubmitted: foodSearchController.init,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Search for food',
-                  prefixIcon: Icon(Icons.search),
-                  border: OutlineInputBorder(),
+                  prefixIcon: const Icon(Icons.search),
+                  border: const OutlineInputBorder(),
+                  suffixIcon: IconButton(
+                    icon: SvgPicture.asset(AssetIcons.barcodeIcon, width: 20),
+                    onPressed: () async {
+                      final res = await SimpleBarcodeScanner.scanBarcode(
+                        context,
+                        barcodeAppBar: const BarcodeAppBar(
+                          appBarTitle: 'Test',
+                          centerTitle: false,
+                          enableBackButton: true,
+                          backButtonIcon: Icon(Icons.arrow_back_ios),
+                        ),
+                        isShowFlashIcon: true,
+                        delayMillis: 2000,
+                        cameraFace: CameraFace.front,
+                      );
+                      if (res != null && res.isNotEmpty) {
+                        foodSearchController.init(res);
+                      }
+                    },
+                  ),
                 ),
               ),
             ),
@@ -58,9 +81,10 @@ class FoodSearchPage extends HookConsumerWidget {
                 child: RefreshIndicator(
                   onRefresh: () async =>
                       foodSearchController.refresh(searchController.text),
-                  child: ListView.builder(
+                  child: ListView.separated(
                     controller: controller,
                     itemCount: foodList.length,
+                    separatorBuilder: (_, _) => const Divider(height: 0),
                     itemBuilder: (context, index) {
                       final food = foodList[index];
                       return ListTile(
@@ -73,12 +97,14 @@ class FoodSearchPage extends HookConsumerWidget {
                                 maxLines: 2,
                                 softWrap: true,
                                 overflow: TextOverflow.fade,
+                                style: Theme.of(context).textTheme.titleLarge,
                               ),
                             ),
                           ],
                         ),
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
+                          spacing: 5,
                           children: [
                             ProteinEfficiency(
                               protein:
@@ -93,19 +119,28 @@ class FoodSearchPage extends HookConsumerWidget {
                                   0,
                               height: 5,
                             ),
-                            Text(food.serving.serving.first.servingDescription),
-                            Text(food.brandName ?? ''),
+
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  'Protein: ${food.serving.serving.first.protein ?? ''}g',
+                                  'Protein: ${food.serving.serving.first.protein ?? ''} g',
                                 ),
                                 Text(
-                                  'Calories: ${food.serving.serving.first.calories ?? ''}',
+                                  'Calories: ${food.serving.serving.first.calories ?? ''} kcal',
+                                ),
+                                Text(
+                                  'Fat: ${food.serving.serving.first.fat ?? ''} g',
                                 ),
                               ],
                             ),
+                            Text(
+                              'Serving size: ${food.serving.serving.first.servingDescription}',
+                            ),
+                            if (food.brandName != null &&
+                                food.brandName!.isNotEmpty) ...[
+                              Text(food.brandName!),
+                            ],
                           ],
                         ),
 

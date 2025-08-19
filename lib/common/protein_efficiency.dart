@@ -33,14 +33,24 @@ class ProteinEfficiency extends StatelessWidget {
     final barWidth = ratio.clamp(0.0, 1.0);
     final proteinPer100Calories = calories > 0
         ? (protein / calories) * 100
-        : 0.0; // Calculate protein per 100 calories
+        : 0.0;
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (height > 10) ...[
-          Text(
-            'Protein per 100 calories: ${proteinPer100Calories.toStringAsFixed(1)}g',
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            spacing: 5,
+            children: [
+              Text(
+                'Protein per 100 calories: ${proteinPer100Calories.toStringAsFixed(1)}g',
+              ),
+              const Tooltip(
+                message:
+                    'This value indicates the protein content relative to calories.',
+                child: Icon(Icons.info_outline, size: 16),
+              ),
+            ],
           ),
           const SizedBox(height: 8),
         ],

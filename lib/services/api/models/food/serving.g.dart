@@ -25,7 +25,7 @@ Serving _$ServingFromJson(Map<String, dynamic> json) => Serving(
   measurementDescription: json['measurement_description'] as String,
   calories: json['calories'] as String?,
   protein: json['protein'] as String?,
-);
+)..fat = json['fat'] as String?;
 
 Map<String, dynamic> _$ServingToJson(Serving instance) => <String, dynamic>{
   'serving_id': instance.servingId,
@@ -36,4 +36,5 @@ Map<String, dynamic> _$ServingToJson(Serving instance) => <String, dynamic>{
   'measurement_description': instance.measurementDescription,
   'calories': instance.calories,
   'protein': instance.protein,
+  'fat': instance.fat,
 };

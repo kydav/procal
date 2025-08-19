@@ -43,6 +43,8 @@ class Serving {
   String? calories;
   @JsonKey(name: 'protein')
   String? protein;
+  @JsonKey(name: 'fat')
+  String? fat;
 
   Map<String, dynamic> toJson() => _$ServingToJson(this);
 }

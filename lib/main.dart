@@ -55,6 +55,13 @@ class ProCalApp extends ConsumerWidget {
       title: 'ProCal',
       routerConfig: ref.watch(procalRouterProvider),
       theme: ThemeData(
+        filledButtonTheme: FilledButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(2.0),
+            ),
+          ),
+        ),
         brightness: Brightness.light,
         primaryColor: ColorPalette.headerLight,
         colorScheme: MaterialTheme.lightScheme(),
@@ -67,6 +74,13 @@ class ProCalApp extends ConsumerWidget {
       darkTheme: ThemeData(
         useMaterial3: true,
         brightness: Brightness.dark,
+        filledButtonTheme: FilledButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(2.0),
+            ),
+          ),
+        ),
         primaryColor: ColorPalette.headerDark,
         colorScheme: MaterialTheme.darkScheme(),
         appBarTheme: const AppBarTheme(
