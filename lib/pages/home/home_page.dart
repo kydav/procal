@@ -24,55 +24,104 @@ class HomePage extends HookConsumerWidget {
         icon: const Icon(Icons.add, size: 50),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 50.0),
-        child: SingleChildScrollView(
-          child: Column(
-            spacing: 30,
-            children: [
-              // Text(
-              //   DateFormat.MMMMEEEEd().format(date),
-              //   style: const TextStyle(fontSize: 22),
-              // ),
-              TextButton(
-                onPressed: () {},
-                child: const Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text('Today', style: TextStyle(fontSize: 22)),
-                    Icon(Icons.keyboard_arrow_down, size: 22),
-                  ],
-                ),
-              ),
-
-              SliderTheme(
-                data: SliderTheme.of(context).copyWith(
-                  thumbShape: SliderComponentShape.noThumb,
-                  trackHeight: 10,
-                ),
-                child: Slider(value: .8, onChanged: (value) {}),
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
+        padding: const EdgeInsets.only(top: 50.0, bottom: 30.0),
+        child: Column(
+          spacing: 30,
+          children: [
+            // Text(
+            //   DateFormat.MMMMEEEEd().format(date),
+            //   style: const TextStyle(fontSize: 22),
+            // ),
+            TextButton(
+              onPressed: () {},
+              child: const Row(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  CircularProgress(
-                    title: GeneralStrings.protein,
-                    sizeFactor: 50,
-                    current: 0,
-                    total: proteinGoal,
-                  ),
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: CircularProgress(
-                      title: GeneralStrings.calories,
-                      sizeFactor: 30,
-                      current: 0,
-                      total: caloriesGoal,
-                    ),
-                  ),
+                  Text('Today', style: TextStyle(fontSize: 22)),
+                  Icon(Icons.keyboard_arrow_down, size: 22),
                 ],
               ),
-            ],
-          ),
+            ),
+
+            SliderTheme(
+              data: SliderTheme.of(context).copyWith(
+                thumbShape: SliderComponentShape.noThumb,
+                trackHeight: 10,
+              ),
+              child: Slider(value: .8, onChanged: (value) {}),
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                CircularProgress(
+                  title: GeneralStrings.protein,
+                  sizeFactor: 50,
+                  current: 0,
+                  total: proteinGoal,
+                ),
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: CircularProgress(
+                    title: GeneralStrings.calories,
+                    sizeFactor: 30,
+                    current: 0,
+                    total: caloriesGoal,
+                  ),
+                ),
+              ],
+            ),
+            const Spacer(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: SizedBox(
+                width: double.infinity,
+                child: FilledButton(
+                  onPressed: () {
+                    //show an anchor menu with options
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (context) => SizedBox(
+                        height: 300,
+                        child: Column(
+                          children: [
+                            ListTile(
+                              title: const Text('Breakfast'),
+                              onTap: () {
+                                // Handle option 1
+                                Navigator.pop(context);
+                              },
+                            ),
+                            ListTile(
+                              title: const Text('Lunch'),
+                              onTap: () {
+                                // Handle option 2
+                                Navigator.pop(context);
+                              },
+                            ),
+                            ListTile(
+                              title: const Text('Dinner'),
+                              onTap: () {
+                                // Handle option 2
+                                Navigator.pop(context);
+                              },
+                            ),
+                            ListTile(
+                              title: const Text('Snack'),
+                              onTap: () {
+                                // Handle option 2
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                  child: const Text('Track', style: TextStyle(fontSize: 18)),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

@@ -13,7 +13,7 @@ final class FoodDetailControllerProvider
     extends $AsyncNotifierProvider<FoodDetailController, FatSecretFood> {
   const FoodDetailControllerProvider._({
     required FoodDetailControllerFamily super.from,
-    required String super.argument,
+    required ({String foodId, bool isBarcode}) super.argument,
   }) : super(
          retry: null,
          name: r'foodDetailControllerProvider',
@@ -29,7 +29,7 @@ final class FoodDetailControllerProvider
   String toString() {
     return r'foodDetailControllerProvider'
         ''
-        '($argument)';
+        '$argument';
   }
 
   @$internal
@@ -48,7 +48,7 @@ final class FoodDetailControllerProvider
 }
 
 String _$foodDetailControllerHash() =>
-    r'5a653cb52d36cdf5ec2bfea4ebfd0d788ee651b0';
+    r'00905587aa5892bab170cb0e38606e1ab21541b8';
 
 final class FoodDetailControllerFamily extends $Family
     with
@@ -57,7 +57,7 @@ final class FoodDetailControllerFamily extends $Family
           AsyncValue<FatSecretFood>,
           FatSecretFood,
           FutureOr<FatSecretFood>,
-          String
+          ({String foodId, bool isBarcode})
         > {
   const FoodDetailControllerFamily._()
     : super(
@@ -68,22 +68,31 @@ final class FoodDetailControllerFamily extends $Family
         isAutoDispose: true,
       );
 
-  FoodDetailControllerProvider call(String foodId) =>
-      FoodDetailControllerProvider._(argument: foodId, from: this);
+  FoodDetailControllerProvider call({
+    required String foodId,
+    bool isBarcode = false,
+  }) => FoodDetailControllerProvider._(
+    argument: (foodId: foodId, isBarcode: isBarcode),
+    from: this,
+  );
 
   @override
   String toString() => r'foodDetailControllerProvider';
 }
 
 abstract class _$FoodDetailController extends $AsyncNotifier<FatSecretFood> {
-  late final _$args = ref.$arg as String;
-  String get foodId => _$args;
+  late final _$args = ref.$arg as ({String foodId, bool isBarcode});
+  String get foodId => _$args.foodId;
+  bool get isBarcode => _$args.isBarcode;
 
-  FutureOr<FatSecretFood> build(String foodId);
+  FutureOr<FatSecretFood> build({
+    required String foodId,
+    bool isBarcode = false,
+  });
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build(_$args);
+    final created = build(foodId: _$args.foodId, isBarcode: _$args.isBarcode);
     final ref = this.ref as $Ref<AsyncValue<FatSecretFood>, FatSecretFood>;
     final element =
         ref.element

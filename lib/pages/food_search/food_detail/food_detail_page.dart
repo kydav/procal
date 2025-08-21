@@ -7,11 +7,16 @@ import 'package:procal/pages/food_search/food_detail/food_detail_controller.dart
 import 'package:procal/services/api/models/food/serving.dart';
 
 class FoodDetailPage extends HookConsumerWidget {
-  const FoodDetailPage({required this.foodId, super.key});
+  const FoodDetailPage({
+    required this.foodId,
+    this.isBarcode = false,
+    super.key,
+  });
   final String foodId;
+  final bool isBarcode;
   @override
   Widget build(BuildContext context, WidgetRef ref) => ref
-      .watch(foodDetailControllerProvider(foodId))
+      .watch(foodDetailControllerProvider(foodId: foodId, isBarcode: isBarcode))
       .when(
         data: (food) {
           final selectedServing = useState(food.food.serving.serving.first);

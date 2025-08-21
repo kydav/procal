@@ -10,6 +10,7 @@ class ProcalAppBar extends ConsumerWidget implements PreferredSizeWidget {
     this.showBackButton = false,
     this.showLogo = true,
     this.onBackPressed,
+    this.content,
     super.key,
   });
 
@@ -17,15 +18,18 @@ class ProcalAppBar extends ConsumerWidget implements PreferredSizeWidget {
   final bool showBackButton;
   final bool showLogo;
   final VoidCallback? onBackPressed;
+  final Widget? content;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) => PreferredSize(
     preferredSize: const Size.fromHeight(60.0),
     child: AppBar(
       backgroundColor: Theme.of(context).colorScheme.surface,
-      title: showLogo
-          ? Image.asset(AssetIcons.horizontalTransparentLogo, height: 45)
-          : null,
+      title:
+          content ??
+          (showLogo
+              ? Image.asset(AssetIcons.horizontalTransparentLogo, height: 45)
+              : null),
       centerTitle: true,
       leading: showBackButton
           ? IconButton(
@@ -70,5 +74,5 @@ class ProcalAppBar extends ConsumerWidget implements PreferredSizeWidget {
   );
 
   @override
-  Size get preferredSize => const Size.fromHeight(60.0);
+  Size get preferredSize => const Size.fromHeight(65.0);
 }

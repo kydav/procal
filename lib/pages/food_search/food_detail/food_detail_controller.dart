@@ -7,8 +7,15 @@ part 'food_detail_controller.g.dart';
 @riverpod
 class FoodDetailController extends _$FoodDetailController {
   @override
-  Future<FatSecretFood> build(String foodId) async {
+  Future<FatSecretFood> build({
+    required String foodId,
+    bool isBarcode = false,
+  }) async {
     final procalService = ref.read(procalServiceProvider);
-    return procalService.getFoodById(foodId);
+    if (isBarcode) {
+      return procalService.getFoodByBarcode(foodId);
+    } else {
+      return procalService.getFoodById(foodId);
+    }
   }
 }
