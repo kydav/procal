@@ -1,34 +1,38 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'journal_entry.g.dart';
+part 'meal_food.g.dart';
 
 @JsonSerializable()
-class JournalEntry {
-  JournalEntry({
+class MealFood {
+  MealFood({
     required this.id,
-    required this.userId,
+    required this.mealId,
     required this.foodId,
+    required this.foodName,
     required this.foodAmount,
-    required this.date,
     required this.protein,
     required this.calories,
+    required this.fat,
   });
-  factory JournalEntry.fromJson(Map<String, dynamic> json) =>
-      _$JournalEntryFromJson(json);
+  factory MealFood.fromJson(Map<String, dynamic> json) =>
+      _$MealFoodFromJson(json);
+
   @JsonKey(name: 'Id')
   final String id;
-  @JsonKey(name: 'UserId')
-  final String userId;
+  @JsonKey(name: 'MealId')
+  final String mealId;
   @JsonKey(name: 'FoodId')
   final String foodId;
+  @JsonKey(name: 'FoodName')
+  final String foodName;
   @JsonKey(name: 'FoodAmount')
   final String foodAmount;
-  @JsonKey(name: 'Date')
-  final DateTime date;
   @JsonKey(name: 'Protein')
   final int protein;
   @JsonKey(name: 'Calories')
   final int calories;
+  @JsonKey(name: 'Fat')
+  final int fat;
 
-  Map<String, dynamic> toJson() => _$JournalEntryToJson(this);
+  Map<String, dynamic> toJson() => _$MealFoodToJson(this);
 }

@@ -339,29 +339,26 @@ class _ProcalClient implements ProcalClient {
   }
 
   @override
-  Future<List<JournalEntry>> getJournalEntriesByUserId(
-    String userId,
-    String date,
-  ) async {
+  Future<List<Meal>> getMealsByUserId(String userId, String date) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<List<JournalEntry>>(
+    final _options = _setStreamType<List<Meal>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/journal/${userId}/${date}',
+            '/meal/${userId}/${date}',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<JournalEntry> _value;
+    late List<Meal> _value;
     try {
       _value = _result.data!
-          .map((dynamic i) => JournalEntry.fromJson(i as Map<String, dynamic>))
+          .map((dynamic i) => Meal.fromJson(i as Map<String, dynamic>))
           .toList();
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
@@ -371,26 +368,26 @@ class _ProcalClient implements ProcalClient {
   }
 
   @override
-  Future<JournalEntry> createJournalEntry(JournalEntry journalEntry) async {
+  Future<Meal> createMeal(Meal meal) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(journalEntry.toJson());
-    final _options = _setStreamType<JournalEntry>(
+    _data.addAll(meal.toJson());
+    final _options = _setStreamType<Meal>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/journal',
+            '/meal',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late JournalEntry _value;
+    late Meal _value;
     try {
-      _value = JournalEntry.fromJson(_result.data!);
+      _value = Meal.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -399,26 +396,26 @@ class _ProcalClient implements ProcalClient {
   }
 
   @override
-  Future<JournalEntry> updateJournalEntry(JournalEntry journalEntry) async {
+  Future<Meal> updateMeal(Meal meal) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(journalEntry.toJson());
-    final _options = _setStreamType<JournalEntry>(
+    _data.addAll(meal.toJson());
+    final _options = _setStreamType<Meal>(
       Options(method: 'PUT', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/journal',
+            '/meal',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late JournalEntry _value;
+    late Meal _value;
     try {
-      _value = JournalEntry.fromJson(_result.data!);
+      _value = Meal.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -427,7 +424,7 @@ class _ProcalClient implements ProcalClient {
   }
 
   @override
-  Future<void> deleteJournalEntry(String id) async {
+  Future<void> deleteMeal(String id) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -436,7 +433,7 @@ class _ProcalClient implements ProcalClient {
       Options(method: 'DELETE', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/journal/${id}',
+            '/meal/${id}',
             queryParameters: queryParameters,
             data: _data,
           )

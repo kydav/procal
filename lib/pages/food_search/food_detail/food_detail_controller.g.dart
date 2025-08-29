@@ -48,7 +48,7 @@ final class FoodDetailControllerProvider
 }
 
 String _$foodDetailControllerHash() =>
-    r'00905587aa5892bab170cb0e38606e1ab21541b8';
+    r'e5722d7c47f297d70cc72f2b4b4d22a483dcaf5d';
 
 final class FoodDetailControllerFamily extends $Family
     with
