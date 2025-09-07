@@ -5,22 +5,22 @@ part 'meal_food.g.dart';
 @JsonSerializable()
 class MealFood {
   MealFood({
-    required this.id,
-    required this.mealId,
     required this.foodId,
     required this.foodName,
     required this.foodAmount,
     required this.protein,
     required this.calories,
     required this.fat,
+    this.id,
+    this.mealId,
   });
   factory MealFood.fromJson(Map<String, dynamic> json) =>
       _$MealFoodFromJson(json);
 
   @JsonKey(name: 'Id')
-  final String id;
+  final String? id;
   @JsonKey(name: 'MealId')
-  final String mealId;
+  final String? mealId;
   @JsonKey(name: 'FoodId')
   final String foodId;
   @JsonKey(name: 'FoodName')
@@ -28,11 +28,11 @@ class MealFood {
   @JsonKey(name: 'FoodAmount')
   final String foodAmount;
   @JsonKey(name: 'Protein')
-  final int protein;
+  final double protein;
   @JsonKey(name: 'Calories')
-  final int calories;
+  final double calories;
   @JsonKey(name: 'Fat')
-  final int fat;
+  final double fat;
 
   Map<String, dynamic> toJson() => _$MealFoodToJson(this);
 }

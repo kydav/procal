@@ -4,7 +4,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:procal/common/protein_efficiency.dart';
 import 'package:procal/pages/food_search/food_detail/food_detail_controller.dart';
+import 'package:procal/pages/food_search/food_search_state_controller.dart';
 import 'package:procal/services/api/models/food/serving.dart';
+import 'package:procal/services/api/models/meal/meal_food.dart';
 
 class FoodDetailPage extends HookConsumerWidget {
   const FoodDetailPage({
@@ -15,141 +17,165 @@ class FoodDetailPage extends HookConsumerWidget {
   final String foodId;
   final bool isBarcode;
   @override
-  Widget build(BuildContext context, WidgetRef ref) => ref
-      .watch(foodDetailControllerProvider(foodId: foodId, isBarcode: isBarcode))
-      .when(
-        data: (food) {
-          final selectedServing = useState(food.food.serving.serving.first);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isValid = useState(true);
+    return ref
+        .watch(
+          foodDetailControllerProvider(foodId: foodId, isBarcode: isBarcode),
+        )
+        .when(
+          data: (food) {
+            final selectedServing = useState(food.food.serving.serving.first);
 
-          final amountController = useTextEditingController(text: '1');
-          final calories =
-              double.tryParse(
-                food.food.serving.serving.first.calories ?? '0',
-              ) ??
-              0;
+            final amountController = useTextEditingController(text: '1');
+            final calories =
+                double.tryParse(
+                  food.food.serving.serving.first.calories ?? '0',
+                ) ??
+                0;
 
-          final protein =
-              double.tryParse(food.food.serving.serving.first.protein ?? '0') ??
-              0;
-          final totalProtein = useState(0.0);
-          final totalCalories = useState(0.0);
-          final totalFat = useState(0.0);
-          void setValues() {
-            totalProtein.value =
-                (double.tryParse(selectedServing.value.protein ?? '0') ?? 0) *
-                (double.tryParse(amountController.text) ?? 1);
-            totalCalories.value =
-                (double.tryParse(selectedServing.value.calories ?? '0') ?? 0) *
-                (double.tryParse(amountController.text) ?? 1);
-            totalFat.value =
-                (double.tryParse(selectedServing.value.fat ?? '0') ?? 0) *
-                (double.tryParse(amountController.text) ?? 1);
-          }
+            final protein =
+                double.tryParse(
+                  food.food.serving.serving.first.protein ?? '0',
+                ) ??
+                0;
+            final totalProtein = useState(0.0);
+            final totalCalories = useState(0.0);
+            final totalFat = useState(0.0);
+            void setValues() {
+              totalProtein.value =
+                  (double.tryParse(selectedServing.value.protein ?? '0') ?? 0) *
+                  (double.tryParse(amountController.text) ?? 1);
+              totalCalories.value =
+                  (double.tryParse(selectedServing.value.calories ?? '0') ??
+                      0) *
+                  (double.tryParse(amountController.text) ?? 1);
+              totalFat.value =
+                  (double.tryParse(selectedServing.value.fat ?? '0') ?? 0) *
+                  (double.tryParse(amountController.text) ?? 1);
+            }
 
-          selectedServing.addListener(setValues);
-          amountController.addListener(setValues);
-          useEffect(() {
-            setValues();
-            return null;
-          }, []);
+            selectedServing.addListener(setValues);
+            amountController.addListener(setValues);
+            useEffect(() {
+              setValues();
+              return null;
+            }, []);
 
-          return SizedBox(
-            height: MediaQuery.of(context).size.height * 0.8,
-            child: Padding(
-              padding: const EdgeInsets.only(
-                left: 40.0,
-                bottom: 60.0,
-                right: 40.0,
-              ),
-              child: Column(
-                spacing: 15,
-                children: [
-                  Text(
-                    food.food.foodName,
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                  ProteinEfficiency(protein: protein, calories: calories),
-                  if (food.food.foodType == 'Brand')
-                    Text(food.food.brandName ?? ''),
-                  TextFormField(
-                    controller: amountController,
-                    inputFormatters: [DecimalTextInputFormatter()],
-                    decoration: const InputDecoration(
-                      labelText: 'Amount',
-                      border: OutlineInputBorder(),
+            return SizedBox(
+              height: MediaQuery.of(context).size.height * 0.8,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  left: 40.0,
+                  bottom: 60.0,
+                  right: 40.0,
+                ),
+                child: Column(
+                  spacing: 15,
+                  children: [
+                    Text(
+                      food.food.foodName,
+                      style: Theme.of(context).textTheme.headlineMedium,
                     ),
-                    keyboardType: TextInputType.number,
-                  ),
-                  DropdownMenu<Serving?>(
-                    width: double.infinity,
-                    initialSelection: selectedServing.value,
-                    onSelected: (value) => selectedServing.value = value!,
-                    label: const Text('Serving Size'),
-                    dropdownMenuEntries: food.food.serving.serving
-                        .map(
-                          (serving) => DropdownMenuEntry<Serving?>(
-                            value: serving,
-                            label: serving.servingDescription,
-                          ),
-                        )
-                        .toList(),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        children: [
-                          const Text('Protein'),
-                          Text(
-                            '${totalProtein.value.toStringAsFixed(2)} g',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                        ],
+                    ProteinEfficiency(protein: protein, calories: calories),
+                    if (food.food.foodType == 'Brand')
+                      Text(food.food.brandName ?? ''),
+                    TextFormField(
+                      controller: amountController,
+                      inputFormatters: [DecimalTextInputFormatter()],
+                      onChanged: (value) => isValid.value =
+                          value.isNotEmpty && double.tryParse(value) != null,
+                      decoration: const InputDecoration(
+                        labelText: 'Amount',
+                        border: OutlineInputBorder(),
                       ),
-                      Column(
-                        children: [
-                          const Text('Calories'),
-                          Text(
-                            '${totalCalories.value.toStringAsFixed(2)} kcal',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          const Text('Fat'),
-                          Text(
-                            '${totalFat.value.toStringAsFixed(2)} g',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                      keyboardType: TextInputType.number,
+                    ),
+                    DropdownMenu<Serving?>(
+                      width: double.infinity,
+                      initialSelection: selectedServing.value,
+                      onSelected: (value) => selectedServing.value = value!,
+                      label: const Text('Serving Size'),
+                      dropdownMenuEntries: food.food.serving.serving
+                          .map(
+                            (serving) => DropdownMenuEntry<Serving?>(
+                              value: serving,
+                              label: serving.servingDescription,
+                            ),
+                          )
+                          .toList(),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          children: [
+                            const Text('Protein'),
+                            Text(
+                              '${totalProtein.value.toStringAsFixed(2)} g',
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            const Text('Calories'),
+                            Text(
+                              '${totalCalories.value.toStringAsFixed(2)} kcal',
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            const Text('Fat'),
+                            Text(
+                              '${totalFat.value.toStringAsFixed(2)} g',
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
 
-                  const Spacer(),
-                  SizedBox(
-                    width: double.infinity,
-                    child: FilledButton(
-                      onPressed: amountController.value.text.isNotEmpty
-                          ? () {
-                              // Handle button press
-                            }
-                          : null,
-                      child: const Text(
-                        'Add to Meal',
-                        style: TextStyle(fontSize: 18),
+                    const Spacer(),
+                    SizedBox(
+                      width: double.infinity,
+                      child: FilledButton(
+                        onPressed: isValid.value
+                            ? () {
+                                final mealFood = MealFood(
+                                  foodId: food.food.foodId,
+                                  foodName: food.food.foodName,
+                                  foodAmount: amountController.text,
+                                  protein: totalProtein.value,
+                                  calories: totalCalories.value,
+                                  fat: totalFat.value,
+                                );
+
+                                ref
+                                    .read(
+                                      foodSearchStateControllerProvider
+                                          .notifier,
+                                    )
+                                    .addFood(mealFood);
+                              }
+                            : null,
+                        child: const Text(
+                          'Add to Meal',
+                          style: TextStyle(fontSize: 18),
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          );
-        },
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stackTrace) => Center(child: Text('Error: $error')),
-      );
+            );
+          },
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (error, stackTrace) => Center(child: Text('Error: $error')),
+        );
+  }
 }
 
 class DecimalTextInputFormatter extends TextInputFormatter {

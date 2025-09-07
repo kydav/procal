@@ -17,7 +17,7 @@ final class FoodSearchStateControllerProvider
         argument: null,
         retry: null,
         name: r'foodSearchStateControllerProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -39,7 +39,7 @@ final class FoodSearchStateControllerProvider
 }
 
 String _$foodSearchStateControllerHash() =>
-    r'daed71f46bdc4fa5220023b777ff364eaf4bbff0';
+    r'04ccfb95445214811977b7231ea31c8e26a2f4e6';
 
 abstract class _$FoodSearchStateController extends $Notifier<MealState> {
   MealState build();
