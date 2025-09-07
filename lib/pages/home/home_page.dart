@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:health/health.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:procal/common/app_bar.dart';
 import 'package:procal/common/circular_progress.dart';
+import 'package:procal/common/string_extensions.dart';
 import 'package:procal/constants/strings.dart';
+import 'package:procal/pages/food_search/food_search_state_controller.dart';
 import 'package:procal/procal_router.dart';
 import 'package:procal/providers/auth_state_notifier.dart';
 
@@ -76,47 +79,34 @@ class HomePage extends HookConsumerWidget {
               child: SizedBox(
                 width: double.infinity,
                 child: FilledButton(
-                  onPressed: () {
-                    //show an anchor menu with options
-                    showModalBottomSheet(
-                      context: context,
-                      builder: (context) => SizedBox(
-                        height: 300,
-                        child: Column(
-                          children: [
-                            ListTile(
-                              title: const Text('Breakfast'),
-                              onTap: () {
-                                // Handle option 1
-                                Navigator.pop(context);
-                              },
-                            ),
-                            ListTile(
-                              title: const Text('Lunch'),
-                              onTap: () {
-                                // Handle option 2
-                                Navigator.pop(context);
-                              },
-                            ),
-                            ListTile(
-                              title: const Text('Dinner'),
-                              onTap: () {
-                                // Handle option 2
-                                Navigator.pop(context);
-                              },
-                            ),
-                            ListTile(
-                              title: const Text('Snack'),
-                              onTap: () {
-                                // Handle option 2
-                                Navigator.pop(context);
-                              },
-                            ),
-                          ],
-                        ),
+                  onPressed: () => showModalBottomSheet(
+                    context: context,
+                    builder: (context) => SizedBox(
+                      height: 300,
+                      child: Column(
+                        children: MealType.values
+                            .where((type) => type != MealType.UNKNOWN)
+                            .map(
+                              (mealType) => ListTile(
+                                title: Text(mealType.name.titleCase()),
+                                onTap: () {
+                                  ref
+                                      .read(
+                                        foodSearchStateControllerProvider
+                                            .notifier,
+                                      )
+                                      .setMealType(mealType);
+                                  Navigator.pop(context);
+                                  ref
+                                      .read(procalRouterProvider)
+                                      .push('/search');
+                                },
+                              ),
+                            )
+                            .toList(),
                       ),
-                    );
-                  },
+                    ),
+                  ),
                   child: const Text('Track', style: TextStyle(fontSize: 18)),
                 ),
               ),

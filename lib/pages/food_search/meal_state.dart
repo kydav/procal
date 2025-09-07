@@ -1,5 +1,5 @@
+import 'package:health/health.dart';
 import 'package:procal/services/api/models/food/food.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 // part 'food_search_state.g.dart';
 
@@ -10,8 +10,6 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 //   //   return [];
 //   // }
 // }
-
-enum MealType { breakfast, lunch, dinner, snack }
 
 class MealState {
   MealState({required this.mealType, this.foods = const []});
