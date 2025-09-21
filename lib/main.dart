@@ -32,7 +32,7 @@ final initializeAppProvider = FutureProvider<void>((ref) async {
     if (procalUser != null) {
       final goals = await procalService.getGoalByUserId(procalUser.id!);
       ref
-          .read(authStateNotifierProvider.notifier)
+          .read(authStateProvider.notifier)
           .setLoggedIn(currentUser, procalUser, goals);
       ref.read(procalRouterProvider).go(Routes.home.path);
     }

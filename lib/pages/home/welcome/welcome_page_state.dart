@@ -64,7 +64,7 @@ class WelcomePageState extends _$WelcomePageState {
 
   Future<void> setGoals(int proteinGoal, int calorieGoal) async {
     state = const AsyncLoading();
-    final authState = ref.watch(authStateNotifierProvider);
+    final authState = ref.watch(authStateProvider);
     final userId = authState.value?.procalUser?.id;
     final user = authState.value!.procalUser!;
     await ref
@@ -87,9 +87,8 @@ class WelcomePageState extends _$WelcomePageState {
           ),
         )
         .then(
-          (value) => ref
-              .read(authStateNotifierProvider.notifier)
-              .updateProcalUser(value),
+          (value) =>
+              ref.read(authStateProvider.notifier).updateProcalUser(value),
         )
         .catchError((e, stk) {
           debugPrint('Error updating user: $e');
@@ -106,7 +105,7 @@ class WelcomePageState extends _$WelcomePageState {
           ),
         )
         .then((goal) {
-          ref.read(authStateNotifierProvider.notifier).setGoals(goal);
+          ref.read(authStateProvider.notifier).setGoals(goal);
           state = AsyncData(state.value!);
         })
         .catchError((e, stk) {

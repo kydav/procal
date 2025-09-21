@@ -14,7 +14,7 @@ class HomePage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authState = ref.watch(authStateNotifierProvider);
+    final authState = ref.watch(authStateProvider);
     final proteinGoal = authState.asData?.value.goals?.proteinGoal ?? 0;
     final caloriesGoal = authState.asData?.value.goals?.calorieGoal ?? 0;
 

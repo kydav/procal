@@ -36,7 +36,7 @@ class LoginController extends _$LoginController {
             ),
           );
       ref
-          .read(authStateNotifierProvider.notifier)
+          .read(authStateProvider.notifier)
           .setLoggedIn(result.user!, user, null);
       ref.read(procalRouterProvider).go(Routes.welcome.path);
 
@@ -55,7 +55,7 @@ class LoginController extends _$LoginController {
   Future<void> login(String username, String password) async {
     state = const AsyncValue.loading();
     final procalService = ref.read(procalServiceProvider);
-    final authState = ref.read(authStateNotifierProvider.notifier);
+    final authState = ref.read(authStateProvider.notifier);
     try {
       final result = await ref
           .read(authServiceProvider.notifier)

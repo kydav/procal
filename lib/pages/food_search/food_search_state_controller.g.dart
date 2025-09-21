@@ -6,6 +6,9 @@ part of 'food_search_state_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+
 @ProviderFor(FoodSearchStateController)
 const foodSearchStateControllerProvider = FoodSearchStateControllerProvider._();
 
@@ -39,7 +42,7 @@ final class FoodSearchStateControllerProvider
 }
 
 String _$foodSearchStateControllerHash() =>
-    r'04ccfb95445214811977b7231ea31c8e26a2f4e6';
+    r'314fb029bb3dead87e7ded6555ac270a279f0873';
 
 abstract class _$FoodSearchStateController extends $Notifier<MealState> {
   MealState build();
@@ -59,6 +62,3 @@ abstract class _$FoodSearchStateController extends $Notifier<MealState> {
     element.handleValue(ref, created);
   }
 }
-
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
