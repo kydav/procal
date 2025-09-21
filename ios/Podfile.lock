@@ -1,6 +1,6 @@
 PODS:
   - Flutter (1.0.0)
-  - health (13.1.1):
+  - health (13.2.0):
     - Flutter
   - permission_handler_apple (9.3.0):
     - Flutter
@@ -25,7 +25,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  health: d215443242b260036fa91f91d8f3504c327a127f
+  health: afa47eecde2e04d74ae99e485e8e4bd18bdf9d75
   permission_handler_apple: 9878588469a2b0d0fc1e048d9f43605f92e6cec2
   simple_barcode_scanner: bb2603ae5228a007bd066e9f955911858ae55755
 
