@@ -20,12 +20,6 @@ class HomePage extends HookConsumerWidget {
 
     return Scaffold(
       appBar: const ProcalAppBar(showMenu: true),
-      floatingActionButton: IconButton(
-        onPressed: () {
-          ref.read(procalRouterProvider).push('/search');
-        },
-        icon: const Icon(Icons.add, size: 50),
-      ),
       body: Padding(
         padding: const EdgeInsets.only(top: 50.0, bottom: 30.0),
         child: Column(

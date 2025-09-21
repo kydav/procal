@@ -104,6 +104,7 @@ class FoodSearchPage extends HookConsumerWidget {
         ),
         onBackPressed: () => ref.read(procalRouterProvider).pop(),
       ),
+      //floatingActionButton: const ExpandableFab(),
       body: SafeArea(
         child: Column(
           children: [
@@ -202,11 +203,16 @@ class FoodSearchPage extends HookConsumerWidget {
               ),
               orElse: () => const SizedBox.shrink(),
             ),
-            if (foodSearchState.isLoading)
-              LoadingAnimationWidget.horizontalRotatingDots(
-                color: Theme.of(context).colorScheme.primary,
-                size: 50,
+            SizedBox(
+              height: 50,
+              child: Visibility(
+                visible: foodSearchState.isLoading,
+                child: LoadingAnimationWidget.horizontalRotatingDots(
+                  color: Theme.of(context).colorScheme.primary,
+                  size: 50,
+                ),
               ),
+            ),
           ],
         ),
       ),
