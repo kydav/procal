@@ -1,7 +1,7 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-export "FLUTTER_ROOT=/Users/kyler.davis/fvm/versions/3.32.6"
-export "FLUTTER_APPLICATION_PATH=/Users/kyler.davis/Development/procal"
+export "FLUTTER_ROOT=/Users/kylerdavis/.asdf/installs/flutter/3.35.4"
+export "FLUTTER_APPLICATION_PATH=/Users/kylerdavis/Development/procal"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_BUILD_DIR=build"
 export "FLUTTER_BUILD_NAME=1.0.0"

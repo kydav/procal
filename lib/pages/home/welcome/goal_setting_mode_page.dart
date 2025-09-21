@@ -31,33 +31,26 @@ class GoalSettingModePage extends HookConsumerWidget {
           curve: Curves.easeInOut,
         );
       },
-      child: Column(
-        children: [
-          Text(WelcomeStrings.letsSetYourGoals),
-          const SizedBox(height: 20),
-          Text(WelcomeStrings.aiOrManual),
-          const SizedBox(height: 20),
-          ListTile(
-            title: Text(WelcomeStrings.aiGoalSetting),
-            trailing: Radio<GoalSettingMode>(
-              value: GoalSettingMode.ai,
-              groupValue: goalSettingMode.value,
-              onChanged: (value) {
-                goalSettingMode.value = value;
-              },
+      child: RadioGroup<GoalSettingMode>(
+        onChanged: (value) => goalSettingMode.value = value,
+        groupValue: goalSettingMode.value,
+        child: Column(
+          children: [
+            Text(WelcomeStrings.letsSetYourGoals),
+            const SizedBox(height: 20),
+            Text(WelcomeStrings.aiOrManual),
+            const SizedBox(height: 20),
+
+            ListTile(
+              title: Text(WelcomeStrings.aiGoalSetting),
+              trailing: const Radio<GoalSettingMode>(value: GoalSettingMode.ai),
             ),
-          ),
-          ListTile(
-            title: Text(WelcomeStrings.manualGoalSetting),
-            trailing: Radio(
-              value: GoalSettingMode.manual,
-              groupValue: goalSettingMode.value,
-              onChanged: (value) {
-                goalSettingMode.value = value;
-              },
+            ListTile(
+              title: Text(WelcomeStrings.manualGoalSetting),
+              trailing: const Radio(value: GoalSettingMode.manual),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

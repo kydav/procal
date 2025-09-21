@@ -41,43 +41,29 @@ class ObjectivePage extends HookConsumerWidget {
           curve: Curves.bounceIn,
         );
       },
-      child: Column(
-        children: [
-          Text(WelcomeStrings.primaryGoal),
-          ListTile(
-            title: Text(WelcomeStrings.loseWeight),
-            onTap: () => primaryGoal.value = 'lose_weight',
-            trailing: Radio(
-              value: 'lose_weight',
-              groupValue: primaryGoal.value,
-              onChanged: (value) {
-                primaryGoal.value = value;
-              },
+      child: RadioGroup<String>(
+        onChanged: (value) => primaryGoal.value = value,
+        groupValue: primaryGoal.value,
+        child: Column(
+          children: [
+            Text(WelcomeStrings.primaryGoal),
+            ListTile(
+              title: Text(WelcomeStrings.loseWeight),
+              onTap: () => primaryGoal.value = 'lose_weight',
+              trailing: const Radio(value: 'lose_weight'),
             ),
-          ),
-          ListTile(
-            title: Text(WelcomeStrings.buildMuscle),
-            onTap: () => primaryGoal.value = 'build_muscle',
-            trailing: Radio(
-              value: 'build_muscle',
-              groupValue: primaryGoal.value,
-              onChanged: (value) {
-                primaryGoal.value = value;
-              },
+            ListTile(
+              title: Text(WelcomeStrings.buildMuscle),
+              onTap: () => primaryGoal.value = 'build_muscle',
+              trailing: const Radio(value: 'build_muscle'),
             ),
-          ),
-          ListTile(
-            title: Text(WelcomeStrings.maintainWeight),
-            onTap: () => primaryGoal.value = 'maintain_weight',
-            trailing: Radio(
-              value: 'maintain_weight',
-              groupValue: primaryGoal.value,
-              onChanged: (value) {
-                primaryGoal.value = value;
-              },
+            ListTile(
+              title: Text(WelcomeStrings.maintainWeight),
+              onTap: () => primaryGoal.value = 'maintain_weight',
+              trailing: const Radio(value: 'maintain_weight'),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

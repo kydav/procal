@@ -1,6 +1,6 @@
 // This is a generated file; do not edit or check into version control.
-FLUTTER_ROOT=/Users/kyler.davis/fvm/versions/3.32.6
-FLUTTER_APPLICATION_PATH=/Users/kyler.davis/Development/procal
+FLUTTER_ROOT=/Users/kylerdavis/.asdf/installs/flutter/3.35.4
+FLUTTER_APPLICATION_PATH=/Users/kylerdavis/Development/procal
 COCOAPODS_PARALLEL_CODE_SIGN=true
 FLUTTER_BUILD_DIR=build
 FLUTTER_BUILD_NAME=1.0.0
