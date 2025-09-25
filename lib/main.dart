@@ -10,6 +10,7 @@ import 'package:procal/procal_router.dart';
 import 'package:procal/providers/auth_state_notifier.dart';
 import 'package:procal/routes.dart';
 import 'package:procal/services/api/clients/procal_service.dart';
+import 'package:procal/services/api/models/user/procal_user.dart';
 import 'package:procal/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -28,13 +29,27 @@ final initializeAppProvider = FutureProvider<void>((ref) async {
   final currentUser = FirebaseAuth.instance.currentUser;
   if (currentUser != null) {
     final procalService = ref.read(procalServiceProvider);
-    final procalUser = await procalService.getUserByUid(currentUser.uid);
-    if (procalUser != null) {
-      final goals = await procalService.getGoalByUserId(procalUser.id!);
-      ref
-          .read(authStateProvider.notifier)
-          .setLoggedIn(currentUser, procalUser, goals);
-      ref.read(procalRouterProvider).go(Routes.home.path);
+    try {
+      final procalUser = await procalService.getUserByUid(currentUser.uid);
+      if (procalUser != null) {
+        final goals = await procalService.getGoalByUserId(procalUser.id!);
+        ref
+            .read(authStateProvider.notifier)
+            .setLoggedIn(currentUser, procalUser, goals);
+        ref.read(procalRouterProvider).go(Routes.home.path);
+      }
+    } catch (e) {
+      final user = await ref
+          .read(procalServiceProvider)
+          .createUser(
+            ProcalUser(
+              email: currentUser.email!,
+              firebaseUid: currentUser.uid,
+              isActive: true,
+            ),
+          );
+      ref.read(authStateProvider.notifier).setLoggedIn(currentUser, user, null);
+      ref.read(procalRouterProvider).go(Routes.welcome.path);
     }
   }
   await Health().configure();

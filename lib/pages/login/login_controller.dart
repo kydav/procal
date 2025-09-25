@@ -56,11 +56,10 @@ class LoginController extends _$LoginController {
     state = const AsyncValue.loading();
     final procalService = ref.read(procalServiceProvider);
     final authState = ref.read(authStateProvider.notifier);
+    final result = await ref
+        .read(authServiceProvider.notifier)
+        .loginUser(username, password);
     try {
-      final result = await ref
-          .read(authServiceProvider.notifier)
-          .loginUser(username, password);
-
       final user = await procalService.getUserByUid(result.user!.uid);
 
       final goals = await procalService.getGoalByUserId(user!.id!);
@@ -81,6 +80,19 @@ class LoginController extends _$LoginController {
       state = AsyncValue.error(error.message, stk);
       return;
     } on DioException catch (e, stk) {
+      final user = await ref
+          .read(procalServiceProvider)
+          .createUser(
+            ProcalUser(
+              email: username,
+              firebaseUid: result.user!.uid,
+              isActive: true,
+            ),
+          );
+      ref
+          .read(authStateProvider.notifier)
+          .setLoggedIn(result.user!, user, null);
+      ref.read(procalRouterProvider).go(Routes.welcome.path);
       debugPrint('DioException: ${e.toString()}');
       state = AsyncValue.error('Failed to login user', stk);
     } on Exception catch (e, stk) {
