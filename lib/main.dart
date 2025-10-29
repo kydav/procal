@@ -38,7 +38,7 @@ final initializeAppProvider = FutureProvider<void>((ref) async {
             .setLoggedIn(currentUser, procalUser, goals);
         ref.read(procalRouterProvider).go(Routes.home.path);
       }
-    } catch (e) {
+    } on Exception catch (_) {
       final user = await ref
           .read(procalServiceProvider)
           .createUser(
