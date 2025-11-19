@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:procal/common/protein_efficiency.dart';
 import 'package:procal/pages/food_search/food_detail/food_detail_controller.dart';
 import 'package:procal/pages/food_search/food_search_state_controller.dart';
+import 'package:procal/procal_router.dart';
 import 'package:procal/services/api/models/food/serving.dart';
 import 'package:procal/services/api/models/meal/meal_food.dart';
 
@@ -159,6 +160,7 @@ class FoodDetailPage extends HookConsumerWidget {
                                           .notifier,
                                     )
                                     .addFood(mealFood);
+                                ref.read(procalRouterProvider).pop();
                               }
                             : null,
                         child: const Text(

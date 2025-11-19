@@ -106,7 +106,7 @@ class FoodSearchPage extends HookConsumerWidget {
       ),
       //floatingActionButton: const ExpandableFab(),
       body: SafeArea(
-        child: Column(
+        child: Stack(
           children: [
             foodSearchState.maybeWhen(
               data: (foodList) => Expanded(
@@ -203,10 +203,10 @@ class FoodSearchPage extends HookConsumerWidget {
               ),
               orElse: () => const SizedBox.shrink(),
             ),
-            SizedBox(
-              height: 50,
-              child: Visibility(
-                visible: foodSearchState.isLoading,
+            Visibility(
+              visible: foodSearchState.isLoading,
+              child: Align(
+                alignment: Alignment.bottomCenter,
                 child: LoadingAnimationWidget.horizontalRotatingDots(
                   color: Theme.of(context).colorScheme.primary,
                   size: 50,
